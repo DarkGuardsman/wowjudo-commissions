@@ -9,8 +9,10 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -54,11 +56,52 @@ public class BlockExplosive extends BlockContainer
         {
             return det;
         }
-        if (side == meta)
+        if (side == meta || ForgeDirection.getOrientation(side).getOpposite().ordinal() == meta)
         {
             return top;
         }
         return this.blockIcon;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        int meta = world.getBlockMetadata(x, y, z);
+        switch (meta)
+        {
+            case 0:
+                return AxisAlignedBB.getBoundingBox(
+                        x + ISBRExplosive.c4Size, y + 1 - ISBRExplosive.c4Height, z + ISBRExplosive.c4Size,
+                        x + 1 - ISBRExplosive.c4Size, y + 1, z + 1 - ISBRExplosive.c4Size);
+            case 1:
+                return AxisAlignedBB.getBoundingBox(
+                        x + ISBRExplosive.c4Size, y + ISBRExplosive.c4Height, z + ISBRExplosive.c4Size,
+                        x + 1 - ISBRExplosive.c4Size, y, z + 1 - ISBRExplosive.c4Size);
+            case 2:
+                return AxisAlignedBB.getBoundingBox(
+                        x + ISBRExplosive.c4Size, y + ISBRExplosive.c4Size, z + 1 - ISBRExplosive.c4Height,
+                        x + 1 - ISBRExplosive.c4Size, y + 1 - ISBRExplosive.c4Size, z + 1);
+            case 3:
+                return AxisAlignedBB.getBoundingBox(
+                        x + ISBRExplosive.c4Size, y + ISBRExplosive.c4Size, z,
+                        x + 1 - ISBRExplosive.c4Size, y + 1 - ISBRExplosive.c4Size, z + ISBRExplosive.c4Height);
+            case 4:
+                return AxisAlignedBB.getBoundingBox(
+                        x + 1 - ISBRExplosive.c4Height, y + ISBRExplosive.c4Size, z + ISBRExplosive.c4Size,
+                        x + 1, y + 1 - ISBRExplosive.c4Size, z + 1 - ISBRExplosive.c4Size);
+            case 5:
+                return AxisAlignedBB.getBoundingBox(
+                        x, y + ISBRExplosive.c4Size, z + ISBRExplosive.c4Size,
+                        x + ISBRExplosive.c4Height, y + 1 - ISBRExplosive.c4Size, z + 1 - ISBRExplosive.c4Size);
+        }
+        return AxisAlignedBB.getBoundingBox((double) x + this.minX, (double) y + this.minY, (double) z + this.minZ, (double) x + this.maxX, (double) y + this.maxY, (double) z + this.maxZ);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        return getCollisionBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
@@ -70,16 +113,6 @@ public class BlockExplosive extends BlockContainer
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float xHit, float yHit, float zHit, int meta)
     {
-        //Bottom
-        if (side == 0)
-        {
-
-        }
-        //TOP
-        else if (side == 1)
-        {
-
-        }
         return side;
     }
 

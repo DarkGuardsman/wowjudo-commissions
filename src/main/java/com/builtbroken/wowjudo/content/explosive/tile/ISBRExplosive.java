@@ -13,7 +13,17 @@ import net.minecraft.world.IBlockAccess;
  */
 public class ISBRExplosive implements ISimpleBlockRenderingHandler
 {
+    /** Block render ID */
     public static int ID = RenderingRegistry.getNextAvailableRenderId();
+
+    /** 1 pixel or 1/16 of a meter */
+    public static final float pixel = 1.0f / 16.0f;
+    /** Size of C4 block, width, not height */
+    public static final float c4Size = pixel * 3;
+    /** Size of button on C4, width, not height */
+    public static final float buttonSize = pixel * 6;
+    /** Height of C4 block */
+    public static final float c4Height = 6 * pixel;
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
@@ -24,9 +34,6 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        final float pixel = 1.0f / 16.0f;
-        final float c4Size = pixel * 3;
-        final float buttonSize = pixel * 6;
         int meta = world.getBlockMetadata(x, y, z);
 
         //Keep track of previous values for reset
@@ -46,7 +53,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateNorth = 3;
                 renderer.uvRotateSouth = 3;
 
-                renderer.setRenderBounds(c4Size, 1.01 - 6 * pixel, c4Size, 1 - c4Size, 1, 1 - c4Size);
+                renderer.setRenderBounds(c4Size, 1.01 - c4Height, c4Size, 1 - c4Size, 1, 1 - c4Size);
                 renderer.renderStandardBlock(block, x, y, z);
 
                 //Reset
@@ -55,15 +62,15 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateNorth = uvRotationNorth;
                 renderer.uvRotateSouth = uvRotationSouth;
 
-                renderer.setRenderBounds(buttonSize, 1.01 - 7 * pixel, buttonSize, 1 - buttonSize, 1.01 - 6 * pixel, 1 - buttonSize);
+                renderer.setRenderBounds(buttonSize, 1.01 - 7 * pixel, buttonSize, 1 - buttonSize, 1.01 - c4Height, 1 - buttonSize);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
             //TOP
             case 1:
-                renderer.setRenderBounds(c4Size, 0, c4Size, 1 - c4Size, 6 * pixel, 1 - c4Size);
+                renderer.setRenderBounds(c4Size, 0, c4Size, 1 - c4Size, c4Height, 1 - c4Size);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(buttonSize, 6 * pixel, buttonSize, 1 - buttonSize, 6 * pixel + pixel, 1 - buttonSize);
+                renderer.setRenderBounds(buttonSize, c4Height, buttonSize, 1 - buttonSize, c4Height + pixel, 1 - buttonSize);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
             //North
@@ -71,14 +78,14 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateNorth = 2;
                 renderer.uvRotateSouth = 1;
 
-                renderer.setRenderBounds(c4Size, c4Size, 1.01 - 6 * pixel, 1 - c4Size, 1 - c4Size, 1);
+                renderer.setRenderBounds(c4Size, c4Size, 1.01 - c4Height, 1 - c4Size, 1 - c4Size, 1);
                 renderer.renderStandardBlock(block, x, y, z);
 
                 //Reset
                 renderer.uvRotateNorth = uvRotationNorth;
                 renderer.uvRotateSouth = uvRotationSouth;
 
-                renderer.setRenderBounds(buttonSize, buttonSize, 1.01 - 7 * pixel, 1 - buttonSize, 1 - buttonSize, 1.01 - 6 * pixel);
+                renderer.setRenderBounds(buttonSize, buttonSize, 1.01 - 7 * pixel, 1 - buttonSize, 1 - buttonSize, 1.01 - c4Height);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
             //South
@@ -88,7 +95,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateBottom = 3;
                 renderer.uvRotateTop = 3;
 
-                renderer.setRenderBounds(c4Size, c4Size, 0, 1 - c4Size, 1 - c4Size, 6 * pixel);
+                renderer.setRenderBounds(c4Size, c4Size, 0, 1 - c4Size, 1 - c4Size, c4Height);
                 renderer.renderStandardBlock(block, x, y, z);
 
                 //Reset
@@ -97,7 +104,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateNorth = uvRotationNorth;
                 renderer.uvRotateSouth = uvRotationSouth;
 
-                renderer.setRenderBounds(buttonSize, buttonSize, 6 * pixel, 1 - buttonSize, 1 - buttonSize, 6 * pixel + pixel);
+                renderer.setRenderBounds(buttonSize, buttonSize, c4Height, 1 - buttonSize, 1 - buttonSize, c4Height + pixel);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
             //West
@@ -107,7 +114,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateEast = 1;
                 renderer.uvRotateWest = 2;
 
-                renderer.setRenderBounds(1.01 - 6 * pixel, c4Size, c4Size, 1, 1 - c4Size, 1 - c4Size);
+                renderer.setRenderBounds(1.01 - c4Height, c4Size, c4Size, 1, 1 - c4Size, 1 - c4Size);
                 renderer.renderStandardBlock(block, x, y, z);
 
                 //Reset
@@ -116,7 +123,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateEast = uvRotationEast;
                 renderer.uvRotateWest = uvRotationWest;
 
-                renderer.setRenderBounds(1.01 - 7 * pixel, buttonSize, buttonSize, 1.01 - 6 * pixel, 1 - buttonSize, 1 - buttonSize);
+                renderer.setRenderBounds(1.01 - 7 * pixel, buttonSize, buttonSize, 1.01 - c4Height, 1 - buttonSize, 1 - buttonSize);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
             //East
@@ -126,7 +133,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateEast = 2;
                 renderer.uvRotateWest = 1;
 
-                renderer.setRenderBounds(0, c4Size, c4Size, 6 * pixel, 1 - c4Size, 1 - c4Size);
+                renderer.setRenderBounds(0, c4Size, c4Size, c4Height, 1 - c4Size, 1 - c4Size);
                 renderer.renderStandardBlock(block, x, y, z);
 
                 //Reset
@@ -135,7 +142,7 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
                 renderer.uvRotateEast = uvRotationEast;
                 renderer.uvRotateWest = uvRotationWest;
 
-                renderer.setRenderBounds(6 * pixel, buttonSize, buttonSize, 6 * pixel + pixel, 1 - buttonSize, 1 - buttonSize);
+                renderer.setRenderBounds(c4Height, buttonSize, buttonSize, c4Height + pixel, 1 - buttonSize, 1 - buttonSize);
                 renderBlock(renderer, block, x, y, z, block.getIcon(0, 7));
                 break;
         }
