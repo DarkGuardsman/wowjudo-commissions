@@ -3,7 +3,6 @@ package com.builtbroken.wowjudo;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
-import com.builtbroken.wowjudo.network.PacketManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -38,8 +37,6 @@ public class JudoMod
 
     /** Information output thing */
     public static final Logger logger = LogManager.getLogger("SBM-GrapplingHook");
-
-    public static PacketManager packetHandler;
 
     @SidedProxy(clientSide = "com.builtbroken.wowjudo.ClientProxy", serverSide = "com.builtbroken.wowjudo.CommonProxy")
     public static CommonProxy proxy;
@@ -76,7 +73,6 @@ public class JudoMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        packetHandler = new PacketManager("wowjudo");
         proxy.init();
     }
 

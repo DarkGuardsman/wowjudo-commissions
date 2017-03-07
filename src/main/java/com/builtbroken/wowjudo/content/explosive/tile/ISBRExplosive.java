@@ -5,6 +5,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -25,7 +26,11 @@ public class ISBRExplosive implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        renderer.renderStandardBlock(block, x, y, z);
+        renderer.setRenderBounds(.15, 0, .15, .85, .4, .85);
+        renderBlock(renderer, Blocks.clay, x, y, z, Blocks.clay.getIcon(0, 0));
+
+        renderer.setRenderBounds(.35, .4, .35, .65, .5, .65);
+        renderBlock(renderer, Blocks.coal_block, x, y, z, Blocks.coal_block.getIcon(0, 0));
         return true;
     }
 
