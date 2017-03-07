@@ -1,7 +1,7 @@
 package com.builtbroken.wowjudo.content.explosive.remote;
 
 import com.builtbroken.mc.lib.transform.vector.Location;
-import com.builtbroken.wowjudo.JudoMod;
+import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,9 +23,9 @@ public class ItemRemote extends Item
         setMaxStackSize(1);
         setNoRepair();
 
-        setUnlocalizedName(JudoMod.PREFX + "explosiveRemote");
-        setTextureName(JudoMod.PREFX + "C4_remote");
-        setCreativeTab(JudoMod.creativeTab);
+        setUnlocalizedName(SurvivalMod.PREFX + "explosiveRemote");
+        setTextureName(SurvivalMod.PREFX + "C4_remote");
+        setCreativeTab(SurvivalMod.creativeTab);
     }
 
     @Override

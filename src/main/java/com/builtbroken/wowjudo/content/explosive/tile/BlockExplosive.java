@@ -1,9 +1,15 @@
 package com.builtbroken.wowjudo.content.explosive.tile;
 
-import com.builtbroken.wowjudo.JudoMod;
+import com.builtbroken.wowjudo.SurvivalMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -12,13 +18,69 @@ import net.minecraft.world.World;
  */
 public class BlockExplosive extends BlockContainer
 {
+    @SideOnly(Side.CLIENT)
+    public IIcon top;
+
+    @SideOnly(Side.CLIENT)
+    public IIcon bottom;
+
+    @SideOnly(Side.CLIENT)
+    public IIcon det;
+
     public BlockExplosive()
     {
         super(Material.tnt);
-        setCreativeTab(JudoMod.creativeTab);
-        setBlockName(JudoMod.PREFX + "c4");
+        setCreativeTab(SurvivalMod.creativeTab);
+        setBlockName(SurvivalMod.PREFX + "c4");
         setHardness(5);
         setResistance(5);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg)
+    {
+        this.blockIcon = reg.registerIcon(SurvivalMod.PREFX + "C4_block_side");
+        this.top = reg.registerIcon(SurvivalMod.PREFX + "C4_block_topBottom");
+        this.bottom = reg.registerIcon(SurvivalMod.PREFX + "C4_block_topDet");
+        this.det = reg.registerIcon(SurvivalMod.PREFX + "C4_block_det");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta)
+    {
+        if (meta > 5)
+        {
+            return det;
+        }
+        if (side == meta)
+        {
+            return top;
+        }
+        return this.blockIcon;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+    {
+        //TODO keep track of owner
+    }
+
+    @Override
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float xHit, float yHit, float zHit, int meta)
+    {
+        //Bottom
+        if (side == 0)
+        {
+
+        }
+        //TOP
+        else if (side == 1)
+        {
+
+        }
+        return side;
     }
 
     @Override
@@ -31,5 +93,11 @@ public class BlockExplosive extends BlockContainer
     public int getRenderType()
     {
         return ISBRExplosive.ID;
+    }
+
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
     }
 }

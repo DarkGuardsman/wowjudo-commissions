@@ -2,6 +2,7 @@ package com.builtbroken.wowjudo;
 
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
+import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -21,8 +22,8 @@ import org.apache.logging.log4j.Logger;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/7/2017.
  */
-@cpw.mods.fml.common.Mod(modid = JudoMod.DOMAIN, name = "Wowjudo's Mod", version = JudoMod.VERSION)
-public class JudoMod
+@cpw.mods.fml.common.Mod(modid = SurvivalMod.DOMAIN, name = "Wowjudo's Survival Mod", version = SurvivalMod.VERSION)
+public class SurvivalMod
 {
     public static final boolean runningAsDev = System.getProperty("development") != null && System.getProperty("development").equalsIgnoreCase("true");
 
@@ -60,7 +61,7 @@ public class JudoMod
         };
 
         blockExplosive = new BlockExplosive();
-        GameRegistry.registerBlock(blockExplosive, "wjExplosive");
+        GameRegistry.registerBlock(blockExplosive, ItemBlockExplosive.class, "wjExplosive");
         GameRegistry.registerTileEntity(TileEntityExplosive.class, "wjExplosive");
 
         itemExplosiveRemote = new ItemRemote();
