@@ -1,4 +1,4 @@
-package com.builtbroken.wowjudo.content.explosive.logs;
+package com.builtbroken.wowjudo.content.logs;
 
 import com.builtbroken.wowjudo.SurvivalMod;
 import cpw.mods.fml.common.IFuelHandler;

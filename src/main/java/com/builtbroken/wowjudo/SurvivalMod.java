@@ -1,7 +1,9 @@
 package com.builtbroken.wowjudo;
 
 import com.builtbroken.mc.lib.helper.LanguageUtility;
-import com.builtbroken.wowjudo.content.explosive.logs.ItemLog;
+import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
+import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
+import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
@@ -12,6 +14,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,11 +51,15 @@ public class SurvivalMod
     public static CommonProxy proxy;
 
     public static BlockExplosive blockExplosive;
+    public static BlockCampFire blockCampFire;
 
     public static ItemRemote itemExplosiveRemote;
     public static ItemLog itemLog;
 
     public static CreativeTabs creativeTab;
+
+    @Mod.Instance(DOMAIN)
+    public static SurvivalMod instance;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -62,13 +69,19 @@ public class SurvivalMod
             @SideOnly(Side.CLIENT)
             public Item getTabIconItem()
             {
-                return itemExplosiveRemote;
+                return Item.getItemFromBlock(blockCampFire);
             }
         };
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
         blockExplosive = new BlockExplosive();
         GameRegistry.registerBlock(blockExplosive, ItemBlockExplosive.class, "wjExplosive");
         GameRegistry.registerTileEntity(TileEntityExplosive.class, "wjExplosive");
+
+        blockCampFire = new BlockCampFire();
+        GameRegistry.registerBlock(blockCampFire, "wjCampFire");
+        GameRegistry.registerTileEntity(TileEntityCampfire.class, "wjCampFire");
 
         itemExplosiveRemote = new ItemRemote();
         GameRegistry.registerItem(itemExplosiveRemote, "wjExplosiveRemote");
