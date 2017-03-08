@@ -1,5 +1,7 @@
 package com.builtbroken.wowjudo;
 
+import com.builtbroken.mc.lib.helper.LanguageUtility;
+import com.builtbroken.wowjudo.content.explosive.logs.ItemLog;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
@@ -7,14 +9,17 @@ import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,9 +47,10 @@ public class SurvivalMod
     @SidedProxy(clientSide = "com.builtbroken.wowjudo.ClientProxy", serverSide = "com.builtbroken.wowjudo.CommonProxy")
     public static CommonProxy proxy;
 
-    public static Block blockExplosive;
+    public static BlockExplosive blockExplosive;
 
-    public static Item itemExplosiveRemote;
+    public static ItemRemote itemExplosiveRemote;
+    public static ItemLog itemLog;
 
     public static CreativeTabs creativeTab;
 
@@ -67,6 +73,10 @@ public class SurvivalMod
         itemExplosiveRemote = new ItemRemote();
         GameRegistry.registerItem(itemExplosiveRemote, "wjExplosiveRemote");
 
+        itemLog = new ItemLog();
+        GameRegistry.registerItem(itemLog, "wjLog");
+        MinecraftForge.EVENT_BUS.register(itemLog);
+        GameRegistry.registerFuelHandler(itemLog);
 
         proxy.preInit();
     }
@@ -74,6 +84,21 @@ public class SurvivalMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        //Register ore dictionary support
+        for (ItemLog.LogTypes type : ItemLog.LogTypes.values())
+        {
+            OreDictionary.registerOre("logWood", new ItemStack(itemLog, 1, type.ordinal()));
+            OreDictionary.registerOre("log", new ItemStack(itemLog, 1, type.ordinal()));
+            if (type == ItemLog.LogTypes.DARK_OAK)
+            {
+                OreDictionary.registerOre("logBigOak", new ItemStack(itemLog, 1, type.ordinal()));
+            }
+            else if (type != ItemLog.LogTypes.GENERIC)
+            {
+                OreDictionary.registerOre("log" + LanguageUtility.capitalizeFirst(type.localization), new ItemStack(itemLog, 1, type.ordinal()));
+            }
+        }
+
         proxy.init();
     }
 
@@ -81,5 +106,11 @@ public class SurvivalMod
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.postInit();
+    }
+
+    @Mod.EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event)
+    {
+        //TODO maybe modify recipes?
     }
 }
