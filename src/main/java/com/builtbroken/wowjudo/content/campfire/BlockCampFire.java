@@ -10,11 +10,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -26,6 +28,7 @@ public class BlockCampFire extends BlockContainer
     {
         super(Material.rock);
         setCreativeTab(SurvivalMod.creativeTab);
+        setBlockTextureName(SurvivalMod.PREFX + "firepit");
         setBlockName(SurvivalMod.PREFX + "campFire");
         setHardness(1);
         setResistance(1);
@@ -35,6 +38,44 @@ public class BlockCampFire extends BlockContainer
     public int getRenderType()
     {
         return -1;
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z)
+    {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileEntityCampfire)
+        {
+            return ((TileEntityCampfire) tile).cookTimer > 0 ? 10 : 0;
+        }
+        return 0;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+    {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileEntityCampfire && ((TileEntityCampfire) tile).cookTimer > 0)
+        {
+            float f = (float) x + 0.5F + rp(rand) - rp(rand);
+            float f1 = (float) y + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
+            float f2 = (float) z + 0.5F + rp(rand) - rp(rand);
+
+            world.spawnParticle("smoke", (double) f, (double) f1, (double) f2, 0.0D, 0.0D, 0.0D);
+            world.spawnParticle("flame", (double) f, (double) f1, (double) f2, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    private final float rp(Random rand)
+    {
+        return rand.nextFloat() * 0.5f;
+    }
+
+    @Override
+    public boolean canBlockStay(World world, int x, int y, int z)
+    {
+        return world.getBlock(x, y, z).isSideSolid(world, x, y, z, ForgeDirection.UP);
     }
 
     @Override
@@ -60,13 +101,6 @@ public class BlockCampFire extends BlockContainer
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
     {
         return getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return Blocks.cobblestone.getIcon(0, 0);
     }
 
     @Override

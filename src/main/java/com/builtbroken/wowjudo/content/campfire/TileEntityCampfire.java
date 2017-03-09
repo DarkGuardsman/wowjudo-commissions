@@ -1,6 +1,8 @@
 package com.builtbroken.wowjudo.content.campfire;
 
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.IPacketIDReceiver;
+import com.builtbroken.mc.core.network.packet.PacketTile;
 import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,100 +36,110 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     public static final int[] OUTPUT_SLOTS = new int[]{SLOT_OUTPUT};
 
     /** Map of inputs to outputs */
-    private static HashMap<ItemStackWrapper, ItemStack> recipes = new HashMap();
+    private static HashMap<ItemStackWrapper, FireRecipe> recipes = new HashMap();
 
     /** Remaining ticks on fuel */
     public int fuelTimer = 0;
     /** Progress on cooking items */
     public int cookTimer = 0;
-
-    public boolean doUpdateClient = false;
     public boolean hasRecipe = false;
+    public boolean hasFuel = false;
 
     @Override
     public void updateEntity()
     {
         if (!worldObj.isRemote)
         {
-            //If we have no fuel get fuel
-            if (fuelTimer <= 0)
+            //If have no recipe, find recipe
+            if (!hasRecipe && getStackInSlot(SLOT_INPUT) != null)
             {
+                ItemStackWrapper stack = new ItemStackWrapper(getStackInSlot(SLOT_INPUT));
+                if (recipes.containsKey(stack))
+                {
+                    hasRecipe = true;
+                }
+            }
+
+            //If we have no fuel get fuel
+            if (hasRecipe && fuelTimer <= 0 || !hasFuel)
+            {
+                hasFuel = false;
                 ItemStack stack = getStackInSlot(SLOT_FUEL);
                 if (stack != null)
                 {
                     int burnTime = TileEntityFurnace.getItemBurnTime(stack);
                     if (burnTime > 0)
                     {
-                        fuelTimer += burnTime;
-                        decrStackSize(SLOT_FUEL, 1);
-                        doUpdateClient = true;
+                        hasFuel = true;
+                        //Only consume fuel if we are cooking items
+                        if (hasRecipe)
+                        {
+                            fuelTimer += burnTime;
+                            decrStackSize(SLOT_FUEL, 1);
+                        }
                     }
                 }
             }
 
-            //If we have fuel run system
-            if (fuelTimer > 0)
+
+            //If we have a recipe, tick recipe timer
+            if (hasRecipe)
             {
-                fuelTimer--;
-                if(fuelTimer <= 0)
+                //If we have fuel run system
+                if (fuelTimer > 0)
                 {
-                    doUpdateClient = true;
-                }
-
-                //If have no recipe, find recipe
-                if (!hasRecipe && getStackInSlot(SLOT_INPUT) != null)
-                {
-                    ItemStackWrapper stack = new ItemStackWrapper(getStackInSlot(SLOT_INPUT));
-                    if (recipes.containsKey(stack))
-                    {
-                        hasRecipe = true;
-                        doUpdateClient = true;
-                    }
-                }
-
-                //If we have a recipe, tick recipe timer
-                if (hasRecipe)
-                {
+                    fuelTimer--;
                     cookTimer++;
                     //If done, consume item and output
                     if (cookTimer >= 200)
                     {
+                        //Validate input
                         ItemStack input = getStackInSlot(SLOT_INPUT);
                         if (input != null)
                         {
+                            //Get recipe
                             ItemStackWrapper stack = new ItemStackWrapper(input);
-                            ItemStack recipe = recipes.get(stack);
+                            FireRecipe recipe = recipes.get(stack);
+                            //Get output slot content
                             ItemStack output = getStackInSlot(SLOT_OUTPUT);
-                            if (recipe != null && (output == null || InventoryUtility.stacksMatch(recipe, output) && InventoryUtility.roomLeftInSlot(this, SLOT_OUTPUT) >= recipe.stackSize))
+                            //Only process if we have a recipe for output and we can output into slot
+                            if (recipe != null && (output == null || InventoryUtility.stacksMatch(recipe.output, output) && InventoryUtility.roomLeftInSlot(this, SLOT_OUTPUT) >= recipe.output.stackSize))
                             {
+                                //TODO output XP
+                                //Output item
                                 if (output != null)
                                 {
-                                    output.stackSize += recipe.stackSize;
+                                    output.stackSize += recipe.output.stackSize;
                                     setInventorySlotContents(SLOT_OUTPUT, output);
                                 }
                                 else
                                 {
-                                    setInventorySlotContents(SLOT_OUTPUT, recipe.copy());
+                                    setInventorySlotContents(SLOT_OUTPUT, recipe.output.copy());
                                 }
+
+                                //Consume item
                                 decrStackSize(SLOT_INPUT, 1);
+                                //Reset
+                                hasRecipe = false;
                                 cookTimer = 0;
-                                doUpdateClient = true;
                             }
                         }
                     }
                 }
+                //If timer hits zero we have consumed our fuel item
                 else
                 {
-                    cookTimer = 0;
+                    hasFuel = false;
                 }
             }
-
-            //Send description packet
-            if (doUpdateClient)
+            //If we have no recipe reset cook time
+            else if (cookTimer > 0)
             {
-                doUpdateClient = false;
-                //TODO send description packet
+                cookTimer = 0;
             }
+
+            //Update client to sync render state
+            Engine.instance.packetHandler.sendToAllAround(getDescPacket(), this);
         }
     }
 
@@ -138,6 +151,8 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        cookTimer = nbt.getInteger("cookTime");
+        fuelTimer = nbt.getInteger("fuelTime");
         if (nbt.hasKey("inventory"))
         {
             NBTTagCompound tag = nbt.getCompoundTag("inventory");
@@ -149,6 +164,8 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setInteger("cookTime", cookTimer);
+        nbt.setInteger("fuelTime", fuelTimer);
         if (inventory_module != null)
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -164,7 +181,28 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     @Override
     public boolean read(ByteBuf buf, int id, EntityPlayer player, PacketType type)
     {
+        if (worldObj.isRemote)
+        {
+            if (id == 0)
+            {
+                this.cookTimer = buf.readInt();
+                this.fuelTimer = buf.readInt();
+                this.hasFuel = buf.readBoolean();
+                return true;
+            }
+        }
         return false;
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        return Engine.instance.packetHandler.toMCPacket(getDescPacket());
+    }
+
+    public PacketTile getDescPacket()
+    {
+        return new PacketTile(this, 0, cookTimer, fuelTimer, hasFuel);
     }
 
     //==================================================
@@ -174,10 +212,9 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     @Override
     public void onInventoryChanged(int slot, ItemStack prev, ItemStack item)
     {
-        if (!worldObj.isRemote && slot == SLOT_INPUT)
+        if (worldObj != null && !worldObj.isRemote && slot == SLOT_INPUT)
         {
             hasRecipe = false;
-            doUpdateClient = true;
         }
     }
 
@@ -221,18 +258,30 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     //================== Recipes =======================
     //==================================================
 
-    public static void addRecipe(Block block, ItemStack output)
+    public static void addRecipe(Block block, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(block), output);
+        recipes.put(new ItemStackWrapper(block), new FireRecipe(output, xp));
     }
 
-    public static void addRecipe(Item item, ItemStack output)
+    public static void addRecipe(Item item, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(item), output);
+        recipes.put(new ItemStackWrapper(item), new FireRecipe(output, xp));
     }
 
-    public static void addRecipe(ItemStack input, ItemStack output)
+    public static void addRecipe(ItemStack input, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(input), output);
+        recipes.put(new ItemStackWrapper(input), new FireRecipe(output, xp));
+    }
+
+    public static class FireRecipe
+    {
+        public final ItemStack output;
+        public final float xp;
+
+        public FireRecipe(ItemStack output, float xp)
+        {
+            this.output = output;
+            this.xp = xp;
+        }
     }
 }

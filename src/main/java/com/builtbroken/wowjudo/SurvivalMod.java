@@ -19,8 +19,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
@@ -118,6 +121,14 @@ public class SurvivalMod
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
+        TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
+        TileEntityCampfire.addRecipe(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);
+        TileEntityCampfire.addRecipe(Blocks.log, new ItemStack(Items.coal, 1, 1), 0.15F);
+        TileEntityCampfire.addRecipe(Blocks.log2, new ItemStack(Items.coal, 1, 1), 0.15F);
+        TileEntityCampfire.addRecipe(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
+        TileEntityCampfire.addRecipe(Blocks.cactus, new ItemStack(Items.dye, 1, 2), 0.2F);
+
         proxy.postInit();
     }
 
