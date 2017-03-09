@@ -1,11 +1,11 @@
 package com.builtbroken.wowjudo.content.crafting.gui;
 
 import com.builtbroken.mc.prefab.gui.ContainerBase;
-import com.builtbroken.wowjudo.content.campfire.gui.SlotCampFire;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -15,27 +15,45 @@ public class ContainerCraftingTable extends ContainerBase
 {
     TileEntityCraftingTable craftingTable;
 
-    public ContainerCraftingTable(EntityPlayer player, TileEntityCraftingTable campFire)
+    public InventoryCrafting craftMatrix;
+    public IInventory craftResult = new InventoryCraftResult();
+
+    public ContainerCraftingTable(EntityPlayer player, TileEntityCraftingTable table)
     {
-        super(player, campFire);
-        this.craftingTable = campFire;
+        super(player, table);
+        this.craftingTable = table;
+        craftMatrix = new InventoryCraftingMatrix(this, table);
         int slot = 0;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                addSlotToContainer(new Slot(campFire, slot++, i * 18 + 30, j * 18 + 17));
+                addSlotToContainer(new Slot(craftMatrix, slot++, i * 18 + 30, j * 18 + 17));
             }
         }
-        this.addSlotToContainer(new SlotCampFire(player, campFire, slot++, 116, 35));
+        this.addSlotToContainer(new SlotCraftingTable(player, this.craftMatrix, this.craftResult, 0, 124, 35));
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                addSlotToContainer(new Slot(campFire, slot++, 8 + j * 18, 90 + i * 18));
+                addSlotToContainer(new Slot(table, slot++, 8 + j * 18, 90 + i * 18));
             }
         }
         addPlayerInventory(player, 8, 90 + 3 * 18);
+
+        this.onCraftMatrixChanged(this.craftMatrix);
+    }
+
+    @Override
+    public void onCraftMatrixChanged(IInventory inventory)
+    {
+        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, craftingTable.getWorldObj()));
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer p_75145_1_)
+    {
+        return true;
     }
 
     @Override
@@ -80,5 +98,11 @@ public class ContainerCraftingTable extends ContainerBase
         }
 
         return itemstack;
+    }
+
+    @Override
+    public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_)
+    {
+        return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
     }
 }

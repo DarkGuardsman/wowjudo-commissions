@@ -15,10 +15,8 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
 {
     public static final int SLOT_CRAFTING_START = 0;
     public static final int SLOT_CRAFTING_END = 15;
-    public static final int SLOT_CRAFTING_OUTPUT = SLOT_CRAFTING_END + 1;
-    public static final int SLOT_INVENTORY_START = SLOT_CRAFTING_OUTPUT + 1;
+    public static final int SLOT_INVENTORY_START = SLOT_CRAFTING_END + 1;
     public static final int SLOT_INVENTORY_END = SLOT_INVENTORY_START + 18;
-
 
     @Override
     protected ExternalInventory createInventory()
