@@ -3,11 +3,11 @@ package com.builtbroken.wowjudo;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
-import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
+import com.builtbroken.wowjudo.content.logs.ItemLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -22,8 +22,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
@@ -121,13 +121,30 @@ public class SurvivalMod
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        //Food
         TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
         TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
         TileEntityCampfire.addRecipe(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);
+        TileEntityCampfire.addRecipe(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
+
+        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
+        for (int j = 0; j < afishtype.length; ++j)
+        {
+            ItemFishFood.FishType fishtype = afishtype[j];
+
+            if (fishtype.func_150973_i())
+            {
+                TileEntityCampfire.addRecipe(new ItemStack(Items.fish, 1, fishtype.func_150976_a()), new ItemStack(Items.cooked_fished, 1, fishtype.func_150976_a()), 0.35F);
+            }
+        }
+        //Dye
+        TileEntityCampfire.addRecipe(Blocks.cactus, new ItemStack(Items.dye, 1, 2), 0.2F);
+
+        //Charcoal
         TileEntityCampfire.addRecipe(Blocks.log, new ItemStack(Items.coal, 1, 1), 0.15F);
         TileEntityCampfire.addRecipe(Blocks.log2, new ItemStack(Items.coal, 1, 1), 0.15F);
-        TileEntityCampfire.addRecipe(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
-        TileEntityCampfire.addRecipe(Blocks.cactus, new ItemStack(Items.dye, 1, 2), 0.2F);
+
+        //TODO config load recipes
 
         proxy.postInit();
     }

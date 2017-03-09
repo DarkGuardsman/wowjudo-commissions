@@ -3,7 +3,6 @@ package com.builtbroken.wowjudo.content.campfire;
 import com.builtbroken.mc.prefab.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -19,7 +18,7 @@ public class ContainerCampFire extends ContainerBase
         super(player, campFire);
         this.addSlotToContainer(new Slot(campFire, TileEntityCampfire.SLOT_INPUT, 56, 17));
         this.addSlotToContainer(new Slot(campFire, TileEntityCampfire.SLOT_FUEL, 56, 53));
-        this.addSlotToContainer(new SlotFurnace(player, campFire, TileEntityCampfire.SLOT_OUTPUT, 116, 35));
+        this.addSlotToContainer(new SlotCampFire(player, campFire, TileEntityCampfire.SLOT_OUTPUT, 116, 35));
         addPlayerInventory(player);
     }
 

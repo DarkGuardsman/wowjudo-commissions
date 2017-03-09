@@ -37,6 +37,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
 
     /** Map of inputs to outputs */
     private static HashMap<ItemStackWrapper, FireRecipe> recipes = new HashMap();
+    private static HashMap<ItemStackWrapper, FireRecipe> outputs = new HashMap();
 
     /** Remaining ticks on fuel */
     public int fuelTimer = 0;
@@ -260,18 +261,31 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
 
     public static void addRecipe(Block block, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(block), new FireRecipe(output, xp));
+        addRecipe(new ItemStack(block), output, xp);
     }
 
     public static void addRecipe(Item item, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(item), new FireRecipe(output, xp));
+        addRecipe(new ItemStack(item), output, xp);
     }
 
     public static void addRecipe(ItemStack input, ItemStack output, float xp)
     {
-        recipes.put(new ItemStackWrapper(input), new FireRecipe(output, xp));
+        FireRecipe recipe = new FireRecipe(output, xp);
+        recipes.put(new ItemStackWrapper(input), recipe);
+        outputs.put(new ItemStackWrapper(output), recipe);
     }
+
+    public static float getXp(ItemStack stack)
+    {
+        ItemStackWrapper wrapper = new ItemStackWrapper(stack);
+        if (outputs.containsKey(wrapper))
+        {
+            return outputs.get(wrapper).xp;
+        }
+        return 0;
+    }
+
 
     public static class FireRecipe
     {
