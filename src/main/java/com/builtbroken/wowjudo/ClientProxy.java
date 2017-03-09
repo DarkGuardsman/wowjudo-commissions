@@ -1,6 +1,6 @@
 package com.builtbroken.wowjudo;
 
-import com.builtbroken.wowjudo.content.campfire.GuiCampFire;
+import com.builtbroken.wowjudo.content.campfire.gui.GuiCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityRenderCampFire;
 import com.builtbroken.wowjudo.content.explosive.tile.ISBRExplosive;

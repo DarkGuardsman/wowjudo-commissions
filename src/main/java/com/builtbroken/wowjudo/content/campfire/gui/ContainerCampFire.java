@@ -1,6 +1,7 @@
-package com.builtbroken.wowjudo.content.campfire;
+package com.builtbroken.wowjudo.content.campfire.gui;
 
 import com.builtbroken.mc.prefab.gui.ContainerBase;
+import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

@@ -1,5 +1,6 @@
-package com.builtbroken.wowjudo.content.campfire;
+package com.builtbroken.wowjudo.content.campfire.gui;
 
+import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
