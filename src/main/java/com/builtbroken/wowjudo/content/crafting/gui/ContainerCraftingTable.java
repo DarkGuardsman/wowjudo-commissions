@@ -3,7 +3,10 @@ package com.builtbroken.wowjudo.content.crafting.gui;
 import com.builtbroken.mc.prefab.gui.ContainerBase;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 
@@ -23,23 +26,22 @@ public class ContainerCraftingTable extends ContainerBase
         super(player, table);
         this.craftingTable = table;
         craftMatrix = new InventoryCraftingMatrix(this, table);
-        int slot = 0;
-        for (int i = 0; i < 4; i++)
+        for (int row = 0; row < 4; ++row)
         {
-            for (int j = 0; j < 4; j++)
+            for (int col = 0; col < 4; ++col)
             {
-                addSlotToContainer(new Slot(craftMatrix, slot++, i * 18 + 30, j * 18 + 17));
+                this.addSlotToContainer(new Slot(this.craftMatrix, col + row * 4, 30 + col * 18, 13 + row * 18));
             }
         }
-        this.addSlotToContainer(new SlotCraftingTable(player, this.craftMatrix, this.craftResult, 0, 124, 35));
-        for (int i = 0; i < 2; i++)
+        this.addSlotToContainer(new SlotCraftingTable(player, this.craftMatrix, this.craftResult, 0, 124, 39));
+        for (int row = 0; row < 2; ++row)
         {
-            for (int j = 0; j < 9; j++)
+            for (int col = 0; col < 9; ++col)
             {
-                addSlotToContainer(new Slot(table, slot++, 8 + j * 18, 90 + i * 18));
+                this.addSlotToContainer(new Slot(table, col + row * 9 + 16, 8 + col * 18, 94 + row * 18));
             }
         }
-        addPlayerInventory(player, 8, 90 + 3 * 18);
+        addPlayerInventory(player, 8, 135);
 
         this.onCraftMatrixChanged(this.craftMatrix);
     }
@@ -59,23 +61,47 @@ public class ContainerCraftingTable extends ContainerBase
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
     {
+        //Constant to mark player inventory, based on crafting table
+        final int playerInventoryStart = craftingTable.getSizeInventory();
+        final int playerInventoryEnd = craftingTable.getSizeInventory() + 36;
+        //final int playerToolbarStart = craftingTable.getSizeInventory() + 27;
+
         ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(slotIndex);
+        final Slot slot = (Slot) this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack())
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (slotIndex >= craftingTable.getSizeInventory())
+            //From output to player inventory
+            if (slotIndex == 0)
             {
-                if (!this.mergeItemStack(itemstack1, TileEntityCraftingTable.SLOT_INVENTORY_START, craftingTable.getSizeInventory(), false))
+                if (!this.mergeItemStack(itemstack1, playerInventoryStart, playerInventoryEnd, true))
+                {
+                    return null;
+                }
+
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            //From player inventory to secondary inventory
+            else if (slotIndex >= TileEntityCraftingTable.SLOT_INVENTORY_START && slotIndex <= TileEntityCraftingTable.SLOT_INVENTORY_END)
+            {
+                if (!this.mergeItemStack(itemstack1, playerInventoryStart, playerInventoryEnd, false))
                 {
                     return null;
                 }
             }
-            //From inventory
-            else if (!this.mergeItemStack(itemstack1, craftingTable.getSizeInventory(), craftingTable.getSizeInventory() + 27 + 9, false))
+            //From secondary to player inventory
+            else if (slotIndex >= playerInventoryStart && slotIndex <= playerInventoryEnd)
+            {
+                if (!this.mergeItemStack(itemstack1, TileEntityCraftingTable.SLOT_INVENTORY_START, TileEntityCraftingTable.SLOT_INVENTORY_END, false))
+                {
+                    return null;
+                }
+            }
+            //Default for anything else, merge to player inventory
+            else if (!this.mergeItemStack(itemstack1, playerInventoryStart, playerInventoryEnd, false))
             {
                 return null;
             }
@@ -101,8 +127,8 @@ public class ContainerCraftingTable extends ContainerBase
     }
 
     @Override
-    public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_)
+    public boolean func_94530_a(ItemStack stack, Slot slot)
     {
-        return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
+        return slot.inventory != this.craftResult && super.func_94530_a(stack, slot);
     }
 }
