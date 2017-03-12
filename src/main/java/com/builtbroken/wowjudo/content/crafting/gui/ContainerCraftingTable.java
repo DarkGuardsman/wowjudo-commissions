@@ -1,6 +1,7 @@
 package com.builtbroken.wowjudo.content.crafting.gui;
 
 import com.builtbroken.mc.prefab.gui.ContainerBase;
+import com.builtbroken.mc.prefab.recipe.item.grid.RecipeShapedOreLarge;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -50,6 +51,14 @@ public class ContainerCraftingTable extends ContainerBase
     public void onCraftMatrixChanged(IInventory inventory)
     {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, craftingTable.getWorldObj()));
+
+        for(Object object : CraftingManager.getInstance().getRecipeList())
+        {
+            if(object instanceof RecipeShapedOreLarge)
+            {
+                System.out.println(object);
+            }
+        }
     }
 
     @Override

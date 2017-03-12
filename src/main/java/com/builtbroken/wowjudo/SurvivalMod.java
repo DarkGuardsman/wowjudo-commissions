@@ -4,6 +4,7 @@ import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.crafting.BlockCraftingTable;
+import com.builtbroken.wowjudo.content.crafting.ItemBlockCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
@@ -90,7 +91,7 @@ public class SurvivalMod
         GameRegistry.registerTileEntity(TileEntityCampfire.class, "wjCampFire");
 
         blockCraftingTable = new BlockCraftingTable();
-        GameRegistry.registerBlock(blockCraftingTable, "wjCraftingTable");
+        GameRegistry.registerBlock(blockCraftingTable, ItemBlockCraftingTable.class, "wjCraftingTable");
         GameRegistry.registerTileEntity(TileEntityCraftingTable.class, "wjCraftingTable");
 
         itemExplosiveRemote = new ItemRemote();

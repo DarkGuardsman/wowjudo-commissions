@@ -154,11 +154,6 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
         super.readFromNBT(nbt);
         cookTimer = nbt.getInteger("cookTime");
         fuelTimer = nbt.getInteger("fuelTime");
-        if (nbt.hasKey("inventory"))
-        {
-            NBTTagCompound tag = nbt.getCompoundTag("inventory");
-            getInventory().load(tag);
-        }
     }
 
     @Override
@@ -167,12 +162,6 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
         super.writeToNBT(nbt);
         nbt.setInteger("cookTime", cookTimer);
         nbt.setInteger("fuelTime", fuelTimer);
-        if (inventory_module != null)
-        {
-            NBTTagCompound tag = new NBTTagCompound();
-            getInventory().save(tag);
-            nbt.setTag("inventory", tag);
-        }
     }
 
     //==================================================

@@ -1,0 +1,14 @@
+{
+  "author": {
+    "name": "${wowjudo}"
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output":"block@wowjudo:wjCampFire",
+    "grid": "SSSS,RRRR",
+    "items": {
+      "S": "ore@log",
+      "R": "ore@rock"
+    }
+  }
+}
