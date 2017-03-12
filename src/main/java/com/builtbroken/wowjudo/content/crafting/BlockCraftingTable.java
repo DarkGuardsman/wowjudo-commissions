@@ -5,7 +5,6 @@ import com.builtbroken.mc.prefab.inventory.InventoryIterator;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.multiblock.MultiBlockHelper;
 import com.builtbroken.wowjudo.SurvivalMod;
-import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -84,15 +83,15 @@ public class BlockCraftingTable extends BlockContainer
     public void breakBlock(World world, int x, int y, int z, Block block, int meta)
     {
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityCampfire)
+        if (tile instanceof TileEntityCraftingTable)
         {
-            InventoryIterator it = new InventoryIterator(((TileEntityCampfire) tile).getInventory(), true);
+            InventoryIterator it = new InventoryIterator(((TileEntityCraftingTable) tile).getInventory(), true);
             while (it.hasNext())
             {
                 InventoryUtility.dropItemStack(world, x + 0.5, y + 0.5, z + 0.5, it.next(), 0, 0);
                 it.remove();
             }
-            MultiBlockHelper.destroyMultiBlockStructure((IMultiTileHost) tile, false, true, true);
+            MultiBlockHelper.destroyMultiBlockStructure((IMultiTileHost) tile, true, true, false);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }

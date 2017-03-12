@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
 
@@ -39,12 +38,21 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
 
     static
     {
-        for (ForgeDirection direction : new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST})
-        {
-            HashMap<IPos3D, String> map = new HashMap();
-            map.put(new Pos(direction.offsetX, 0, direction.offsetZ), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
-            STR_MAPS[direction.ordinal() - 2] = map;
-        }
+        HashMap<IPos3D, String> map = new HashMap();
+        map.put(new Pos(1, 0, 0), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        STR_MAPS[0] = map;
+
+        map = new HashMap();
+        map.put(new Pos(-1, 0, 0), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        STR_MAPS[1] = map;
+
+        map = new HashMap();
+        map.put(new Pos(0, 0, -1), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        STR_MAPS[2] = map;
+
+        map = new HashMap();
+        map.put(new Pos(0, 0, 1), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        STR_MAPS[3] = map;
     }
 
     @Override
