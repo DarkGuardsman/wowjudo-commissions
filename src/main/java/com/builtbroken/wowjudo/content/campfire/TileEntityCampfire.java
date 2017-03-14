@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo.content.campfire;
 
+import com.builtbroken.mc.api.tile.IGuiTile;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.IPacketIDReceiver;
 import com.builtbroken.mc.core.network.packet.PacketTile;
@@ -8,6 +9,8 @@ import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.items.ItemStackWrapper;
 import com.builtbroken.mc.prefab.tile.entity.TileEntityInv;
+import com.builtbroken.wowjudo.content.campfire.gui.ContainerCampFire;
+import com.builtbroken.wowjudo.content.campfire.gui.GuiCampFire;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +29,7 @@ import java.util.HashMap;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/8/2017.
  */
-public class TileEntityCampfire extends TileEntityInv<ExternalInventory> implements IPacketIDReceiver
+public class TileEntityCampfire extends TileEntityInv<ExternalInventory> implements IPacketIDReceiver, IGuiTile
 {
     public static final int SLOT_INPUT = 0;
     public static final int SLOT_OUTPUT = 2;
@@ -244,6 +247,18 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
         return slot == SLOT_OUTPUT;
     }
 
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player)
+    {
+        return new ContainerCampFire(player, this);
+    }
+
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player)
+    {
+        return new GuiCampFire(player, this);
+    }
+
     //==================================================
     //================== Recipes =======================
     //==================================================
@@ -274,7 +289,6 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
         }
         return 0;
     }
-
 
     public static class FireRecipe
     {
