@@ -5,6 +5,7 @@ import com.builtbroken.mc.api.tile.IGuiTile;
 import com.builtbroken.mc.api.tile.client.IIconCallBack;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
+import com.builtbroken.mc.core.handler.TileTaskTickHandler;
 import com.builtbroken.mc.lib.transform.vector.Pos;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.tile.entity.TileEntityInv;
@@ -36,23 +37,43 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     private static final HashMap[] STR_MAPS = new HashMap[4];
     protected boolean _destroyingStructure = false;
 
+    private boolean init = false;
+
     static
     {
         HashMap<IPos3D, String> map = new HashMap();
-        map.put(new Pos(1, 0, 0), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        map.put(new Pos(1, 0, 0), EnumMultiblock.INVENTORY.getTileName());
         STR_MAPS[0] = map;
 
         map = new HashMap();
-        map.put(new Pos(-1, 0, 0), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        map.put(new Pos(-1, 0, 0), EnumMultiblock.INVENTORY.getTileName());
         STR_MAPS[1] = map;
 
         map = new HashMap();
-        map.put(new Pos(0, 0, -1), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        map.put(new Pos(0, 0, -1), EnumMultiblock.INVENTORY.getTileName());
         STR_MAPS[2] = map;
 
         map = new HashMap();
-        map.put(new Pos(0, 0, 1), EnumMultiblock.INVENTORY.getTileName() + "#renderblock=true");
+        map.put(new Pos(0, 0, 1), EnumMultiblock.INVENTORY.getTileName());
         STR_MAPS[3] = map;
+    }
+
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
+        if (!init)
+        {
+            init = true;
+            MultiBlockHelper.buildMultiBlock(worldObj, this, true, true);
+            TileTaskTickHandler.INSTANCE.addTileToBeRemoved(this); //Removes from tick list
+        }
+    }
+
+    @Override
+    public boolean canUpdate()
+    {
+        return !init; //Only ticks once
     }
 
     @Override

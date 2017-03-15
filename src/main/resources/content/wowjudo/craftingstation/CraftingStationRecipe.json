@@ -1,0 +1,16 @@
+{
+  "author": {
+    "name": "${wowjudo}"
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output":"block@wowjudo:wjCraftingTable",
+    "grid": "LH,SR",
+    "items": {
+      "S": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen",
+      "H": "ore@leather"
+    }
+  }
+}

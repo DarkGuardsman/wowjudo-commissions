@@ -5,5 +5,13 @@
   "oreName": {
     "name":"rock",
     "item":"block@minecraft:cobblestone"
+  },
+  "oreName1": {
+    "name":"linen",
+    "item":"block@minecraft:wool"
+  },
+  "oreName2": {
+    "name": "leather",
+    "item" :"item@minecraft:leather"
   }
 }

@@ -12,6 +12,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -22,51 +23,37 @@ import net.minecraft.world.World;
  */
 public class BlockCraftingTable extends BlockContainer
 {
-    @SideOnly(Side.CLIENT)
-    public IIcon top_icon;
-
     public BlockCraftingTable()
     {
         super(Material.wood);
         setCreativeTab(SurvivalMod.creativeTab);
-        setBlockTextureName(SurvivalMod.PREFX + "crafting_side");
         setBlockName(SurvivalMod.PREFX + "craftingTable");
         setHardness(1);
         setResistance(1);
     }
 
+    @Override
+    public int getRenderType()
+    {
+        return -1;
+    }
+
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg)
     {
-        super.registerBlockIcons(reg);
-        this.top_icon = reg.registerIcon(SurvivalMod.PREFX + "crafting_top");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        if (side == 1)
-        {
-            return top_icon;
-        }
-        return this.blockIcon;
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta < 2 || meta > 5)
-        {
-            InventoryUtility.dropBlockAsItem(world, x, y, z, true);
-            return;
-        }
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityCraftingTable)
-        {
-            MultiBlockHelper.buildMultiBlock(world, (IMultiTileHost) tile, true, true);
-        }
+        return Blocks.planks.getIcon(0, 0);
     }
 
     @Override
