@@ -5,16 +5,11 @@ import com.builtbroken.mc.prefab.inventory.InventoryIterator;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.multiblock.MultiBlockHelper;
 import com.builtbroken.wowjudo.SurvivalMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -28,6 +23,7 @@ public class BlockCraftingTable extends BlockContainer
         super(Material.wood);
         setCreativeTab(SurvivalMod.creativeTab);
         setBlockName(SurvivalMod.PREFX + "craftingTable");
+        setBlockTextureName(SurvivalMod.PREFX + "craftingTable");
         setHardness(1);
         setResistance(1);
     }
@@ -42,18 +38,6 @@ public class BlockCraftingTable extends BlockContainer
     public boolean isOpaqueCube()
     {
         return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg)
-    {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return Blocks.planks.getIcon(0, 0);
     }
 
     @Override

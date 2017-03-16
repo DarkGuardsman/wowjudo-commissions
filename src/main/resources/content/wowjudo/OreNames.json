@@ -2,15 +2,15 @@
   "author": {
     "name": "${voltzengine}"
   },
-  "oreName": {
+  "oreName:0": {
     "name":"rock",
     "item":"block@minecraft:cobblestone"
   },
-  "oreName1": {
+  "oreName:1": {
     "name":"linen",
     "item":"block@minecraft:wool"
   },
-  "oreName2": {
+  "oreName:2": {
     "name": "leather",
     "item" :"item@minecraft:leather"
   }
