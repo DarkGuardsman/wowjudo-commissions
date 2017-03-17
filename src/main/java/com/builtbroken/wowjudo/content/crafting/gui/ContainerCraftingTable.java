@@ -25,15 +25,21 @@ public class ContainerCraftingTable extends ContainerBase
     {
         super(player, table);
         this.craftingTable = table;
+
+        //Crafting grid
         craftMatrix = new InventoryCraftingMatrix(this, table);
         for (int row = 0; row < 4; ++row)
         {
             for (int col = 0; col < 4; ++col)
             {
-                this.addSlotToContainer(new Slot(this.craftMatrix, col + row * 4, 30 + col * 18, 13 + row * 18));
+                this.addSlotToContainer(new Slot(this.craftMatrix, col + row * 4, 20 + col * 18, 13 + row * 18));
             }
         }
+
+        //Output slot
         this.addSlotToContainer(new SlotCraftingTable(player, this.craftMatrix, this.craftResult, 0, 124, 39));
+
+        //Secondary inventory
         for (int row = 0; row < 2; ++row)
         {
             for (int col = 0; col < 9; ++col)
@@ -41,8 +47,11 @@ public class ContainerCraftingTable extends ContainerBase
                 this.addSlotToContainer(new Slot(table, col + row * 9 + 16, 8 + col * 18, 94 + row * 18));
             }
         }
+
+        //Player inventory
         addPlayerInventory(player, 8, 135);
 
+        //Init crafting grid
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 

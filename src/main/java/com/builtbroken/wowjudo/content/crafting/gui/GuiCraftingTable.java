@@ -1,7 +1,9 @@
 package com.builtbroken.wowjudo.content.crafting.gui;
 
 import com.builtbroken.mc.client.SharedAssets;
+import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.prefab.gui.GuiContainerBase;
+import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -30,5 +32,17 @@ public class GuiCraftingTable extends GuiContainerBase
                 drawSlot((Slot) object);
             }
         }
+
+        int x = 96;
+        int y = 39;
+        drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 0, 22, 15);
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        drawString(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "craftingTable.gui.grid"), 20, 3);
+        drawString(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "craftingTable.gui.inventory"), 8, 84);
     }
 }

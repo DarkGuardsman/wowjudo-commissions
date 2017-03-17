@@ -35,6 +35,8 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     public static final int SLOT_OUTPUT = 2;
     public static final int SLOT_FUEL = 1;
 
+    public static final int COOK_TIMER = 200;
+
     public static final int[] INPUT_SLOTS = new int[]{SLOT_INPUT, SLOT_FUEL};
     public static final int[] OUTPUT_SLOTS = new int[]{SLOT_OUTPUT};
 
@@ -44,6 +46,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
 
     /** Remaining ticks on fuel */
     public int fuelTimer = 0;
+    public int itemFuelTime = 100;
     /** Progress on cooking items */
     public int cookTimer = 0;
     public boolean hasRecipe = false;
@@ -75,6 +78,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                     if (burnTime > 0)
                     {
                         hasFuel = true;
+                        itemFuelTime = burnTime;
                         //Only consume fuel if we are cooking items
                         if (hasRecipe)
                         {
@@ -87,45 +91,48 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
 
 
             //If we have a recipe, tick recipe timer
-            if (hasRecipe)
+            if (hasRecipe || hasFuel)
             {
                 //If we have fuel run system
                 if (fuelTimer > 0)
                 {
                     fuelTimer--;
-                    cookTimer++;
-                    //If done, consume item and output
-                    if (cookTimer >= 200)
+                    if (hasRecipe)
                     {
-                        //Validate input
-                        ItemStack input = getStackInSlot(SLOT_INPUT);
-                        if (input != null)
+                        cookTimer++;
+                        //If done, consume item and output
+                        if (cookTimer >= COOK_TIMER)
                         {
-                            //Get recipe
-                            ItemStackWrapper stack = new ItemStackWrapper(input);
-                            FireRecipe recipe = recipes.get(stack);
-                            //Get output slot content
-                            ItemStack output = getStackInSlot(SLOT_OUTPUT);
-                            //Only process if we have a recipe for output and we can output into slot
-                            if (recipe != null && (output == null || InventoryUtility.stacksMatch(recipe.output, output) && InventoryUtility.roomLeftInSlot(this, SLOT_OUTPUT) >= recipe.output.stackSize))
+                            //Validate input
+                            ItemStack input = getStackInSlot(SLOT_INPUT);
+                            if (input != null)
                             {
-                                //TODO output XP
-                                //Output item
-                                if (output != null)
+                                //Get recipe
+                                ItemStackWrapper stack = new ItemStackWrapper(input);
+                                FireRecipe recipe = recipes.get(stack);
+                                //Get output slot content
+                                ItemStack output = getStackInSlot(SLOT_OUTPUT);
+                                //Only process if we have a recipe for output and we can output into slot
+                                if (recipe != null && (output == null || InventoryUtility.stacksMatch(recipe.output, output) && InventoryUtility.roomLeftInSlot(this, SLOT_OUTPUT) >= recipe.output.stackSize))
                                 {
-                                    output.stackSize += recipe.output.stackSize;
-                                    setInventorySlotContents(SLOT_OUTPUT, output);
-                                }
-                                else
-                                {
-                                    setInventorySlotContents(SLOT_OUTPUT, recipe.output.copy());
-                                }
+                                    //TODO output XP
+                                    //Output item
+                                    if (output != null)
+                                    {
+                                        output.stackSize += recipe.output.stackSize;
+                                        setInventorySlotContents(SLOT_OUTPUT, output);
+                                    }
+                                    else
+                                    {
+                                        setInventorySlotContents(SLOT_OUTPUT, recipe.output.copy());
+                                    }
 
-                                //Consume item
-                                decrStackSize(SLOT_INPUT, 1);
-                                //Reset
-                                hasRecipe = false;
-                                cookTimer = 0;
+                                    //Consume item
+                                    decrStackSize(SLOT_INPUT, 1);
+                                    //Reset
+                                    hasRecipe = false;
+                                    cookTimer = 0;
+                                }
                             }
                         }
                     }
@@ -181,6 +188,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                 this.cookTimer = buf.readInt();
                 this.fuelTimer = buf.readInt();
                 this.hasFuel = buf.readBoolean();
+                this.itemFuelTime = buf.readInt();
                 return true;
             }
         }
@@ -195,7 +203,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
 
     public PacketTile getDescPacket()
     {
-        return new PacketTile(this, 0, cookTimer, fuelTimer, hasFuel);
+        return new PacketTile(this, 0, cookTimer, fuelTimer, hasFuel, itemFuelTime);
     }
 
     //==================================================
@@ -207,11 +215,11 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     {
         if (worldObj != null && !worldObj.isRemote)
         {
-            if( slot == SLOT_INPUT)
+            if (slot == SLOT_INPUT)
             {
                 hasRecipe = false;
             }
-            else if(slot == SLOT_FUEL)
+            else if (slot == SLOT_FUEL)
             {
                 hasFuel = false;
             }

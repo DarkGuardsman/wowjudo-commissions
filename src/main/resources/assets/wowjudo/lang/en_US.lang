@@ -1,5 +1,11 @@
 item.wowjudo:explosiveRemote.name=C4 Remote
 
 tile.wowjudo:c4.name=C4
-tile.wowjudo:campFire.name=Camp Fire
+
 tile.wowjudo:craftingTable.name=Workbench
+tile.wowjudo:craftingTable.gui.grid=Workbench
+tile.wowjudo:craftingTable.gui.inventory=Inventory
+
+tile.wowjudo:campFire.name=Camp Fire
+tile.wowjudo:campFire.gui.name=Camp Fire
+tile.wowjudo:campFire.gui.inventory=Inventory
