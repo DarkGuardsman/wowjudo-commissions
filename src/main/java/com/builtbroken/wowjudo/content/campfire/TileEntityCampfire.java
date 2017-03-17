@@ -205,9 +205,16 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     @Override
     public void onInventoryChanged(int slot, ItemStack prev, ItemStack item)
     {
-        if (worldObj != null && !worldObj.isRemote && slot == SLOT_INPUT)
+        if (worldObj != null && !worldObj.isRemote)
         {
-            hasRecipe = false;
+            if( slot == SLOT_INPUT)
+            {
+                hasRecipe = false;
+            }
+            else if(slot == SLOT_FUEL)
+            {
+                hasFuel = false;
+            }
         }
     }
 

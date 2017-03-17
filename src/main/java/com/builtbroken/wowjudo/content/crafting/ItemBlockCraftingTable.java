@@ -25,8 +25,29 @@ public class ItemBlockCraftingTable extends ItemBlock
     {
         metadata = BlockUtility.determineRotation(player);
 
+        ForgeDirection direction = ForgeDirection.UNKNOWN;
+        switch (metadata)
+        {
+            //North
+            case 2:
+                direction = ForgeDirection.EAST;
+                break;
+            //South
+            case 3:
+                direction = ForgeDirection.WEST;
+                break;
+            //West
+            case 4:
+                direction = ForgeDirection.NORTH;
+                break;
+            //East
+            case 5:
+                direction = ForgeDirection.SOUTH;
+                break;
+        }
+
         //Can't place if we do not have a second open space
-        if(!new Pos(x, y, z).add(ForgeDirection.getOrientation(metadata)).isReplaceable(world))
+        if(!new Pos(x, y, z).add(direction).isReplaceable(world))
         {
             return false;
         }
