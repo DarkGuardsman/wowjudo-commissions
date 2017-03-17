@@ -1,5 +1,7 @@
 package com.builtbroken.wowjudo.content.crafting.gui;
 
+import com.builtbroken.mc.prefab.inventory.InventoryUtility;
+import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,17 +20,19 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class SlotCraftingTable extends Slot
 {
     /** The craft matrix inventory linked to this result slot. */
-    private final IInventory craftMatrix;
+    private final InventoryCraftingMatrix craftMatrix;
+    private final TileEntityCraftingTable craftingTable;
     /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
     /** The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset. */
     private int amountCrafted;
 
-    public SlotCraftingTable(EntityPlayer player, IInventory matrix, IInventory result, int id, int x, int y)
+    public SlotCraftingTable(EntityPlayer player, TileEntityCraftingTable craftingTable, InventoryCraftingMatrix matrix, IInventory result, int id, int x, int y)
     {
         super(result, id, x, y);
         this.thePlayer = player;
         this.craftMatrix = matrix;
+        this.craftingTable = craftingTable;
     }
 
     @Override
@@ -120,24 +124,43 @@ public class SlotCraftingTable extends Slot
 
         for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i)
         {
-            ItemStack itemstack1 = this.craftMatrix.getStackInSlot(i);
+            ItemStack matrixStack = this.craftMatrix.getStackInSlot(i);
 
-            if (itemstack1 != null)
+            if (matrixStack != null)
             {
-                //TODO attempt to empty secondary inventory first
-                this.craftMatrix.decrStackSize(i, 1);
+                boolean removed = false;
 
-                if (itemstack1.getItem().hasContainerItem(itemstack1))
+                //Attempt to remove from secondary inventory
+                for (int j = TileEntityCraftingTable.SLOT_INVENTORY_START; j < TileEntityCraftingTable.SLOT_INVENTORY_END; j++)
                 {
-                    ItemStack itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
+                    ItemStack tableStack = craftingTable.getStackInSlot(j);
+                    if (tableStack != null && InventoryUtility.stacksMatch(tableStack, matrixStack))
+                    {
+                        craftingTable.decrStackSize(j, 1);
+                        removed = true;
+                        break;
+                    }
+                }
 
+                //If not removed from secondary decrease
+                if (!removed)
+                {
+                    this.craftMatrix.decrStackSize(i, 1);
+                }
+
+                //Add container item to grid
+                if (matrixStack.getItem().hasContainerItem(matrixStack))
+                {
+                    ItemStack itemstack2 = matrixStack.getItem().getContainerItem(matrixStack);
+
+                    //Fire destroyed item even it was tool
                     if (itemstack2 != null && itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage())
                     {
                         MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, itemstack2));
                         continue;
                     }
 
-                    if (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1) || !this.thePlayer.inventory.addItemStackToInventory(itemstack2))
+                    if (!matrixStack.getItem().doesContainerItemLeaveCraftingGrid(matrixStack) || !this.thePlayer.inventory.addItemStackToInventory(itemstack2))
                     {
                         if (this.craftMatrix.getStackInSlot(i) == null)
                         {
@@ -145,11 +168,15 @@ public class SlotCraftingTable extends Slot
                         }
                         else
                         {
+                            //TODO add to secondary inventory first
                             this.thePlayer.dropPlayerItemWithRandomChoice(itemstack2, false);
                         }
                     }
                 }
             }
         }
+
+        //Update container
+        craftMatrix.hostContainer.onCraftMatrixChanged(craftMatrix);
     }
 }

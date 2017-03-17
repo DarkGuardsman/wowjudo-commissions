@@ -5,7 +5,6 @@ import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -18,7 +17,7 @@ public class ContainerCraftingTable extends ContainerBase
 {
     TileEntityCraftingTable craftingTable;
 
-    public InventoryCrafting craftMatrix;
+    public InventoryCraftingMatrix craftMatrix;
     public IInventory craftResult = new InventoryCraftResult();
 
     public ContainerCraftingTable(EntityPlayer player, TileEntityCraftingTable table)
@@ -37,7 +36,7 @@ public class ContainerCraftingTable extends ContainerBase
         }
 
         //Output slot
-        this.addSlotToContainer(new SlotCraftingTable(player, this.craftMatrix, this.craftResult, 0, 124, 39));
+        this.addSlotToContainer(new SlotCraftingTable(player, table, this.craftMatrix, this.craftResult, 0, 124, 39));
 
         //Secondary inventory
         for (int row = 0; row < 2; ++row)
