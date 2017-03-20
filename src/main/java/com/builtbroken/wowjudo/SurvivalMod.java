@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo;
 
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
@@ -81,6 +82,8 @@ public class SurvivalMod
         };
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+
+        Engine.requestMultiBlock();
 
         blockExplosive = new BlockExplosive();
         GameRegistry.registerBlock(blockExplosive, ItemBlockExplosive.class, "wjExplosive");
