@@ -43,7 +43,10 @@ public class GuiCampFire extends GuiContainerBase
         if(campFire.fuelTimer > 0)
         {
             int offsetY = (int)Math.floor(campFire.fuelTimer * 18f / (campFire.itemFuelTime + 0.0f));
-            this.drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y + 17 - offsetY, 18, 18 * 3 - offsetY, 18, 1 + offsetY);
+            if(offsetY > 0)
+            {
+                this.drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y + 17 - offsetY, 18, 18 * 3 - offsetY, 18, 1 + offsetY);
+            }
         }
 
         //Render arrow for crafting timer

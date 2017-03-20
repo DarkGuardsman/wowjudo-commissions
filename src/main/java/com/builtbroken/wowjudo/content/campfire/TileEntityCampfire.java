@@ -97,6 +97,10 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                 if (fuelTimer > 0)
                 {
                     fuelTimer--;
+                    if(fuelTimer <= 0)
+                    {
+                        hasFuel = false;
+                    }
                     if (hasRecipe)
                     {
                         cookTimer++;
@@ -136,11 +140,6 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                             }
                         }
                     }
-                }
-                //If timer hits zero we have consumed our fuel item
-                else
-                {
-                    hasFuel = false;
                 }
             }
             //If we have no recipe reset cook time
