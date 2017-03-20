@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -12,28 +11,37 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+      classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+      classpath 'org.ajoberstar:gradle-git:1.3.2'
+      classpath 'org.ajoberstar:grgit:1.4.1'
     }
 }
 
 plugins {
-  id 'com.matthewprenger.cursegradle' version '1.0.1'
+  id 'com.gradle.build-scan' version '1.4'
+  id "com.matthewprenger.cursegradle" version "1.0.8"
   id 'net.saliman.cobertura' version '2.2.5'
   id 'com.github.kt3k.coveralls' version '2.0.1'
+  //id "com.github.johnrengelman.shadow" version "1.2.2"
+  id "net.franz-becker.gradle-lombok" version "1.3"
+  id 'com.jfrog.bintray' version '1.1'
+  id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.32"
 }
 
 apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/buildScripts/index/index.gradle'
 apply plugin: 'forge'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'jacoco'
-
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/buildScripts/scripts/forge/deps.gradle'
 
 println archivesBaseName 
 
-dependencies 
+dependencies
 {
-    testCompile 'junit:junit:4.11'
-    //compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-0.+:deobf-dev"
+    if (project.hasProperty("bambooshortPlanName") && project.getProperty("bambooshortPlanName") == "BBM-Dev")
+    compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
+    else
+    compile "com.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf"
 }
 
 

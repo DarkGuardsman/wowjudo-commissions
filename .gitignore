@@ -1,1 +1,6 @@
 *.iml
+.gradle/
+CompiledWith.txt
+Wowjudo.txt
+build/
+output/
