@@ -48,7 +48,7 @@ public class SurvivalMod
     public static final String BUILD_VERSION = "@BUILD@";
     public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD_VERSION;
 
-    public static final String DOMAIN = "wowjudo";
+    public static final String DOMAIN = "wjsurvialmod";
     public static final String PREFX = DOMAIN + ":";
 
     /** Information output thing */

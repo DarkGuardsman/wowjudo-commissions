@@ -1,0 +1,18 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "gun": {
+    "name": "handgun",
+    "type": "handgun",
+    "contentGroup":"wowjudo",
+    "translationKey": "handgun",
+    "ID": "wowjudo.handgun",
+    "ammo": "wowjudo.handgun",
+    "clipType": 3,
+    "fallOff": "0.05D",
+    "mass": 630,
+    "rateOfFire": 240,
+    "reloadTime": 40
+  }
+}

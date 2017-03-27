@@ -1,0 +1,19 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "handgun",
+    "id": "handgun",
+    "type": 4,
+    "translationKey": "handgun"
+  },
+  "ammo": {
+    "name": "handgun",
+    "id": "wowjudo.handgun",
+    "translationKey": "handgun",
+    "type": "handgun",
+    "damage": 2,
+    "source": "impact"
+  }
+}
