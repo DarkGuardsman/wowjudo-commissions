@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "wjsurvialmod.rifle",
+    "id": "wjsurvialmod:ammoType.rifle",
+    "projectileType": "bullet"
+  },
+  "ammo": {
+    "name": "rifle",
+    "id": "wjsurvialmod:ammo.rifle",
+    "ammoType": "wjsurvialmod:ammoType.rifle",
+    "damage": {
+      "value": 10,
+      "type": "impact"
+    }
+  },
+  "clip": {
+    "name": "rifle.clip",
+    "id": "wjsurvialmod:clip.rifle",
+    "reloadType": "clip",
+    "ammoType": "wjsurvialmod:ammoType.rifle",
+    "maxAmmo": 5
+  },
+  "gun": {
+    "name": "wjsurvialmod.rifle",
+    "gunType": "rifle",
+    "ID": "wjsurvialmod:rifle",
+    "ammoType": "wjsurvialmod:ammoType.rifle",
+    "reloadType": "clip",
+    "fallOff": "0.05D",
+    "mass": 3400,
+    "rateOfFire": 18,
+    "reloadTime": 60
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "author": {
+    "name": "armory"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:rifle",
+    "type":"gun",
+    "states": [
+      {
+        "id": 0,
+        "textureID": "wjsurvialmod:rifle"
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:rifle",
+    "domain": "wjsurvialmod",
+    "name": "rifle",
+    "type": "item"
+  }
+}
