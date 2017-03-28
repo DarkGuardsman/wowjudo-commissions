@@ -3,7 +3,7 @@
     "name": "wjsurvialmod"
   },
   "ammoType": {
-    "name": "wjsurvialmod.rifle",
+    "name": "rifle",
     "id": "wjsurvialmod:ammoType.rifle",
     "projectileType": "bullet"
   },
@@ -17,14 +17,14 @@
     }
   },
   "clip": {
-    "name": "rifle.clip",
+    "name": "rifle",
     "id": "wjsurvialmod:clip.rifle",
     "reloadType": "clip",
     "ammoType": "wjsurvialmod:ammoType.rifle",
     "maxAmmo": 5
   },
   "gun": {
-    "name": "wjsurvialmod.rifle",
+    "name": "rifle",
     "gunType": "rifle",
     "ID": "wjsurvialmod:rifle",
     "ammoType": "wjsurvialmod:ammoType.rifle",

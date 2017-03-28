@@ -3,7 +3,7 @@
     "name": "wjsurvialmod"
   },
   "ammoType": {
-    "name": "wjsurvialmod.handgun",
+    "name": "handgun",
     "id": "wjsurvialmod:ammoType.handgun",
     "projectileType": "bullet"
   },
@@ -17,14 +17,14 @@
     }
   },
   "clip": {
-    "name": "handgun.clip",
+    "name": "handgun",
     "id": "wjsurvialmod:clip.handgun",
     "reloadType": "clip",
     "ammoType": "wjsurvialmod:ammoType.handgun",
     "maxAmmo": 15
   },
   "gun": {
-    "name": "wjsurvialmod.handgun",
+    "name": "handgun",
     "gunType": "handgun",
     "ID": "wjsurvialmod:handgun",
     "ammoType": "wjsurvialmod:ammoType.handgun",

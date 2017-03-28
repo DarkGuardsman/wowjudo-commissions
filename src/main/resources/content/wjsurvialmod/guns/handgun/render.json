@@ -12,10 +12,42 @@
       }
     ]
   },
+  "render:1": {
+    "contentID": "wjsurvialmod:clip.handgun",
+    "type":"gun",
+    "states": [
+      {
+        "id": 0,
+        "textureID": "wjsurvialmod:handgun.clip"
+      }
+    ]
+  },
+  "render:2": {
+    "contentID": "wjsurvialmod:ammo.handgun",
+    "type":"gun",
+    "states": [
+      {
+        "id": 0,
+        "textureID": "wjsurvialmod:handgun.bullet"
+      }
+    ]
+  },
   "texture": {
     "key": "wjsurvialmod:handgun",
     "domain": "wjsurvialmod",
     "name": "handgun",
+    "type": "item"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:handgun.clip",
+    "domain": "wjsurvialmod",
+    "name": "handgun.clip",
+    "type": "item"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:handgun.bullet",
+    "domain": "wjsurvialmod",
+    "name": "handgun.bullet",
     "type": "item"
   }
 }

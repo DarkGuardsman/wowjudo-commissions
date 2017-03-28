@@ -9,3 +9,13 @@ tile.wjsurvialmod:craftingTable.gui.inventory=Inventory
 tile.wjsurvialmod:campFire.name=Camp Fire
 tile.wjsurvialmod:campFire.gui.name=Camp Fire
 tile.wjsurvialmod:campFire.gui.inventory=Inventory
+
+gun.wjsurvialmod:handgun.name=Handgun
+clip.wjsurvialmod:handgun.name=Handgun Clip
+ammo.wjsurvialmod:handgun.name=Handgun Round
+ammoType.wjsurvialmod:handgun.name=Handgun Ammo
+
+gun.wjsurvialmod:rifle.name=Rifle
+clip.wjsurvialmod:rifle.name=Rifle Clip
+ammo.wjsurvialmod:rifle.name=Rifle Round
+ammoType.wjsurvialmod:rifle.name=Handgun Ammo
