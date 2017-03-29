@@ -1,0 +1,31 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "rpg",
+    "id": "wjsurvialmod:ammoType.rpg",
+    "projectileType": "ROCKET"
+  },
+  "ammo": {
+    "name": "rpg",
+    "id": "wjsurvialmod:ammo.rpg",
+    "ammoType": "wjsurvialmod:ammoType.rpg",
+    "mass":4500,
+    "damage": {
+      "value": 2,
+      "type": "impact"
+    }
+  },
+  "gun": {
+    "name": "rpg",
+    "gunType": "rpg",
+    "ID": "wjsurvialmod:rpg",
+    "ammoType": "wjsurvialmod:ammoType.rpg",
+    "reloadType": "FRONT_LOADED",
+    "fallOff": "0.05D",
+    "mass": 7000,
+    "rateOfFire": 2,
+    "reloadTime": 30
+  }
+}

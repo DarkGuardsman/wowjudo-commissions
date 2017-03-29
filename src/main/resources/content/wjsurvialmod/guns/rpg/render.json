@@ -1,0 +1,47 @@
+{
+  "author": {
+    "name": "armory"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:rpg",
+    "type":"gun",
+    "states": [
+      {
+        "id": 0,
+        "textureID": "wjsurvialmod:rpg"
+      },
+      {
+        "id": "empty:0",
+        "textureID": "wjsurvialmod:rpg.empty"
+      }
+    ]
+  },
+  "render:2": {
+    "contentID": "wjsurvialmod:ammo.rpg",
+    "type":"gun",
+    "states": [
+      {
+        "id": 0,
+        "textureID": "wjsurvialmod:rpg.bullet"
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:rpg",
+    "domain": "wjsurvialmod",
+    "name": "rpg",
+    "type": "item"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:rpg.bullet",
+    "domain": "wjsurvialmod",
+    "name": "rpg.bullet",
+    "type": "item"
+  },
+  "texture:3": {
+    "key": "wjsurvialmod:rpg.empty",
+    "domain": "wjsurvialmod",
+    "name": "rpg.empty",
+    "type": "item"
+  }
+}
