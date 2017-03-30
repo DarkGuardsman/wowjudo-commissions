@@ -12,6 +12,7 @@
     "id": "wjsurvialmod:ammo.rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "mass":4500,
+    "velocity":10,
     "damage": {
       "value": 2,
       "type": "impact"
