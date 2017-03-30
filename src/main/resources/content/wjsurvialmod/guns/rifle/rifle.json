@@ -32,6 +32,6 @@
     "fallOff": "0.05D",
     "mass": 3400,
     "rateOfFire": 18,
-    "reloadTime": 60
+    "reloadTime": 7
   }
 }

@@ -11,11 +11,14 @@
     "name": "rpg",
     "id": "wjsurvialmod:ammo.rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
-    "mass":4500,
-    "velocity":10,
+    "mass": 4500,
+    "velocity": 10,
     "damage": {
-      "value": 2,
-      "type": "impact"
+      "type": "blast",
+      "blast": {
+        "id": "TNT",
+        "size": 10
+      }
     }
   },
   "gun": {
@@ -26,7 +29,7 @@
     "reloadType": "FRONT_LOADED",
     "fallOff": "0.05D",
     "mass": 7000,
-    "rateOfFire": 2,
-    "reloadTime": 30
+    "rateOfFire": 6,
+    "reloadTime": 10
   }
 }
