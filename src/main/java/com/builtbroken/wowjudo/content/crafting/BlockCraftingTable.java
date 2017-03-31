@@ -3,7 +3,7 @@ package com.builtbroken.wowjudo.content.crafting;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
 import com.builtbroken.mc.prefab.inventory.InventoryIterator;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
-import com.builtbroken.mc.prefab.tile.multiblock.MultiBlockHelper;
+import com.builtbroken.mc.framework.multiblock.MultiBlockHelper;
 import com.builtbroken.wowjudo.SurvivalMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

@@ -1,7 +1,7 @@
 package com.builtbroken.wowjudo.content.crafting;
 
 import com.builtbroken.mc.lib.helper.BlockUtility;
-import com.builtbroken.mc.lib.transform.vector.Pos;
+import com.builtbroken.mc.imp.transform.vector.Pos;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

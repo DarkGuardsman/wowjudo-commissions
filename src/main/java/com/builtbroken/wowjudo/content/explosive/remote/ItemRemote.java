@@ -1,6 +1,6 @@
 package com.builtbroken.wowjudo.content.explosive.remote;
 
-import com.builtbroken.mc.lib.transform.vector.Location;
+import com.builtbroken.mc.imp.transform.vector.Location;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import net.minecraft.entity.player.EntityPlayer;
