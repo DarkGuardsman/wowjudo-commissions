@@ -1,6 +1,6 @@
 package com.builtbroken.wowjudo.content.campfire;
 
-import com.builtbroken.mc.api.tile.IGuiTile;
+import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.IPacketIDReceiver;
 import com.builtbroken.mc.core.network.packet.PacketTile;

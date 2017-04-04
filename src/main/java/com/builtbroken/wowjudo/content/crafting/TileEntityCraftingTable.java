@@ -1,7 +1,7 @@
 package com.builtbroken.wowjudo.content.crafting;
 
 import com.builtbroken.jlib.data.vector.IPos3D;
-import com.builtbroken.mc.api.tile.IGuiTile;
+import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.client.IIconCallBack;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;

@@ -7,7 +7,7 @@
     "type":"gun",
     "states": [
       {
-        "id": 0,
+        "id": "item.inventory",
         "textureID": "wjsurvialmod:rifle"
       }
     ]
@@ -17,7 +17,7 @@
     "type":"gun",
     "states": [
       {
-        "id": 0,
+        "id": "item.inventory",
         "textureID": "wjsurvialmod:clip.rifle"
       }
     ]
@@ -27,7 +27,7 @@
     "type":"gun",
     "states": [
       {
-        "id": 0,
+        "id": "item.inventory",
         "textureID": "wjsurvialmod:bullet.rifle"
       }
     ]

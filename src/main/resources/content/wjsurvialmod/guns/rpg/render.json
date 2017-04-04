@@ -1,18 +1,73 @@
 {
   "author": {
-    "name": "armory"
+    "name": "wjsurvialmod"
   },
   "render": {
     "contentID": "wjsurvialmod:rpg",
     "type":"gun",
     "states": [
       {
-        "id": 0,
+        "id": "item.inventory",
         "textureID": "wjsurvialmod:rpg"
       },
       {
-        "id": "gun.empty",
+        "id": "item.inventory.gun.empty",
         "textureID": "wjsurvialmod:rpg.empty"
+      },
+      {
+        "id": "item.equipped",
+        "modelID": "wjsurvialmod:rpgModel",
+        "textureID": "wjsurvialmod:rpgTexture",
+        "parts": "all",
+        "offset": {
+          "x": -0.1,
+          "y": -1.5,
+          "z": -1.6
+        },
+        "rotation": {
+          "yaw": -160,
+          "pitch": -70,
+          "roll": -35
+        },
+        "scale": 0.625
+      },
+      {
+        "id": "item.equipped.gun.empty",
+        "parent":"item.equipped",
+        "parts":"group_4,group_5"
+      },
+      {
+        "id": "item.first",
+        "modelID": "wjsurvialmod:rpgModel",
+        "textureID": "wjsurvialmod:rpgTexture",
+        "parts": "all",
+        "offset": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "yaw": 155,
+          "pitch": 13,
+          "roll": 0
+        }
+      },
+      {
+        "id": "item.first.gun.empty",
+        "parent":"item.equipped",
+        "parts":"group_4,group_5"
+      },
+      {
+        "id": "item.entity",
+        "modelID": "wjsurvialmod:rpgModel",
+        "textureID": "wjsurvialmod:rpgTexture",
+        "parts": "all",
+         "scale": 0.5
+      },
+      {
+        "id": "item.entity.gun.empty",
+        "parent":"item.equipped",
+        "parts":"group_4,group_5"
       }
     ]
   },
@@ -43,5 +98,16 @@
     "domain": "wjsurvialmod",
     "name": "rpg.empty",
     "type": "item"
+  },
+  "texture:4": {
+    "key": "wjsurvialmod:rpgTexture",
+    "domain": "wjsurvialmod",
+    "name": "rpg",
+    "type": "model"
+  },
+  "model": {
+    "key": "wjsurvialmod:rpgModel",
+    "domain": "wjsurvialmod",
+    "name": "rpg.obj"
   }
 }
