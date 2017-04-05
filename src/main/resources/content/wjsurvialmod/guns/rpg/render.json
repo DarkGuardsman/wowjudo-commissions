@@ -48,14 +48,33 @@
         },
         "rotation": {
           "yaw": 155,
-          "pitch": 13,
+          "pitch": -10,
           "roll": 0
         }
       },
       {
         "id": "item.first.gun.empty",
-        "parent":"item.equipped",
-        "parts":"group_4,group_5"
+        "parent":"item.first",
+        "parts":"group_4,group_5",
+        "rotation": {
+          "yaw": 155,
+          "pitch": 40,
+          "roll": 0
+        }
+      },
+      {
+        "id": "item.first.sighted",
+        "parent":"item.first",
+        "offset": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "yaw": 155,
+          "pitch": 13,
+          "roll": 0
+        }
       },
       {
         "id": "item.entity",
@@ -66,7 +85,7 @@
       },
       {
         "id": "item.entity.gun.empty",
-        "parent":"item.equipped",
+        "parent":"item.entity",
         "parts":"group_4,group_5"
       }
     ]
@@ -76,7 +95,7 @@
     "type":"gun",
     "states": [
       {
-        "id": 0,
+        "id": "item.inventory",
         "textureID": "wjsurvialmod:rpg.bullet"
       }
     ]
