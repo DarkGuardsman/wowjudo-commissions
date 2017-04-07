@@ -27,6 +27,7 @@
     "ID": "wjsurvialmod:rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "reloadType": "FRONT_LOADED",
+    "sightToFire":"true",
     "fallOff": "0.05D",
     "mass": 7000,
     "rateOfFire": 6,
