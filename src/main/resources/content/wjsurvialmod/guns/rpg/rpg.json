@@ -32,5 +32,11 @@
     "mass": 7000,
     "rateOfFire": 6,
     "reloadTime": 10
+  },
+  "audio:1":
+  {
+    "key":"wjsurvialmod:rpg.empty",
+    "domain":"armory",
+    "name":"gun.empty"
   }
 }
