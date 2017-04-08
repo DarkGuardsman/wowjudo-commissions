@@ -33,5 +33,16 @@
     "mass": 630,
     "rateOfFire": 240,
     "reloadTime": 5
+  },
+  "audio:1":
+  {
+    "key":"wjsurvialmod:handgun.empty",
+    "domain":"armory",
+    "name":"gun.empty"
+  },
+  "effect:1":
+  {
+    "key":"wjsurvialmod:handgun.round.fired",   
+    "effectID":"armory:gunSmoke"
   }
 }

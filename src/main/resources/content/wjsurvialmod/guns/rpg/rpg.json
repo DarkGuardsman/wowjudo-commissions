@@ -38,5 +38,10 @@
     "key":"wjsurvialmod:rpg.empty",
     "domain":"armory",
     "name":"gun.empty"
+  },
+  "effect:1":
+  {
+    "key":"wjsurvialmod:rpg.round.fired",   
+    "effectID":"armory:gunSmoke"
   }
 }
