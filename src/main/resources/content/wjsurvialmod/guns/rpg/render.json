@@ -81,7 +81,7 @@
         "modelID": "wjsurvialmod:rpgModel",
         "textureID": "wjsurvialmod:rpgTexture",
         "parts": "all",
-         "scale": 0.5
+        "scale": 0.5
       },
       {
         "id": "item.entity.gun.empty",
@@ -97,6 +97,13 @@
       {
         "id": "item.inventory",
         "textureID": "wjsurvialmod:rpg.bullet"
+      },
+      {
+        "id": "projectile",
+        "textureID": "wjsurvialmod:rpgTexture",
+        "modelID": "wjsurvialmod:rpgRoundModel",
+        "parts": "all",
+        "scale": 0.5
       }
     ]
   },
@@ -124,9 +131,14 @@
     "name": "rpg",
     "type": "model"
   },
-  "model": {
+  "model:1": {
     "key": "wjsurvialmod:rpgModel",
     "domain": "wjsurvialmod",
     "name": "rpg.obj"
+  },
+  "model:2": {
+    "key": "wjsurvialmod:rpgRoundModel",
+    "domain": "wjsurvialmod",
+    "name": "rpg_rocket.obj"
   }
 }

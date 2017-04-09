@@ -12,7 +12,7 @@
     "id": "wjsurvialmod:ammo.rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "mass": 4500,
-    "velocity": 10,
+    "velocity": 1,
     "damage": {
       "type": "blast",
       "blast": {
@@ -30,8 +30,8 @@
     "sightToFire":"true",
     "fallOff": "0.05D",
     "mass": 7000,
-    "rateOfFire": 6,
-    "reloadTime": 10
+    "rateOfFire": 20,
+    "reloadTime": 4
   },
   "audio:1":
   {
