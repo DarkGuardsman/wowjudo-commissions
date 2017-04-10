@@ -1,0 +1,56 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "sentry": {
+    "name": "sentry",
+    "id": "wjsurvialmod:sentry",
+    "gunID": "wjsurvialmod:sentry",
+    "bodyWidth": 0.5,
+    "bodyHeight": 1.2,
+    "barrelLength": 1,
+    "centerOffset": {
+      "y": 0.1
+    }
+  },
+  "ammoType": {
+    "name": "sentry",
+    "id": "wjsurvialmod:ammoType.sentry",
+    "projectileType": "bullet"
+  },
+  "ammo": {
+    "name": "sentry",
+    "id": "wjsurvialmod:ammo.sentry",
+    "ammoType": "wjsurvialmod:ammoType.sentry",
+    "damage": {
+      "value": 3,
+      "type": "impact"
+    }
+  },
+  "clip": {
+    "name": "sentry.clip",
+    "id": "armory:sentry.clip",
+    "reloadType": "clip",
+    "ammoType": "wjsurvialmod:ammoType.sentry",
+    "maxAmmo": 240
+  },
+  "gun": {
+    "name": "sentry",
+    "gunType": "sentry",
+    "ID": "wjsurvialmod:sentry",
+    "ammoType": "wjsurvialmod:ammoType.sentry",
+    "reloadType": "clip",
+    "fallOff": "0.05D",
+    "rateOfFire": 240,
+    "reloadTime": 1
+  },
+  "audio:1": {
+    "key": "wjsurvialmod:sentry.empty",
+    "domain": "armory",
+    "name": "gun.empty"
+  },
+  "effect:1": {
+    "key": "wjsurvialmod:sentry.round.fired",
+    "effectID": "armory:gunSmoke"
+  }
+}

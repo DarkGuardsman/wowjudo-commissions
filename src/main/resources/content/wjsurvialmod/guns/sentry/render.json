@@ -1,0 +1,58 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:sentry",
+    "type": "gun",
+    "states": [
+      {
+        "id": "item.inventory",
+        "textureID": "wjsurvialmod:minigun"
+      },
+      {
+        "id": "entity.sentry",
+        "modelID": "wjsurvialmod:minigun",
+        "textureID": "wjsurvialmod:minigun",
+        "rotation": {
+          "yaw": -180
+        },
+        "offset": {
+          "y": -0.3
+        }
+      },
+      {
+        "id": "entity.sentry.base",
+        "parent": "entity.sentry",
+        "parts": "Component_7,Component_8,Component_9,group_5,group_7"
+      },
+      {
+        "id": "entity.sentry.turret",
+        "parent": "entity.sentry",
+        "parts": "Component_5,group_1,group_3,group_4,group_6,Component_6,group_8"
+      },
+      {
+        "id": "entity.sentry.turret.empty",
+        "parent": "entity.sentry.turret",
+        "parts": "Component_5,group_1,group_3,group_4,group_6"
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:minigun",
+    "domain": "wjsurvialmod",
+    "name": "rpg",
+    "type": "item"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:minigun",
+    "domain": "wjsurvialmod",
+    "name": "minigun",
+    "type": "model"
+  },
+  "model": {
+    "key": "wjsurvialmod:minigun",
+    "domain": "wjsurvialmod",
+    "name": "turretMinigun.obj"
+  }
+}
