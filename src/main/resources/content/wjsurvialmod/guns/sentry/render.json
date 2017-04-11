@@ -27,13 +27,13 @@
         "parts": "Component_7,Component_8,Component_9,group_5,group_7"
       },
       {
-        "id": "entity.sentry.turret",
+        "id": "entity.sentry.pitch",
         "parent": "entity.sentry",
         "parts": "Component_5,group_1,group_3,group_4,group_6,Component_6,group_8"
       },
       {
-        "id": "entity.sentry.turret.empty",
-        "parent": "entity.sentry.turret",
+        "id": "entity.sentry.pitch.empty",
+        "parent": "entity.sentry.pitch",
         "parts": "Component_5,group_1,group_3,group_4,group_6"
       }
     ]
