@@ -7,7 +7,7 @@
     "id": "wjsurvialmod:sentry",
     "gunID": "wjsurvialmod:sentry",
     "bodyWidth": 0.5,
-    "bodyHeight": 1.2,
+    "bodyHeight": 0.8,
     "barrelLength": 1,
     "centerOffset": {
       "y": 0.1
