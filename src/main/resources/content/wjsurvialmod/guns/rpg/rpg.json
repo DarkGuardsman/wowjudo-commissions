@@ -27,7 +27,7 @@
     "ID": "wjsurvialmod:rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "reloadType": "FRONT_LOADED",
-    "sightToFire":"true",
+    "sightToFire":true,
     "fallOff": "0.05D",
     "mass": 7000,
     "rateOfFire": 20,
@@ -41,7 +41,7 @@
   },
   "effect:1":
   {
-    "key":"wjsurvialmod:rpg.round.fired",   
+    "key":"wjsurvialmod:rpg.round.fired",
     "effectID":"armory:gunSmoke"
   }
 }
