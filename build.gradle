@@ -41,7 +41,9 @@ dependencies
     if (project.hasProperty("bambooshortPlanName") && project.getProperty("bambooshortPlanName") == "BBM-Dev")
     compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
     else
-    compile "com.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
+    compile "com.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf"
+    compile "com.builtbroken.armory:Armory:1.7.10-0.5.0b5:deobf"
+    compile "com.builtbroken.codinglib:CodingLib:0.2.4b44:universal"
 }
 
 
