@@ -99,7 +99,7 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     {
         if (tileMulti instanceof TileEntity)
         {
-            if (getLayoutOfMultiBlock().containsKey(new Pos(this).sub(new Pos((TileEntity) tileMulti))))
+            if (getLayoutOfMultiBlock().containsKey(toPos().sub(new Pos((TileEntity) tileMulti))))
             {
                 tileMulti.setHost(this);
             }
@@ -111,7 +111,7 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     {
         if (!_destroyingStructure && tileMulti instanceof TileEntity)
         {
-            Pos pos = new Pos((TileEntity) tileMulti).sub(new Pos(this));
+            Pos pos = new Pos((TileEntity) tileMulti).sub(toPos());
 
             if (getLayoutOfMultiBlock().containsKey(pos))
             {
@@ -129,7 +129,7 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     }
 
     @Override
-    public boolean onMultiTileActivated(IMultiTile tile, EntityPlayer player, int side, IPos3D hit)
+    public boolean onMultiTileActivated(IMultiTile tile, EntityPlayer player, int side, float xHit, float yHit, float zHit)
     {
         if (!worldObj.isRemote)
         {
