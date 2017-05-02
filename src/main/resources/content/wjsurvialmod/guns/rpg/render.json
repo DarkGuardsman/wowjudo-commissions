@@ -8,14 +8,17 @@
     "states": [
       {
         "id": "item.inventory",
+        "renderType":"item",
         "textureID": "wjsurvialmod:rpg"
       },
       {
         "id": "item.inventory.gun.empty",
+        "renderType":"item",
         "textureID": "wjsurvialmod:rpg.empty"
       },
       {
         "id": "item.equipped",
+        "renderType":"model",
         "modelID": "wjsurvialmod:rpgModel",
         "textureID": "wjsurvialmod:rpgTexture",
         "parts": "all",
@@ -33,11 +36,13 @@
       },
       {
         "id": "item.equipped.gun.empty",
+        "renderType":"model",
         "parent":"item.equipped",
         "parts":"group_4,group_5"
       },
       {
         "id": "item.first",
+        "renderType":"model",
         "modelID": "wjsurvialmod:rpgModel",
         "textureID": "wjsurvialmod:rpgTexture",
         "parts": "all",
@@ -54,6 +59,7 @@
       },
       {
         "id": "item.first.gun.empty",
+        "renderType":"model",
         "parent":"item.first",
         "parts":"group_4,group_5",
         "rotation": {
@@ -64,6 +70,7 @@
       },
       {
         "id": "item.first.sighted",
+        "renderType":"model",
         "parent":"item.first",
         "offset": {
           "x": -1,
@@ -78,6 +85,7 @@
       },
       {
         "id": "item.entity",
+        "renderType":"model",
         "modelID": "wjsurvialmod:rpgModel",
         "textureID": "wjsurvialmod:rpgTexture",
         "parts": "all",
@@ -85,6 +93,7 @@
       },
       {
         "id": "item.entity.gun.empty",
+        "renderType":"model",
         "parent":"item.entity",
         "parts":"group_4,group_5"
       }
@@ -96,10 +105,12 @@
     "states": [
       {
         "id": "item.inventory",
+        "renderType":"item",
         "textureID": "wjsurvialmod:rpg.bullet"
       },
       {
         "id": "projectile",
+        "renderType":"item",
         "textureID": "wjsurvialmod:rpgTexture",
         "modelID": "wjsurvialmod:rpgRoundModel",
         "parts": "all",
