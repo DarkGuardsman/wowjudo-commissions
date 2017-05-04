@@ -1,0 +1,90 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "block": {
+    "name": "powerGen",
+    "id": "wjPowerGenerator",
+    "mod": "wjsurvialmod",
+    "material": "iron",
+    "renderType": -1,
+    "isOpaque": false,
+    "tileEntity": {
+      "id": "wjPowerGenerator",
+      "class": "com.builtbroken.wowjudo.content.generator.TileWrapperPowerGenerator"
+    },
+    "listeners": [
+      "rotation",
+      {
+        "id": "multiblock",
+        "layoutKey": "wjsurvialmod:wjPowerGenerator"
+      }
+    ]
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": "block@wjsurvialmod:wjPowerGenerator",
+    "grid": "PWP,MCM,R R",
+    "items": {
+      "W": "block@icbm:warhead",
+      "P": "ore@plateIron",
+      "M": "ore@motorDC",
+      "R": "ore@rodIron",
+      "C": "ore@circuitAdvanced"
+    }
+  },
+  "multiblock": {
+    "key": "wjsurvialmod:wjPowerGenerator",
+    "tiles": [
+      {
+        "pos": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 0,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 1,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        }
+      }
+    ]
+  }
+}

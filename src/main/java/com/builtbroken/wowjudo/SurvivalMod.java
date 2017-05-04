@@ -2,6 +2,8 @@ package com.builtbroken.wowjudo;
 
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
+import com.builtbroken.mc.lib.mod.AbstractMod;
+import com.builtbroken.mc.lib.mod.AbstractProxy;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.crafting.BlockCraftingTable;
@@ -18,7 +20,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +39,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Dark(DarkGuardsman, Robert) on 3/7/2017.
  */
 @cpw.mods.fml.common.Mod(modid = SurvivalMod.DOMAIN, name = "Wowjudo's Survival Mod", version = SurvivalMod.VERSION)
-public class SurvivalMod
+public class SurvivalMod extends AbstractMod
 {
     public static final boolean runningAsDev = System.getProperty("development") != null && System.getProperty("development").equalsIgnoreCase("true");
 
@@ -69,9 +70,9 @@ public class SurvivalMod
     @Mod.Instance(DOMAIN)
     public static SurvivalMod instance;
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+    public SurvivalMod()
     {
+        super(SurvivalMod.DOMAIN);
         creativeTab = new CreativeTabs("wowjudo")
         {
             @SideOnly(Side.CLIENT)
@@ -80,11 +81,16 @@ public class SurvivalMod
                 return Item.getItemFromBlock(blockCampFire);
             }
         };
+        getManager().setTab(creativeTab);
+    }
 
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        super.preInit(event);
         Engine.requestMultiBlock();
 
+        //TODO convert to JSON and use modmanager
         blockExplosive = new BlockExplosive();
         GameRegistry.registerBlock(blockExplosive, ItemBlockExplosive.class, "wjExplosive");
         GameRegistry.registerTileEntity(TileEntityExplosive.class, "wjExplosive");
@@ -111,6 +117,7 @@ public class SurvivalMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        super.init(event);
         //Register ore dictionary support
         for (ItemLog.LogTypes type : ItemLog.LogTypes.values())
         {
@@ -125,13 +132,12 @@ public class SurvivalMod
                 OreDictionary.registerOre("log" + LanguageUtility.capitalizeFirst(type.localization), new ItemStack(itemLog, 1, type.ordinal()));
             }
         }
-
-        proxy.init();
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        super.postInit(event);
         //Food
         TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
         TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
@@ -155,14 +161,17 @@ public class SurvivalMod
         TileEntityCampfire.addRecipe(Blocks.log, new ItemStack(Items.coal, 1, 1), 0.15F);
         TileEntityCampfire.addRecipe(Blocks.log2, new ItemStack(Items.coal, 1, 1), 0.15F);
 
-        //TODO config load recipes
-
-        proxy.postInit();
     }
 
     @Mod.EventHandler
     public void loadComplete(FMLLoadCompleteEvent event)
     {
-        //TODO maybe modify recipes?
+        super.loadComplete(event);
+    }
+
+    @Override
+    public AbstractProxy getProxy()
+    {
+        return proxy;
     }
 }
