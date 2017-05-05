@@ -129,7 +129,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     {
         if (dirCache == null)
         {
-            dirCache = ForgeDirection.getOrientation(world().getBlockMetadata(xi(), yi(), zi())).getOpposite();
+            dirCache = ForgeDirection.getOrientation(world().getBlockMetadata(xi(), yi(), zi()));
         }
         return dirCache;
     }

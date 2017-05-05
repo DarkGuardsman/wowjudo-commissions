@@ -17,7 +17,8 @@
       "rotation",
       {
         "id": "multiblock",
-        "layoutKey": "wjsurvialmod:wjPowerGenerator"
+        "layoutKey": "wjsurvialmod:wjPowerGenerator",
+        "doRotation": true
       }
     ]
   },
@@ -34,7 +35,7 @@
     }
   },
   "multiblock": {
-    "key": "wjsurvialmod:wjPowerGenerator",
+    "key": "wjsurvialmod:wjPowerGenerator.north",
     "tiles": [
       {
         "pos": {
@@ -76,6 +77,168 @@
           "x": 1,
           "y": 1,
           "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "multiblock:1": {
+    "key": "wjsurvialmod:wjPowerGenerator.south",
+    "tiles": [
+      {
+        "pos": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 0,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 1,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 1,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "multiblock:2": {
+    "key": "wjsurvialmod:wjPowerGenerator.east",
+    "tiles": [
+      {
+        "pos": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 0,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 0,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 1,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": -1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "multiblock:3": {
+    "key": "wjsurvialmod:wjPowerGenerator.west",
+    "tiles": [
+      {
+        "pos": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 0,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 1,
+          "z": 0
+        }
+      },
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": -1
+        }
+      },
+      {
+        "pos": {
+          "x": 1,
+          "y": 1,
+          "z": -1
         }
       },
       {
