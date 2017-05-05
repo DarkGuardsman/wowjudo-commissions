@@ -30,6 +30,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,6 +71,8 @@ public class SurvivalMod extends AbstractMod
 
     @Mod.Instance(DOMAIN)
     public static SurvivalMod instance;
+
+    public static Fluid fuel;
 
     public SurvivalMod()
     {
@@ -138,6 +142,13 @@ public class SurvivalMod extends AbstractMod
     public void postInit(FMLPostInitializationEvent event)
     {
         super.postInit(event);
+
+        fuel = FluidRegistry.getFluid("fuel");
+        if (fuel == null)
+        {
+            fuel = FluidRegistry.LAVA;
+        }
+
         //Food
         TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
         TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);

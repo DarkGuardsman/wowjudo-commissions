@@ -1,6 +1,7 @@
 package com.builtbroken.wowjudo.content.generator;
 
 import com.builtbroken.jlib.lang.StringHelpers;
+import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.api.tile.provider.ITankProvider;
 import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
@@ -17,12 +18,13 @@ import com.builtbroken.mc.lib.world.radar.data.RadarTile;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
 import com.builtbroken.wowjudo.SurvivalMod;
+import com.builtbroken.wowjudo.content.generator.gui.ContainerPowerGen;
+import com.builtbroken.wowjudo.content.generator.gui.GuiPowerGen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +37,13 @@ import java.util.List;
 @ExternalInventoryWrapped()
 @TankProviderWrapped()
 @MultiBlockWrapped()
-public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation
+public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile
 {
     public static final List<String> supportedFluids = new ArrayList();
     public static final List<String> supportedTiles = new ArrayList();
+
+    public static final int BUCKET_INPUT_SLOT = 0;
+    public static final int BUCKET_OUTPUT_SLOT = 1;
 
     public static int fuelConsumedPerTick = 10;
     public static int powerProviderRange = 100;
@@ -72,6 +77,8 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     {
         if (isServer())
         {
+            //TODO drain buckets in slot to fill tank
+
             isPowered = false;
             if (tank.getFluid() != null && tank.getFluid().getFluid() != null && supportedFluids.contains(tank.getFluid().getFluid().getName()))
             {
@@ -132,5 +139,30 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
             dirCache = ForgeDirection.getOrientation(world().getBlockMetadata(xi(), yi(), zi()));
         }
         return dirCache;
+    }
+
+    public static boolean isFuelBucket(ItemStack stack)
+    {
+        if (FluidContainerRegistry.isFilledContainer(stack))
+        {
+            FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stack);
+            if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player)
+    {
+        return new ContainerPowerGen(player, this);
+    }
+
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player)
+    {
+        return new GuiPowerGen(player, this);
     }
 }
