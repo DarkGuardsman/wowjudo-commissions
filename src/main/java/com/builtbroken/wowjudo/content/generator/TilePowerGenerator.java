@@ -1,6 +1,5 @@
 package com.builtbroken.wowjudo.content.generator;
 
-import com.builtbroken.jlib.lang.StringHelpers;
 import com.builtbroken.mc.api.tile.IPlayerUsing;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
@@ -32,6 +31,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,6 +58,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     {
         supportedFluids.add("fuel");
         supportedTiles.add("com.builtbroken.armory.content.sentry.tile.TileSentry");
+        supportedTiles.add("com.builtbroken.armory.content.sentry.tile.TileSentryClient");
     }
 
     protected boolean isPowered = false;
@@ -169,8 +170,6 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                     areaOfEffect = new Cube(toPos().sub(powerProviderRange), toPos().add(powerProviderRange)).cropToWorld();
                 }
 
-                long startTime = System.nanoTime();
-
                 RadarMap map = TileMapRegistry.getRadarMapForDim(world().provider.dimensionId);
                 List<RadarObject> objects = map.getRadarObjects(areaOfEffect, true);
                 for (RadarObject object : objects)
@@ -180,20 +179,28 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                         TileEntity tileEntity = ((RadarTile) object).tile;
                         if (tileEntity != null && tileEntity != getHost())
                         {
-                            if (supportedTiles.contains(tileEntity.getClass().getName()))
+                            String className = tileEntity.getClass().getName();
+                            if (supportedTiles.contains(className))
                             {
-                                UniversalEnergySystem.fill(tick, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
                             }
                         }
                     }
                 }
-
-                startTime = System.nanoTime() - startTime;
-                SurvivalMod.instance.logger().info("SurvialMod: Power gen search time " + StringHelpers.formatNanoTime(startTime)); //TODO remove debug
             }
 
             if (tick % 3 == 0)
             {
+                Iterator<EntityPlayer> it = getPlayersUsing().iterator();
+                while (it.hasNext())
+                {
+                    EntityPlayer next = it.next();
+                    if (!(next.openContainer instanceof ContainerPowerGen))
+                    {
+                        it.remove();
+                    }
+                    //TODO if container is open, check it matches this tile
+                }
                 //Sync data to GUI users
                 sendPacketToGuiUsers(getDescPacket());
             }
