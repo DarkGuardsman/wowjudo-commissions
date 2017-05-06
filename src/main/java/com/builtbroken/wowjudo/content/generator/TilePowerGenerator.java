@@ -8,7 +8,6 @@ import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
 import com.builtbroken.mc.codegen.annotations.MultiBlockWrapped;
 import com.builtbroken.mc.codegen.annotations.TankProviderWrapped;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
-import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.imp.transform.region.Cube;
 import com.builtbroken.mc.lib.energy.UniversalEnergySystem;
 import com.builtbroken.mc.lib.world.map.TileMapRegistry;
@@ -16,6 +15,7 @@ import com.builtbroken.mc.lib.world.radar.RadarMap;
 import com.builtbroken.mc.lib.world.radar.data.RadarObject;
 import com.builtbroken.mc.lib.world.radar.data.RadarTile;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
+import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.generator.gui.ContainerPowerGen;
@@ -77,10 +77,64 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     {
         if (isServer())
         {
-            //TODO drain buckets in slot to fill tank
+            //Clear invalid fluids
+            if (tank.getFluid() != null && tank.getFluid().getFluid() != SurvivalMod.fuel)
+            {
+                SurvivalMod.instance.logger().info("Error clearing invalid fluid '" + tank.getFluid() + "' found in " + this);
+                tank.drain(Integer.MAX_VALUE, true);
+            }
 
+            //Fill tank from input items
+            if (!isFull())
+            {
+                ItemStack bucketStack = getInventory().getStackInSlot(BUCKET_INPUT_SLOT);
+                if (bucketStack != null)
+                {
+                    if (bucketStack.getItem() instanceof IFluidContainerItem)
+                    {
+                        FluidStack fluidStack = ((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack);
+                        if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+                        {
+                            int room = tank.getCapacity() - tank.getFluidAmount();
+                        }
+                    }
+                    else if (FluidContainerRegistry.isFilledContainer(bucketStack))
+                    {
+                        FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(bucketStack);
+                        if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+                        {
+                            int room = tank.getCapacity() - tank.getFluidAmount();
+                            if (room >= fluidStack.amount) //Ensure can take entire bucket to prevent issues
+                            {
+                                ItemStack container = FluidContainerRegistry.drainFluidContainer(bucketStack.copy());
+                                ItemStack output = getInventory().getStackInSlot(BUCKET_OUTPUT_SLOT);
+                                if (container != null && (output == null || InventoryUtility.stacksMatch(container, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1)
+                                {
+                                    //Decrease input
+                                    getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
+
+                                    //Output empty container
+                                    if (output == null)
+                                    {
+                                        output = container.copy();
+                                    }
+                                    else
+                                    {
+                                        output.stackSize++;
+                                    }
+                                    getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Cycle power
             isPowered = false;
-            if (tank.getFluid() != null && tank.getFluid().getFluid() != null && supportedFluids.contains(tank.getFluid().getFluid().getName()))
+
+            //Consume full, update power state
+            if (hasFuel())
             {
                 if (tank.getFluidAmount() > fuelConsumedPerTick)
                 {
@@ -89,6 +143,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 tank.drain(fuelConsumedPerTick, true);
             }
 
+            //Power devices nearby
             if (isPowered)
             {
                 if (areaOfEffect == null)
@@ -116,9 +171,19 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 }
 
                 startTime = System.nanoTime() - startTime;
-                Engine.logger().info("SurvialMod: Power gen search time " + StringHelpers.formatNanoTime(startTime));
+                SurvivalMod.instance.logger().info("SurvialMod: Power gen search time " + StringHelpers.formatNanoTime(startTime)); //TODO remove debug
             }
         }
+    }
+
+    public boolean hasFuel()
+    {
+        return tank.getFluid() != null && tank.getFluid().getFluid() != null && supportedFluids.contains(tank.getFluid().getFluid().getName());
+    }
+
+    public boolean isFull()
+    {
+        return hasFuel() && tank.getFluidAmount() >= tank.getCapacity();
     }
 
     @Override
@@ -143,7 +208,15 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
     public static boolean isFuelBucket(ItemStack stack)
     {
-        if (FluidContainerRegistry.isFilledContainer(stack))
+        if (stack.getItem() instanceof IFluidContainerItem)
+        {
+            FluidStack fluidStack = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
+            if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+            {
+                return true;
+            }
+        }
+        else if (FluidContainerRegistry.isFilledContainer(stack))
         {
             FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stack);
             if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
@@ -164,5 +237,11 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     public Object getClientGuiElement(int ID, EntityPlayer player)
     {
         return new GuiPowerGen(player, this);
+    }
+
+    @Override
+    protected String getClassDisplayName()
+    {
+        return "TilePowerGenerator";
     }
 }
