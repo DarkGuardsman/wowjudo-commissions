@@ -21,7 +21,7 @@
         "parent": "item",
         "scale": 0.45,
         "offset": {
-          "y": -0.2
+          "y": -0.4
         }
       },
       {

@@ -44,7 +44,12 @@ public class GuiPowerGen extends GuiContainerBase
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        drawStringCentered(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.name"), 88, 6);
-        drawString(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.inventory"), 8, 74);
+        drawStringCentered(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.name"), 88, 4);
+        drawString(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.inventory.name"), 8, 74);
+
+        String volume = generator.tank.getFluidAmount() + "/" + generator.tank.getCapacity() + "mb";
+        String fluid = generator.tank.getFluid() != null ? generator.tank.getFluid().getLocalizedName() : "";
+
+        drawString("Tank: " + volume + " " + fluid, 36, 16);
     }
 }

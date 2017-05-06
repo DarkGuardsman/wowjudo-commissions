@@ -1,6 +1,7 @@
 package com.builtbroken.wowjudo.content.generator;
 
 import com.builtbroken.jlib.lang.StringHelpers;
+import com.builtbroken.mc.api.tile.IPlayerUsing;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.api.tile.provider.ITankProvider;
@@ -20,13 +21,17 @@ import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.generator.gui.ContainerPowerGen;
 import com.builtbroken.wowjudo.content.generator.gui.GuiPowerGen;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -37,7 +42,7 @@ import java.util.List;
 @ExternalInventoryWrapped()
 @TankProviderWrapped()
 @MultiBlockWrapped()
-public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile
+public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile, IPlayerUsing
 {
     public static final List<String> supportedFluids = new ArrayList();
     public static final List<String> supportedTiles = new ArrayList();
@@ -45,8 +50,9 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     public static final int BUCKET_INPUT_SLOT = 0;
     public static final int BUCKET_OUTPUT_SLOT = 1;
 
-    public static int fuelConsumedPerTick = 10;
+    public static int fuelConsumedPerTick = 1;
     public static int powerProviderRange = 100;
+    public static int tankVolumeByBuckets = 100;
 
     static
     {
@@ -56,10 +62,12 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
     protected boolean isPowered = false;
 
-    protected FluidTank tank = new FluidTank(10 * FluidContainerRegistry.BUCKET_VOLUME);
+    public final FluidTank tank = new FluidTank(tankVolumeByBuckets * FluidContainerRegistry.BUCKET_VOLUME);
 
     private ForgeDirection dirCache;
     private Cube areaOfEffect;
+
+    private List<EntityPlayer> players = new ArrayList();
 
     public TilePowerGenerator()
     {
@@ -108,21 +116,31 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                             {
                                 ItemStack container = FluidContainerRegistry.drainFluidContainer(bucketStack.copy());
                                 ItemStack output = getInventory().getStackInSlot(BUCKET_OUTPUT_SLOT);
-                                if (container != null && (output == null || InventoryUtility.stacksMatch(container, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1)
+                                if (container != null && (output == null || InventoryUtility.stacksMatch(container, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1))
                                 {
-                                    //Decrease input
-                                    getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
+                                    //Get tank
+                                    IFluidTank tank = getTankForFluid(fluidStack.getFluid());
 
-                                    //Output empty container
-                                    if (output == null)
+                                    //Ensure tank is not null and will accept the fluid
+                                    if (tank != null && tank.fill(fluidStack, false) >= fluidStack.amount)
                                     {
-                                        output = container.copy();
+                                        //Fill tank
+                                        tank.fill(fluidStack, true);
+
+                                        //Decrease input
+                                        getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
+
+                                        //Output empty container
+                                        if (output == null)
+                                        {
+                                            output = container.copy();
+                                        }
+                                        else
+                                        {
+                                            output.stackSize++;
+                                        }
+                                        getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
                                     }
-                                    else
-                                    {
-                                        output.stackSize++;
-                                    }
-                                    getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
                                 }
                             }
                         }
@@ -173,12 +191,18 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 startTime = System.nanoTime() - startTime;
                 SurvivalMod.instance.logger().info("SurvialMod: Power gen search time " + StringHelpers.formatNanoTime(startTime)); //TODO remove debug
             }
+
+            if (tick % 3 == 0)
+            {
+                //Sync data to GUI users
+                sendPacketToGuiUsers(getDescPacket());
+            }
         }
     }
 
     public boolean hasFuel()
     {
-        return tank.getFluid() != null && tank.getFluid().getFluid() != null && supportedFluids.contains(tank.getFluid().getFluid().getName());
+        return tank.getFluid() != null && tank.getFluid().getFluid() == SurvivalMod.fuel;
     }
 
     public boolean isFull()
@@ -189,7 +213,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     @Override
     public IFluidTank getTankForFluid(Fluid fluid)
     {
-        if (fluid != null && supportedFluids.contains(fluid.getName()))
+        if (fluid != null && fluid == SurvivalMod.fuel)
         {
             return tank;
         }
@@ -228,6 +252,46 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     }
 
     @Override
+    public void readDescPacket(ByteBuf buf)
+    {
+        super.readDescPacket(buf);
+        NBTTagCompound tag = ByteBufUtils.readTag(buf);
+        tank.readFromNBT(tag);
+    }
+
+    @Override
+    public void writeDescPacket(ByteBuf buf)
+    {
+        super.writeDescPacket(buf);
+        NBTTagCompound tag = new NBTTagCompound();
+        tank.writeToNBT(tag);
+        ByteBufUtils.writeTag(buf, tag);
+    }
+
+    @Override
+    public void load(NBTTagCompound nbt)
+    {
+        super.load(nbt);
+        if (nbt.hasKey("fluidTank"))
+        {
+            tank.readFromNBT(nbt.getCompoundTag("fluidTank"));
+        }
+    }
+
+    @Override
+    public NBTTagCompound save(NBTTagCompound nbt)
+    {
+        super.save(nbt);
+        if (tank.getFluidAmount() > 0)
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tank.writeToNBT(tag);
+            nbt.setTag("fluidTank", tag);
+        }
+        return nbt;
+    }
+
+    @Override
     public Object getServerGuiElement(int ID, EntityPlayer player)
     {
         return new ContainerPowerGen(player, this);
@@ -243,5 +307,11 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     protected String getClassDisplayName()
     {
         return "TilePowerGenerator";
+    }
+
+    @Override
+    public Collection<EntityPlayer> getPlayersUsing()
+    {
+        return players;
     }
 }

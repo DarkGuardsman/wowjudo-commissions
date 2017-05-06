@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/8/2017.
  */
-public class ContainerPowerGen extends ContainerBase
+public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
 {
     public ContainerPowerGen(EntityPlayer player, TilePowerGenerator generator)
     {
-        super(player, generator.getInventory());
-        this.addSlotToContainer(new SlotFuelBucket(generator.getInventory(), TilePowerGenerator.BUCKET_INPUT_SLOT, 56, 17));
-        this.addSlotToContainer(new SlotOutput(generator.getInventory(), TilePowerGenerator.BUCKET_OUTPUT_SLOT, 56, 53));
+        super(player, generator);
+        this.addSlotToContainer(new SlotFuelBucket(generator.getInventory(), TilePowerGenerator.BUCKET_INPUT_SLOT, 16, 17));
+        this.addSlotToContainer(new SlotOutput(generator.getInventory(), TilePowerGenerator.BUCKET_OUTPUT_SLOT, 16, 53));
         addPlayerInventory(player);
     }
 

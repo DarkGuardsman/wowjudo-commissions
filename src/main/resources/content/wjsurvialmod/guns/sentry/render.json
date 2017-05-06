@@ -8,10 +8,12 @@
     "states": [
       {
         "id": "item.inventory",
+        "renderType": "item",
         "textureID": "wjsurvialmod:minigun"
       },
       {
         "id": "entity.sentry",
+        "renderType": "model",
         "modelID": "wjsurvialmod:minigun",
         "textureID": "wjsurvialmod:minigun",
         "rotation": {
@@ -23,16 +25,19 @@
       },
       {
         "id": "entity.sentry.base",
+        "renderType": "model",
         "parent": "entity.sentry",
         "parts": "Component_7,Component_8,Component_9,group_5,group_7"
       },
       {
         "id": "entity.sentry.pitch",
+        "renderType": "model",
         "parent": "entity.sentry",
         "parts": "Component_5,group_1,group_3,group_4,group_6,Component_6,group_8"
       },
       {
         "id": "entity.sentry.pitch.empty",
+        "renderType": "model",
         "parent": "entity.sentry.pitch",
         "parts": "Component_5,group_1,group_3,group_4,group_6"
       }

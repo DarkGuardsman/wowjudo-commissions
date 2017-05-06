@@ -6,6 +6,8 @@
     "name": "sentry",
     "id": "wjsurvialmod:sentry",
     "gunID": "wjsurvialmod:sentry",
+    "energyCostTick": 100,
+    "energyBufferSize": 300,
     "bodyWidth": 0.5,
     "bodyHeight": 0.8,
     "barrelLength": 1,
