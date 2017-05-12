@@ -8,6 +8,7 @@ import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
 import com.builtbroken.mc.codegen.annotations.MultiBlockWrapped;
 import com.builtbroken.mc.codegen.annotations.TankProviderWrapped;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
+import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.imp.transform.region.Cube;
 import com.builtbroken.mc.lib.energy.UniversalEnergySystem;
 import com.builtbroken.mc.lib.world.map.TileMapRegistry;
@@ -26,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -44,26 +46,42 @@ import java.util.List;
 @MultiBlockWrapped()
 public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile, IPlayerUsing
 {
-    public static final List<String> supportedFluids = new ArrayList();
+    //Supported tiles to power
     public static final List<String> supportedTiles = new ArrayList();
 
+    //Slots
     public static final int BUCKET_INPUT_SLOT = 0;
     public static final int BUCKET_OUTPUT_SLOT = 1;
 
-    public static int fuelConsumedPerTick = 1;
+    //Fuel Settings
+    public static int fuelConsumedPerRun = 1;
+    public static int delayBetweenRuns = 20;
+
+    //Power Setting
     public static int powerProviderRange = 100;
+
+    //Tank volume setting
     public static int tankVolumeByBuckets = 100;
 
-    static
+    public static void init(Configuration config)
     {
-        supportedFluids.add("fuel");
-        supportedTiles.add("com.builtbroken.armory.content.sentry.tile.TileSentry");
-        supportedTiles.add("com.builtbroken.armory.content.sentry.tile.TileSentryClient");
+        String[] tiles = config.getStringList("supported_tiles", "Fuel_Generator", new String[]{"com.builtbroken.armory.content.sentry.tile.TileSentry", "com.builtbroken.armory.content.sentry.tile.TileSentryClient"}, "Notes which tiles the generator should power, dev debug tool can be used to get tile class names.");
+
+        for (String tile : tiles)
+        {
+            supportedTiles.add(tile.trim());
+        }
+
+        fuelConsumedPerRun = config.getInt("fuel_consumed_per_cycle", "Fuel_Generator", fuelConsumedPerRun, 1, 1000000, "How much fuel is consumed each time the generator cycles.");
+        delayBetweenRuns = config.getInt("fuel_consumption_cycle_time", "Fuel_Generator", delayBetweenRuns, 1, 1000000, "How long in ticks (20 ticks a second) between fuel cycles.");
+        powerProviderRange = config.getInt("power_range", "Fuel_Generator", powerProviderRange, 10, 1000000, "Range in meters (blocks) to power machines.");
+        tankVolumeByBuckets = config.getInt("fuel_tank_volume", "Fuel_Generator", fuelConsumedPerRun, 0, 1000000, "Volume in buckets (1000mb) of fuel to hold in the generator.");
     }
 
-    protected boolean isPowered = false;
-
     public final FluidTank tank = new FluidTank(tankVolumeByBuckets * FluidContainerRegistry.BUCKET_VOLUME);
+    public boolean turnedOn = true;
+
+    protected boolean isPowered = false;
 
     private ForgeDirection dirCache;
     private Cube areaOfEffect;
@@ -102,9 +120,53 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                     if (bucketStack.getItem() instanceof IFluidContainerItem)
                     {
                         FluidStack fluidStack = ((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack);
-                        if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+                        if (bucketStack.stackSize == 1 && fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
                         {
                             int room = tank.getCapacity() - tank.getFluidAmount();
+
+                            if (room > 0)
+                            {
+                                //Fill tank
+                                int filled = tank.fill(fluidStack, true);
+
+                                //Drain bucket
+                                ((IFluidContainerItem) bucketStack.getItem()).drain(bucketStack, filled, true);
+
+                                //If empty, eject to output slot
+                                if (((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack) == null)
+                                {
+                                    ItemStack output = getInventory().getStackInSlot(BUCKET_OUTPUT_SLOT);
+                                    if (output == null || InventoryUtility.stacksMatch(bucketStack, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1)
+                                    {
+                                        //Get tank
+                                        IFluidTank tank = getTankForFluid(fluidStack.getFluid());
+
+                                        //Ensure tank is not null and will accept the fluid
+                                        if (tank != null && tank.fill(fluidStack, false) >= fluidStack.amount)
+                                        {
+
+
+                                            //Decrease input
+                                            getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
+
+                                            //Output empty container
+                                            if (output == null)
+                                            {
+                                                output = bucketStack.copy();
+                                            }
+                                            else
+                                            {
+                                                output.stackSize++;
+                                            }
+                                            getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //TODO if containers are stacked, eject containers
                         }
                     }
                     else if (FluidContainerRegistry.isFilledContainer(bucketStack))
@@ -149,46 +211,55 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 }
             }
 
-            //Cycle power
-            isPowered = false;
-
-            //Consume full, update power state
-            if (hasFuel())
+            //Only run when on
+            if (turnedOn)
             {
-                if (tank.getFluidAmount() > fuelConsumedPerTick)
+                //Only update power cycle every so many ticks
+                if (tick % delayBetweenRuns == 0)
                 {
-                    isPowered = true;
-                }
-                tank.drain(fuelConsumedPerTick, true);
-            }
+                    //Cycle power
+                    isPowered = false;
 
-            //Power devices nearby
-            if (isPowered)
-            {
-                if (areaOfEffect == null)
-                {
-                    areaOfEffect = new Cube(toPos().sub(powerProviderRange), toPos().add(powerProviderRange)).cropToWorld();
-                }
-
-                RadarMap map = TileMapRegistry.getRadarMapForDim(world().provider.dimensionId);
-                List<RadarObject> objects = map.getRadarObjects(areaOfEffect, true);
-                for (RadarObject object : objects)
-                {
-                    if (object instanceof RadarTile)
+                    //Consume full, update power state
+                    if (hasFuel())
                     {
-                        TileEntity tileEntity = ((RadarTile) object).tile;
-                        if (tileEntity != null && tileEntity != getHost())
+                        if (tank.getFluidAmount() > fuelConsumedPerRun)
                         {
-                            String className = tileEntity.getClass().getName();
-                            if (supportedTiles.contains(className))
+                            isPowered = true;
+                        }
+                        tank.drain(fuelConsumedPerRun, true);
+                    }
+                }
+
+                //Power devices nearby
+                if (isPowered)
+                {
+                    if (areaOfEffect == null)
+                    {
+                        areaOfEffect = new Cube(toPos().sub(powerProviderRange), toPos().add(powerProviderRange)).cropToWorld();
+                    }
+
+                    RadarMap map = TileMapRegistry.getRadarMapForDim(world().provider.dimensionId);
+                    List<RadarObject> objects = map.getRadarObjects(areaOfEffect, true);
+                    for (RadarObject object : objects)
+                    {
+                        if (object instanceof RadarTile)
+                        {
+                            TileEntity tileEntity = ((RadarTile) object).tile;
+                            if (tileEntity != null && tileEntity != getHost())
                             {
-                                UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                String className = tileEntity.getClass().getName();
+                                if (supportedTiles.contains(className))
+                                {
+                                    UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                }
                             }
                         }
                     }
                 }
             }
 
+            //GUI update
             if (tick % 3 == 0)
             {
                 Iterator<EntityPlayer> it = getPlayersUsing().iterator();
@@ -259,11 +330,39 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     }
 
     @Override
+    public boolean read(ByteBuf buf, int id, EntityPlayer player, PacketType type)
+    {
+        if (!super.read(buf, id, player, type))
+        {
+            if (isServer())
+            {
+                if (id == 1)
+                {
+                    turnedOn = buf.readBoolean();
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public void setOnState(boolean state)
+    {
+        turnedOn = state;
+        if (isClient())
+        {
+            sendPacketToServer(getHost().getPacketForData(1, state));
+        }
+    }
+
+    @Override
     public void readDescPacket(ByteBuf buf)
     {
         super.readDescPacket(buf);
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
         tank.readFromNBT(tag);
+        turnedOn = buf.readBoolean();
     }
 
     @Override
@@ -273,6 +372,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         ByteBufUtils.writeTag(buf, tag);
+        buf.writeBoolean(turnedOn);
     }
 
     @Override
@@ -283,6 +383,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
         {
             tank.readFromNBT(nbt.getCompoundTag("fluidTank"));
         }
+        turnedOn = nbt.hasKey("turnedOn") ? nbt.getBoolean("turnedOn") : true;
     }
 
     @Override
@@ -295,6 +396,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
             tank.writeToNBT(tag);
             nbt.setTag("fluidTank", tag);
         }
+        nbt.setBoolean("turnedOn", turnedOn);
         return nbt;
     }
 

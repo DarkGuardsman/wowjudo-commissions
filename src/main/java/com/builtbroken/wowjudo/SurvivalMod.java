@@ -13,6 +13,7 @@ import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
+import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -116,6 +117,9 @@ public class SurvivalMod extends AbstractMod
         GameRegistry.registerFuelHandler(itemLog);
 
         proxy.preInit();
+
+        //Load generator configs
+        TilePowerGenerator.init(getConfig());
     }
 
     @Mod.EventHandler

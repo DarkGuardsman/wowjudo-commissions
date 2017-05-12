@@ -13,6 +13,18 @@
       "id": "wjPowerGenerator",
       "class": "com.builtbroken.wowjudo.content.generator.TileWrapperPowerGenerator"
     },
+    "renderBounds": {
+      "min": {
+        "x": -1,
+        "y": 0,
+        "z": -1
+      },
+      "max": {
+        "x": 1,
+        "y": 3,
+        "z": 1
+      }
+    },
     "listeners": [
       "rotation",
       {
