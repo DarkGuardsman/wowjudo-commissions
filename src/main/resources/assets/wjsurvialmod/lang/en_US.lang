@@ -24,6 +24,11 @@ gun.wjsurvialmod:rpg.name=RPG Launcher
 ammo.wjsurvialmod:rpg.name=RPG Round
 ammoType.wjsurvialmod:rpg.name=RPG Ammo
 
+gun.wjsurvialmod:sentry.name=Minigun Barrel
+sentry.wjsurvialmod:sentry.name=Minigun Sentry
+clip.wjsurvialmod:sentry.clip.name=Minigun Sentry Ammo Box
+ammoType.wjsurvialmod:sentry.name=Minigun Sentry Ammo
+ammo.wjsurvialmod:sentry.name=Minigun Sentry Round
 
 tile.wjsurvialmod:powerGen.name=Fuel Generator
 tile.wjsurvialmod:powerGen.gui.name=Fuel Generator

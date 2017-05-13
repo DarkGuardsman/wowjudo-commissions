@@ -9,7 +9,7 @@
       {
         "id": "item.inventory",
         "renderType": "item",
-        "textureID": "wjsurvialmod:minigun"
+        "textureID": "wjsurvialmod:minigunItem"
       },
       {
         "id": "entity.sentry",
@@ -43,10 +43,26 @@
       }
     ]
   },
+  "render:1": {
+    "contentID": "wjsurvialmod:sentry.clip",
+    "type": "gun",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType": "item",
+        "textureID": "wjsurvialmod:clip.box.filled"
+      },
+      {
+        "id": "item.inventory.empty",
+        "renderType": "item",
+        "textureID": "wjsurvialmod:clip.box"
+      }
+    ]
+  },
   "texture": {
-    "key": "wjsurvialmod:minigun",
+    "key": "wjsurvialmod:minigunItem",
     "domain": "wjsurvialmod",
-    "name": "rpg",
+    "name": "minigun",
     "type": "item"
   },
   "texture:1": {
@@ -54,6 +70,18 @@
     "domain": "wjsurvialmod",
     "name": "minigun",
     "type": "model"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:clip.box",
+    "domain": "wjsurvialmod",
+    "name": "clip.box",
+    "type": "item"
+  },
+  "texture:3": {
+    "key": "wjsurvialmod:clip.box.filled",
+    "domain": "wjsurvialmod",
+    "name": "clip.box.filled",
+    "type": "item"
   },
   "model": {
     "key": "wjsurvialmod:minigun",

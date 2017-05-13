@@ -31,7 +31,7 @@
   },
   "clip": {
     "name": "sentry.clip",
-    "id": "armory:sentry.clip",
+    "id": "wjsurvialmod:sentry.clip",
     "reloadType": "clip",
     "ammoType": "wjsurvialmod:ammoType.sentry",
     "maxAmmo": 240
@@ -40,6 +40,7 @@
     "name": "sentry",
     "gunType": "sentry",
     "ID": "wjsurvialmod:sentry",
+    "showInCreativeTab": false,
     "ammoType": "wjsurvialmod:ammoType.sentry",
     "reloadType": "clip",
     "fallOff": "0.05D",

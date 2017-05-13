@@ -75,7 +75,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
         fuelConsumedPerRun = config.getInt("fuel_consumed_per_cycle", "Fuel_Generator", fuelConsumedPerRun, 1, 1000000, "How much fuel is consumed each time the generator cycles.");
         delayBetweenRuns = config.getInt("fuel_consumption_cycle_time", "Fuel_Generator", delayBetweenRuns, 1, 1000000, "How long in ticks (20 ticks a second) between fuel cycles.");
         powerProviderRange = config.getInt("power_range", "Fuel_Generator", powerProviderRange, 10, 1000000, "Range in meters (blocks) to power machines.");
-        tankVolumeByBuckets = config.getInt("fuel_tank_volume", "Fuel_Generator", fuelConsumedPerRun, 0, 1000000, "Volume in buckets (1000mb) of fuel to hold in the generator.");
+        tankVolumeByBuckets = config.getInt("fuel_tank_volume", "Fuel_Generator", tankVolumeByBuckets, 0, 1000000, "Volume in buckets (1000mb) of fuel to hold in the generator.");
     }
 
     public final FluidTank tank = new FluidTank(tankVolumeByBuckets * FluidContainerRegistry.BUCKET_VOLUME);
