@@ -59,6 +59,17 @@
       }
     ]
   },
+  "render:2": {
+    "contentID": "wjsurvialmod:ammo.sentry",
+    "type": "gun",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType": "item",
+        "textureID": "wjsurvialmod:ammo.sentry.bullet"
+      }
+    ]
+  },
   "texture": {
     "key": "wjsurvialmod:minigunItem",
     "domain": "wjsurvialmod",
@@ -81,6 +92,18 @@
     "key": "wjsurvialmod:clip.box.filled",
     "domain": "wjsurvialmod",
     "name": "clip.box.filled",
+    "type": "item"
+  },
+  "texture:4": {
+    "key": "wjsurvialmod:ammo.sentry.bullet",
+    "domain": "wjsurvialmod",
+    "name": "ammo.sentry.bullet",
+    "type": "item"
+  },
+  "texture:5": {
+    "key": "wjsurvialmod:ammo.sentry.casing",
+    "domain": "wjsurvialmod",
+    "name": "ammo.sentry.casing",
     "type": "item"
   },
   "model": {
