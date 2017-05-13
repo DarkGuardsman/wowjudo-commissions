@@ -19,6 +19,7 @@
     "states": [
       {
         "id": "item.inventory",
+        "renderType": "item",
         "textureID": "wjsurvialmod:handgun.clip"
       }
     ]
@@ -29,6 +30,7 @@
     "states": [
       {
         "id": "item.inventory",
+        "renderType": "item",
         "textureID": "wjsurvialmod:handgun.bullet"
       }
     ]
