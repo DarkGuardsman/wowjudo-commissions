@@ -59,6 +59,7 @@
       }
     ]
   },
+
   "render:2": {
     "contentID": "wjsurvialmod:ammo.sentry",
     "type": "gun",

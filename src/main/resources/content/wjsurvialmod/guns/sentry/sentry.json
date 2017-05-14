@@ -13,7 +13,22 @@
     "barrelLength": 1,
     "centerOffset": {
       "y": 0.1
-    }
+    },
+    "defaultTargetTypes": [
+      "mobs",
+      "rockets"
+    ],
+    "allowedTargetTypes": [
+      "living",
+      "players",
+      "flying",
+      "animals",
+      "tameable",
+      "mobs",
+      "npcs",
+      "missile",
+      "rockets"
+    ]
   },
   "ammoType": {
     "name": "sentry",

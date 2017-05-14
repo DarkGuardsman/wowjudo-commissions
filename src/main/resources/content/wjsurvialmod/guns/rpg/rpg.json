@@ -5,14 +5,14 @@
   "ammoType": {
     "name": "rpg",
     "id": "wjsurvialmod:ammoType.rpg",
-    "projectileType": "ROCKET"
+    "projectileType": "rocket"
   },
   "ammo": {
     "name": "rpg",
     "id": "wjsurvialmod:ammo.rpg",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "mass": 4500,
-    "velocity": 1,
+    "velocity": 0.5,
     "damage": {
       "type": "blast",
       "blast": {
