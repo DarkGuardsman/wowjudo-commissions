@@ -35,6 +35,7 @@ apply plugin: 'jacoco'
 apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/buildScripts/scripts/forge/deps.gradle'
 
 println archivesBaseName 
+tasks.downloadClient.dependsOn copySrcgen
 
 dependencies
 {
