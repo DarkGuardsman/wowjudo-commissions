@@ -241,17 +241,21 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
                     RadarMap map = TileMapRegistry.getRadarMapForDim(world().provider.dimensionId);
                     List<RadarObject> objects = map.getRadarObjects(areaOfEffect, true);
+                    System.out.println("Generator found " + objects + " potential tiles to power");
                     for (RadarObject object : objects)
                     {
+                        System.out.println("\tEntry: " + object);
                         if (object instanceof RadarTile)
                         {
                             TileEntity tileEntity = ((RadarTile) object).tile;
                             if (tileEntity != null && tileEntity != getHost())
                             {
                                 String className = tileEntity.getClass().getName();
+                                System.out.println("\t\tClass: " + className);
                                 if (supportedTiles.contains(className))
                                 {
-                                    UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                    double power = UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                    System.out.println("\t\tPower " + power);
                                 }
                             }
                         }
