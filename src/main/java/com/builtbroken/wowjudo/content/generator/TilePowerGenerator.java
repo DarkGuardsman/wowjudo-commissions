@@ -9,7 +9,6 @@ import com.builtbroken.mc.codegen.annotations.MultiBlockWrapped;
 import com.builtbroken.mc.codegen.annotations.TankProviderWrapped;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.network.packet.PacketType;
-import com.builtbroken.mc.imp.transform.region.Cube;
 import com.builtbroken.mc.lib.energy.UniversalEnergySystem;
 import com.builtbroken.mc.lib.world.map.TileMapRegistry;
 import com.builtbroken.mc.lib.world.radar.RadarMap;
@@ -84,7 +83,6 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     protected boolean isPowered = false;
 
     private ForgeDirection dirCache;
-    private Cube areaOfEffect;
 
     private List<EntityPlayer> players = new ArrayList();
 
@@ -234,14 +232,10 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 //Power devices nearby
                 if (isPowered)
                 {
-                    if (areaOfEffect == null)
-                    {
-                        areaOfEffect = new Cube(toPos().sub(powerProviderRange), toPos().add(powerProviderRange)).cropToWorld();
-                    }
-
                     RadarMap map = TileMapRegistry.getRadarMapForDim(world().provider.dimensionId);
-                    List<RadarObject> objects = map.getRadarObjects(areaOfEffect, true);
-                    System.out.println("Generator found " + objects + " potential tiles to power  inside of " + areaOfEffect);
+                    List<RadarObject> objects = map.getRadarObjects(xi(), yi(), powerProviderRange + 3);
+                    System.out.println("All Entities: " + map.allEntities);
+                    System.out.println("Generator found " + objects + " potential tiles to power  inside of " + powerProviderRange);
                     for (RadarObject object : objects)
                     {
                         System.out.println("\tEntry: " + object);
