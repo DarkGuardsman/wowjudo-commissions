@@ -24,6 +24,8 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
     {
+        final int playerInventoryEnd = 38;
+        final int playerHotBarStart = playerInventoryEnd - 9;
         ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(slotIndex);
 
@@ -34,7 +36,7 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
 
             if (slotIndex == TilePowerGenerator.BUCKET_OUTPUT_SLOT)
             {
-                if (!this.mergeItemStack(itemstack1, 3, 39, true))
+                if (!this.mergeItemStack(itemstack1, 2, playerInventoryEnd, true))
                 {
                     return null;
                 }
@@ -50,19 +52,19 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
                         return null;
                     }
                 }
-                else if (slotIndex >= 3 && slotIndex < 30)
+                else if (slotIndex >= 2 && slotIndex < playerHotBarStart)
                 {
-                    if (!this.mergeItemStack(itemstack1, 30, 39, false))
+                    if (!this.mergeItemStack(itemstack1, playerHotBarStart, playerInventoryEnd, false))
                     {
                         return null;
                     }
                 }
-                else if (slotIndex >= 30 && slotIndex < 39 && !this.mergeItemStack(itemstack1, 3, 30, false))
+                else if (slotIndex >= playerHotBarStart && slotIndex < playerInventoryEnd && !this.mergeItemStack(itemstack1, 2, playerHotBarStart, false))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 3, 39, false))
+            else if (!this.mergeItemStack(itemstack1, 2, playerInventoryEnd, false))
             {
                 return null;
             }
