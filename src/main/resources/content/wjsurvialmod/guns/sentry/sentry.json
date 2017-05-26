@@ -70,5 +70,9 @@
   "effect:1": {
     "key": "wjsurvialmod:sentry.round.fired",
     "effectID": "armory:gunSmoke"
+  },
+  "effect:2": {
+    "key": "wjsurvialmod:sentry.round.fired.rayTrace",
+    "effectID": "smokeStream"
   }
 }

@@ -110,7 +110,7 @@
       },
       {
         "id": "projectile",
-        "renderType":"item",
+        "renderType":"model",
         "textureID": "wjsurvialmod:rpgTexture",
         "modelID": "wjsurvialmod:rpgRoundModel",
         "parts": "all",
