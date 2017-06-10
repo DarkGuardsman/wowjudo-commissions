@@ -18,6 +18,24 @@
         "textureID": "wjsurvialmod:handgun.model",
         "parts": "all",
         "offset": {
+          "x": 0.1,
+          "y": 0.25,
+          "z": -0.6
+        },
+        "rotation": {
+          "yaw": -130,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale": 2
+      },
+      {
+        "id": "item.equipped.lowered",
+        "renderType":"model",
+        "modelID": "wjsurvialmod:handgun.model",
+        "textureID": "wjsurvialmod:handgun.model",
+        "parts": "all",
+        "offset": {
           "x": -0.03,
           "y": -0.45,
           "z": -0.55
@@ -27,7 +45,7 @@
           "pitch": -70,
           "roll": -40
         },
-        "scale": 1
+        "scale": 2
       },
       {
         "id": "item.first",
