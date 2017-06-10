@@ -56,7 +56,7 @@ public class SurvivalMod extends AbstractMod
     public static final String PREFX = DOMAIN + ":";
 
     /** Information output thing */
-    public static final Logger logger = LogManager.getLogger("SBM-GrapplingHook");
+    public static final Logger logger = LogManager.getLogger("Wowjudo's Survival Mod");
 
     @SidedProxy(clientSide = "com.builtbroken.wowjudo.ClientProxy", serverSide = "com.builtbroken.wowjudo.CommonProxy")
     public static CommonProxy proxy;

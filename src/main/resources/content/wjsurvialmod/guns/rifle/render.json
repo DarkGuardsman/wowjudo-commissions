@@ -4,18 +4,79 @@
   },
   "render": {
     "contentID": "wjsurvialmod:rifle",
-    "type":"gun",
+    "type": "gun",
     "states": [
       {
         "id": "item.inventory",
-        "renderType":"item",
+        "renderType": "item",
         "textureID": "wjsurvialmod:rifle"
+      },
+      {
+        "id": "item.equipped",
+        "renderType": "model",
+        "modelID": "wjsurvialmod:rifle.model",
+        "textureID": "wjsurvialmod:rifle.model",
+        "parts": "all",
+        "offset": {
+          "x": 0.1,
+          "y": 0.3,
+          "z": -0.5
+        },
+        "rotation": {
+          "yaw": -130,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale": 1
+      },
+      {
+        "id": "item.first",
+        "renderType": "model",
+        "modelID": "wjsurvialmod:rifle.model",
+        "textureID": "wjsurvialmod:rifle.model",
+        "parts": "all",
+        "offset": {
+          "x": -0.3,
+          "y": -0.2,
+          "z": -0.5
+        },
+        "rotation": {
+          "yaw": 155,
+          "pitch": 18,
+          "roll": -25
+        },
+        "scale": 7
+      },
+      {
+        "id": "item.first.aimed",
+        "renderType": "model",
+        "modelID": "wjsurvialmod:rifle.model",
+        "textureID": "wjsurvialmod:rifle.model",
+        "parts": "all",
+        "offset": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "yaw": 140,
+          "pitch": 25,
+          "roll": -25
+        }
+      },
+      {
+        "id": "item.entity",
+        "renderType": "model",
+        "modelID": "wjsurvialmod:rifle.model",
+        "textureID": "wjsurvialmod:rifle.model",
+        "parts": "all",
+        "scale": 1
       }
     ]
   },
   "render:1": {
     "contentID": "wjsurvialmod:clip.rifle",
-    "type":"gun",
+    "type": "gun",
     "states": [
       {
         "id": "item.inventory",
@@ -26,7 +87,7 @@
   },
   "render:2": {
     "contentID": "wjsurvialmod:ammo.rifle",
-    "type":"gun",
+    "type": "gun",
     "states": [
       {
         "id": "item.inventory",
@@ -52,5 +113,16 @@
     "domain": "wjsurvialmod",
     "name": "rifle.bullet",
     "type": "item"
+  },
+  "texture:3": {
+    "key": "wjsurvialmod:rifle.model",
+    "domain": "wjsurvialmod",
+    "name": "rifle",
+    "type": "model"
+  },
+  "model:1": {
+    "key": "wjsurvialmod:rifle.model",
+    "domain": "wjsurvialmod",
+    "name": "rifle.obj"
   }
 }

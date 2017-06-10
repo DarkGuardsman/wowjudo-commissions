@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "audio:1":
+  {
+    "key":"wjsurvialmod:handgun.empty",
+    "domain":"armory",
+    "name":"gun.empty"
+  },
+  "audio:2":
+  {
+    "key":"wjsurvialmod:handgun.round.fired",
+    "domain":"wjsurvialmod",
+    "name":"handgun"
+  },
+  "effect:1":
+  {
+    "key":"wjsurvialmod:handgun.round.fired",
+    "effectID":"armory:gunSmoke"
+  }
+}
