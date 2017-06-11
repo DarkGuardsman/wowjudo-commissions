@@ -84,6 +84,24 @@
          "scale": 4
       },
       {
+        "id": "item.first.gun.aimed",
+        "renderType":"model",
+        "modelID": "wjsurvialmod:handgun.model",
+        "textureID": "wjsurvialmod:handgun.model",
+        "parts": "all",
+        "offset": {
+          "x": 0.18,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "yaw": 135,
+          "pitch": 25,
+          "roll": -19
+        },
+        "scale": 4
+      },
+      {
         "id": "item.entity",
         "renderType":"model",
         "modelID": "wjsurvialmod:handgun.model",
