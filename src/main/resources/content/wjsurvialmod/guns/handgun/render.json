@@ -30,6 +30,24 @@
         "scale": 2
       },
       {
+        "id": "item.equipped.gun.aimed",
+        "renderType":"model",
+        "modelID": "wjsurvialmod:handgun.model",
+        "textureID": "wjsurvialmod:handgun.model",
+        "parts": "all",
+        "offset": {
+          "x": 0,
+          "y": -0.6,
+          "z": -0.4
+        },
+        "rotation": {
+          "yaw": -170,
+          "pitch": -78,
+          "roll": -40
+        },
+        "scale": 2
+      },
+      {
         "id": "item.equipped.lowered",
         "renderType":"model",
         "modelID": "wjsurvialmod:handgun.model",
