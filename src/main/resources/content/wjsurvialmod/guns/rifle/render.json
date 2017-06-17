@@ -55,13 +55,13 @@
         "parts": "all",
         "offset": {
           "x": -0.3,
-          "y": -0.2,
-          "z": -0.5
+          "y": -0.15,
+          "z": -0.2
         },
         "rotation": {
           "yaw": 155,
-          "pitch": 18,
-          "roll": -25
+          "pitch": 14,
+          "roll": 4
         },
         "scale": 7
       },
@@ -72,15 +72,16 @@
         "textureID": "wjsurvialmod:rifle.model",
         "parts": "all",
         "offset": {
-          "x": 0,
+          "x": 0.1,
           "y": 0,
-          "z": 0
+          "z": -0.5
         },
         "rotation": {
-          "yaw": 140,
-          "pitch": 25,
-          "roll": -25
-        }
+          "yaw": 135,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale": 7
       },
       {
         "id": "item.entity",
