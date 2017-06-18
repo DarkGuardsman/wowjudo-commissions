@@ -69,7 +69,7 @@
         }
       },
       {
-        "id": "item.first.sighted",
+        "id": "item.first.gun.aimed",
         "renderType":"model",
         "parent":"item.first",
         "offset": {
