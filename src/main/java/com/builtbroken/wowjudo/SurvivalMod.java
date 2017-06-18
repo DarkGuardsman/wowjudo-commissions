@@ -147,12 +147,6 @@ public class SurvivalMod extends AbstractMod
     {
         super.postInit(event);
 
-        fuel = FluidRegistry.getFluid("fuel");
-        if (fuel == null)
-        {
-            fuel = FluidRegistry.LAVA;
-        }
-
         //Food
         TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
         TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
@@ -182,6 +176,12 @@ public class SurvivalMod extends AbstractMod
     public void loadComplete(FMLLoadCompleteEvent event)
     {
         super.loadComplete(event);
+
+        fuel = FluidRegistry.getFluid("fuel");
+        if (fuel == null)
+        {
+            fuel = FluidRegistry.LAVA;
+        }
     }
 
     @Override
