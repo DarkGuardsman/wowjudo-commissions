@@ -61,18 +61,5 @@
     "fallOff": "0.05D",
     "rateOfFire": 240,
     "reloadTime": 1
-  },
-  "audio:1": {
-    "key": "wjsurvialmod:sentry.empty",
-    "domain": "armory",
-    "name": "gun.empty"
-  },
-  "effect:1": {
-    "key": "wjsurvialmod:sentry.round.fired",
-    "effectID": "armory:gunSmoke"
-  },
-  "effect:2": {
-    "key": "wjsurvialmod:sentry.round.fired.rayTrace",
-    "effectID": "smokeStream"
   }
 }
