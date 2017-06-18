@@ -36,14 +36,14 @@
         "textureID": "wjsurvialmod:handgun.model",
         "parts": "all",
         "offset": {
-          "x": 0,
-          "y": -0.6,
+          "x": -0.1,
+          "y": -0.5,
           "z": -0.4
         },
         "rotation": {
-          "yaw": -170,
-          "pitch": -78,
-          "roll": -40
+          "yaw": -115,
+          "pitch": -50,
+          "roll": 60
         },
         "scale": 2
       },
@@ -73,13 +73,13 @@
         "parts": "all",
         "offset": {
           "x": -0.4,
-          "y": -0.25,
-          "z": -0.05
+          "y": -0.1,
+          "z": 0
         },
         "rotation": {
           "yaw": 157,
           "pitch": 25,
-          "roll": -21
+          "roll": 0
         },
          "scale": 4
       },
@@ -91,13 +91,13 @@
         "parts": "all",
         "offset": {
           "x": 0.18,
-          "y": 0,
+          "y": 0.15,
           "z": 0
         },
         "rotation": {
           "yaw": 135,
-          "pitch": 25,
-          "roll": -19
+          "pitch": 0,
+          "roll": 0
         },
         "scale": 4
       },
