@@ -1,8 +1,14 @@
 {
- "handgun":{
-      "category":"neutral",
-      "sounds":[
-         "handgun"
+    "handgun":{
+        "category":"neutral",
+        "sounds":[
+            "handgun"
+      ]
+   },
+    "rifle":{
+        "category":"neutral",
+        "sounds":[
+            "rifle"
       ]
    }
 }

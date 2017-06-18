@@ -18,9 +18,9 @@
         "textureID": "wjsurvialmod:rifle.model",
         "parts": "all",
         "offset": {
-          "x": 0.1,
-          "y": 0.3,
-          "z": -0.5
+          "x": 0.05,
+          "y": 0.2,
+          "z": -0.4
         },
         "rotation": {
           "yaw": -130,
@@ -36,14 +36,14 @@
         "textureID": "wjsurvialmod:rifle.model",
         "parts": "all",
         "offset": {
-          "x": 0.1,
-          "y": 0.3,
-          "z": -0.5
+          "x": -0.1,
+          "y": -0.4,
+          "z": -0.3
         },
         "rotation": {
-          "yaw": -130,
-          "pitch": 0,
-          "roll": 0
+          "yaw": -105,
+          "pitch": -60,
+          "roll": 70
         },
         "scale": 3
       },
