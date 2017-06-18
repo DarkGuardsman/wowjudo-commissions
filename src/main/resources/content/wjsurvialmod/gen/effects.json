@@ -1,0 +1,11 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "audio:1":
+  {
+    "key":"wjsurvialmod:wjPowerGenerator.tick",
+    "domain":"wjsurvialmod",
+    "name":"generator"
+  }
+}

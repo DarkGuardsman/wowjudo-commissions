@@ -8,6 +8,7 @@ import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
 import com.builtbroken.mc.codegen.annotations.MultiBlockWrapped;
 import com.builtbroken.mc.codegen.annotations.TankProviderWrapped;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.lib.energy.UniversalEnergySystem;
 import com.builtbroken.mc.lib.world.map.TileMapRegistry;
@@ -232,6 +233,12 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 //Power devices nearby
                 if (isPowered)
                 {
+                    if (tick % 90 == 0 && Engine.instance != null && Engine.proxy != null && Engine.instance.packetHandler != null)
+                    {
+                        //TODO translate to center of machine
+                        Engine.proxy.playJsonAudio(world(), "wjsurvialmod:wjPowerGenerator.tick", x(), y() + 1f, z(), 1, 1);
+                    }
+
                     RadarMap map = TileMapRegistry.getRadarMapForWorld(world());
                     List<RadarObject> objects = map.getRadarObjects(xi() + 0.5, zi() + 0.5, powerProviderRange + 3); //TODO center correctly
                     for (RadarObject object : objects)
@@ -353,19 +360,19 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     public void readDescPacket(ByteBuf buf)
     {
         super.readDescPacket(buf);
+        turnedOn = buf.readBoolean();
         NBTTagCompound tag = ByteBufUtils.readTag(buf);
         tank.readFromNBT(tag);
-        turnedOn = buf.readBoolean();
     }
 
     @Override
     public void writeDescPacket(ByteBuf buf)
     {
         super.writeDescPacket(buf);
+        buf.writeBoolean(turnedOn);
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         ByteBufUtils.writeTag(buf, tag);
-        buf.writeBoolean(turnedOn);
     }
 
     @Override
