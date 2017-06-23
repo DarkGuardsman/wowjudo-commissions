@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo;
 
+import com.builtbroken.mc.api.event.blast.BlastEventDestroyBlock;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.mod.AbstractMod;
@@ -21,6 +22,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -93,6 +95,9 @@ public class SurvivalMod extends AbstractMod
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+
+        MinecraftForge.EVENT_BUS.register(this);
+
         Engine.requestMultiBlock();
 
         //TODO convert to JSON and use modmanager
@@ -188,5 +193,15 @@ public class SurvivalMod extends AbstractMod
     public AbstractProxy getProxy()
     {
         return proxy;
+    }
+
+    @SubscribeEvent
+    public void blastEvent(BlastEventDestroyBlock.Pre eventBlockEdit)
+    {
+        System.out.println();
+        if (eventBlockEdit.isCancelable())
+        {
+            eventBlockEdit.setCanceled(true);
+        }
     }
 }
