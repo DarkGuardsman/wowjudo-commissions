@@ -8,8 +8,10 @@ import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.framework.logic.TileNode;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.wowjudo.SurvivalMod;
+import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.config.Configuration;
 
 /**
  * Damageable wall system that is slowly broken down rather than instantly destroyed
@@ -41,15 +43,14 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (mat_cache == null)
         {
-            int meta = getHost().getHostMeta();
-            if (meta >= 0 && meta < WallMaterial.values().length)
+            Material material = world().getBlock(xi(), yi(), zi()).getMaterial();
+            for (WallMaterial mat : WallMaterial.values())
             {
-                mat_cache = WallMaterial.values()[meta];
-            }
-            else
-            {
-                world().setBlockMetadataWithNotify(xi(), yi(), zi(), WallMaterial.IRON.ordinal(), 3);
-                mat_cache = WallMaterial.IRON;
+                if (mat.material == material)
+                {
+                    mat_cache = mat;
+                    break;
+                }
             }
         }
         return mat_cache;
@@ -102,15 +103,25 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum WallMaterial
     {
-        WOOD(20),
-        STONE(40),
-        IRON(100);
+        WOOD(Material.wood, 20),
+        STONE(Material.rock, 40),
+        IRON(Material.iron, 100);
 
         public int hp;
+        public Material material;
 
-        WallMaterial(int hp)
+        WallMaterial(Material material, int hp)
         {
+            this.material = material;
             this.hp = hp;
+        }
+
+        public static void loadConfig(Configuration configuration)
+        {
+            for (WallMaterial material : values())
+            {
+                material.hp = configuration.getInt(material.name().toLowerCase(), "Wall_HP", material.hp, 1, 10000, "How many hits of damage the wall can take before being destroyed.");
+            }
         }
     }
 }

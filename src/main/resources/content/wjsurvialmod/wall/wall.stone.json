@@ -1,0 +1,15 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "block": {
+    "name": "wall.stone",
+    "id": "wjStoneWall",
+    "mod": "wjsurvialmod",
+    "material": "rock",
+    "tileEntity": {
+      "id": "wjDamageWall",
+      "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrapperWall"
+    }
+  }
+}

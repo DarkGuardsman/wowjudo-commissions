@@ -16,6 +16,7 @@ import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
+import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -131,6 +132,10 @@ public class SurvivalMod extends AbstractMod
     public void init(FMLInitializationEvent event)
     {
         super.init(event);
+
+        //Load customization configs
+        TileNodeWall.WallMaterial.loadConfig(getConfig());
+
         //Register ore dictionary support
         for (ItemLog.LogTypes type : ItemLog.LogTypes.values())
         {
@@ -198,7 +203,6 @@ public class SurvivalMod extends AbstractMod
     @SubscribeEvent
     public void blastEvent(BlastEventDestroyBlock.Pre eventBlockEdit)
     {
-        System.out.println();
         if (eventBlockEdit.isCancelable())
         {
             eventBlockEdit.setCanceled(true);
