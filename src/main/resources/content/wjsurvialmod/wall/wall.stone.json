@@ -9,7 +9,7 @@
     "material": "rock",
     "tileEntity": {
       "id": "wjDamageWall",
-      "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrapperWall"
+      "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
     }
   }
 }

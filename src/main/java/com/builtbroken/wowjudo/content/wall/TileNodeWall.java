@@ -25,7 +25,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     /** Cost of energy to take away 1 HP */
     public static float energyCostPerHP = 10;
 
-    private int hp = -1;
+    private float hp = -1;
     private WallMaterial mat_cache;
 
     public TileNodeWall()
@@ -52,15 +52,19 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
                     break;
                 }
             }
+            if(mat_cache == null)
+            {
+                mat_cache = WallMaterial.WOOD;
+            }
         }
         return mat_cache;
     }
 
-    public int getHp()
+    public float getHp()
     {
         if (hp == -1)
         {
-            hp = getMaterial().hp;
+            hp = 10;//getMaterial().hp;
         }
         return hp;
     }
@@ -71,7 +75,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         super.load(nbt);
         if (nbt.hasKey("hp"))
         {
-            hp = nbt.getInteger("hp");
+            hp = nbt.getFloat("hp");
         }
     }
 
@@ -79,15 +83,16 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public NBTTagCompound save(NBTTagCompound nbt)
     {
         super.save(nbt);
-        nbt.setInteger("hp", hp);
+        nbt.setFloat("hp", hp);
         return nbt;
     }
 
     @Override
     public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        float energyCost = getHp() * energyCostPerHP;
-        hp -= Math.floor(Math.max(1, energy / energyCostPerHP));
+        energyCostPerHP = 10;
+        float energyCost = Math.max(getHp(), 1) * energyCostPerHP;
+        hp -= Math.min(hp, Math.max(0, energy / energyCostPerHP));
         return energyCost;
     }
 
@@ -103,7 +108,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum WallMaterial
     {
-        WOOD(Material.wood, 20),
+        WOOD(Material.wood, 10),
         STONE(Material.rock, 40),
         IRON(Material.iron, 100);
 

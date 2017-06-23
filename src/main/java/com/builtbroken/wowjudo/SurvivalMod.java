@@ -16,6 +16,7 @@ import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
+import com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -33,6 +34,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -203,7 +205,8 @@ public class SurvivalMod extends AbstractMod
     @SubscribeEvent
     public void blastEvent(BlastEventDestroyBlock.Pre eventBlockEdit)
     {
-        if (eventBlockEdit.isCancelable())
+        TileEntity tile = eventBlockEdit.world.getTileEntity(eventBlockEdit.x, eventBlockEdit.y, eventBlockEdit.z);
+        if (!(tile instanceof TileEntityWrappedWall))
         {
             eventBlockEdit.setCanceled(true);
         }

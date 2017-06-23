@@ -17,7 +17,7 @@
       "type": "blast",
       "blast": {
         "id": "TNT",
-        "size": 10
+        "size": 3
       }
     }
   },
