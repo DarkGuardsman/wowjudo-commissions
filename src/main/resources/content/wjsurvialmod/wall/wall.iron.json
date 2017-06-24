@@ -7,6 +7,7 @@
     "id": "wjIronWall",
     "mod": "wjsurvialmod",
     "material": "iron",
+    "hardness" : 1000,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"

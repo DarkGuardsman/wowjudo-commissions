@@ -64,7 +64,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (hp == -1)
         {
-            hp = 10;//getMaterial().hp;
+            hp = getMaterial().hp;
         }
         return hp;
     }
