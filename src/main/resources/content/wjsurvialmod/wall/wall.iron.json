@@ -11,5 +11,22 @@
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
     }
+  },
+  "render": {
+    "contentID": "wjsurvialmod:wjIronWall",
+    "type": "block",
+    "states": [
+      {
+        "id": "block",
+        "renderType": "block",
+        "textureID": "wjsurvialmod:wjIronWall"
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:wjIronWall",
+    "domain": "wjsurvialmod",
+    "name": "wall.metal",
+    "type": "block"
   }
 }
