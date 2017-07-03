@@ -5,10 +5,14 @@ import com.builtbroken.mc.api.explosive.IBlastEdit;
 import com.builtbroken.mc.api.explosive.IExplosiveDamageable;
 import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
+import com.builtbroken.mc.framework.block.BlockBase;
 import com.builtbroken.mc.framework.logic.TileNode;
+import com.builtbroken.mc.lib.helper.MaterialDict;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.wowjudo.SurvivalMod;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.config.Configuration;
@@ -43,16 +47,23 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (mat_cache == null)
         {
-            Material material = world().getBlock(xi(), yi(), zi()).getMaterial();
+            Block block = getHost().getHostBlock();
+            Material material = block.getMaterial();
+
+            if(material != ((BlockBase)block).data.getMaterial())
+            {
+                System.out.println("Error mats do not match");
+            }
+
             for (WallMaterial mat : WallMaterial.values())
             {
-                if (mat.material == material)
+                if (mat.getMaterial() == material)
                 {
                     mat_cache = mat;
                     break;
                 }
             }
-            if(mat_cache == null)
+            if (mat_cache == null)
             {
                 mat_cache = WallMaterial.WOOD;
             }
@@ -90,7 +101,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     @Override
     public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        energyCostPerHP = 10;
+        energyCostPerHP = 20;
         float energyCost = Math.max(getHp(), 1) * energyCostPerHP;
         hp -= Math.min(hp, Math.max(0, energy / energyCostPerHP));
         return energyCost;
@@ -103,21 +114,22 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         {
             return null;
         }
-        return new BlockEdit(world(), xi(), yi(), zi());
+        return new BlockEdit(world(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 
     public enum WallMaterial
     {
-        WOOD(Material.wood, 10),
-        STONE(Material.rock, 40),
-        IRON(Material.iron, 100);
+        WOOD("wood", 10),
+        STONE("rock", 40),
+        IRON("iron", 100);
 
         public int hp;
-        public Material material;
+        private final String materialName;
+        private Material material;
 
-        WallMaterial(Material material, int hp)
+        WallMaterial(String materialName, int hp)
         {
-            this.material = material;
+            this.materialName = materialName;
             this.hp = hp;
         }
 
@@ -127,6 +139,15 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             {
                 material.hp = configuration.getInt(material.name().toLowerCase(), "Wall_HP", material.hp, 1, 10000, "How many hits of damage the wall can take before being destroyed.");
             }
+        }
+
+        public Material getMaterial()
+        {
+            if (material == null)
+            {
+                material = MaterialDict.get(materialName);
+            }
+            return material;
         }
     }
 }

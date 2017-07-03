@@ -7,20 +7,45 @@
     "id": "wjStoneWall",
     "mod": "wjsurvialmod",
     "material": "rock",
-    "hardness" : 20,
+    "hardness": 20,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
-    }
+    },
+    "subtypes": [
+      {
+        "meta": 0
+      },
+      {
+        "meta": 1
+      },
+      {
+        "meta": 2
+      }
+    ]
   },
   "render": {
     "contentID": "wjsurvialmod:wjStoneWall",
     "type": "block",
     "states": [
       {
-        "id": "block",
+        "id": "block.0",
         "renderType": "block",
         "textureID": "wjsurvialmod:wjStoneWall"
+      },
+      {
+        "id": "block.1",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjStoneFloor.top",
+        "sides": "wjsurvialmod:wjStoneFloor.side",
+        "bottom": "wjsurvialmod:wjStoneFloor.bottom"
+      },
+      {
+        "id": "block.2",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjStoneRoof.top",
+        "sides": "wjsurvialmod:wjStoneRoof.side",
+        "bottom": "wjsurvialmod:wjStoneRoof.bottom"
       }
     ]
   },
@@ -28,6 +53,42 @@
     "key": "wjsurvialmod:wjStoneWall",
     "domain": "wjsurvialmod",
     "name": "wall.stone",
+    "type": "block"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:wjStoneRoof.top",
+    "domain": "wjsurvialmod",
+    "name": "roof.stone.top",
+    "type": "block"
+  },
+  "texture:1A": {
+    "key": "wjsurvialmod:wjStoneRoof.side",
+    "domain": "wjsurvialmod",
+    "name": "roof.stone.side",
+    "type": "block"
+  },
+  "texture:1B": {
+    "key": "wjsurvialmod:wjStoneRoof.bottom",
+    "domain": "wjsurvialmod",
+    "name": "roof.stone.bottom",
+    "type": "block"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:wjStoneFloor.top",
+    "domain": "wjsurvialmod",
+    "name": "floor.stone.top",
+    "type": "block"
+  },
+  "texture:2A": {
+    "key": "wjsurvialmod:wjStoneFloor.side",
+    "domain": "wjsurvialmod",
+    "name": "floor.stone.side",
+    "type": "block"
+  },
+  "texture:2B": {
+    "key": "wjsurvialmod:wjStoneFloor.bottom",
+    "domain": "wjsurvialmod",
+    "name": "floor.stone.bottom",
     "type": "block"
   }
 }

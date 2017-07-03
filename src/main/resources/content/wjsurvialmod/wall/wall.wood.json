@@ -11,7 +11,18 @@
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
-    }
+    },
+    "subtypes": [
+      {
+        "meta": 0
+      },
+      {
+        "meta": 1
+      },
+      {
+        "meta": 2
+      }
+    ]
   },
   "render": {
     "contentID": "wjsurvialmod:wjWoodWall",
