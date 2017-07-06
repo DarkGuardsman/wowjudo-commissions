@@ -29,9 +29,23 @@
     "type": "block",
     "states": [
       {
-        "id": "block",
+        "id": "block.0",
         "renderType": "block",
         "textureID": "wjsurvialmod:wjWoodWall"
+      },
+      {
+        "id": "block.1",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjWoodFloor.top",
+        "sides": "wjsurvialmod:wjWoodFloor.side",
+        "bottom": "wjsurvialmod:wjWoodFloor.bottom"
+      },
+      {
+        "id": "block.2",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjWoodRoof.top",
+        "sides": "wjsurvialmod:wjWoodRoof.side",
+        "bottom": "wjsurvialmod:wjWoodRoof.bottom"
       }
     ]
   },
@@ -39,6 +53,42 @@
     "key": "wjsurvialmod:wjWoodWall",
     "domain": "wjsurvialmod",
     "name": "wall.wood",
+    "type": "block"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:wjWoodRoof.top",
+    "domain": "wjsurvialmod",
+    "name": "roof.wood.top",
+    "type": "block"
+  },
+  "texture:1A": {
+    "key": "wjsurvialmod:wjWoodRoof.side",
+    "domain": "wjsurvialmod",
+    "name": "roof.wood.side",
+    "type": "block"
+  },
+  "texture:1B": {
+    "key": "wjsurvialmod:wjWoodRoof.bottom",
+    "domain": "wjsurvialmod",
+    "name": "roof.wood.bottom",
+    "type": "block"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:wjWoodFloor.top",
+    "domain": "wjsurvialmod",
+    "name": "floor.wood.top",
+    "type": "block"
+  },
+  "texture:2A": {
+    "key": "wjsurvialmod:wjWoodFloor.side",
+    "domain": "wjsurvialmod",
+    "name": "floor.wood.side",
+    "type": "block"
+  },
+  "texture:2B": {
+    "key": "wjsurvialmod:wjWoodFloor.bottom",
+    "domain": "wjsurvialmod",
+    "name": "floor.wood.bottom",
     "type": "block"
   }
 }

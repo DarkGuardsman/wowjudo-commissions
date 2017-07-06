@@ -3,10 +3,10 @@
     "name": "wjsurvialmod"
   },
   "block": {
-    "name": "wall.iron",
+    "name": "wall.metal",
     "id": "wjIronWall",
     "mod": "wjsurvialmod",
-    "material": "iron",
+    "material": "metal",
     "hardness" : 1000,
     "tileEntity": {
       "id": "wjDamageWall",
@@ -29,9 +29,23 @@
     "type": "block",
     "states": [
       {
-        "id": "block",
+        "id": "block.0",
         "renderType": "block",
         "textureID": "wjsurvialmod:wjIronWall"
+      },
+      {
+        "id": "block.1",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjIronFloor.top",
+        "sides": "wjsurvialmod:wjIronFloor.side",
+        "bottom": "wjsurvialmod:wjIronFloor.bottom"
+      },
+      {
+        "id": "block.2",
+        "renderType": "block",
+        "top": "wjsurvialmod:wjIronRoof.top",
+        "sides": "wjsurvialmod:wjIronRoof.side",
+        "bottom": "wjsurvialmod:wjIronRoof.bottom"
       }
     ]
   },
@@ -39,6 +53,42 @@
     "key": "wjsurvialmod:wjIronWall",
     "domain": "wjsurvialmod",
     "name": "wall.metal",
+    "type": "block"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:wjIronRoof.top",
+    "domain": "wjsurvialmod",
+    "name": "roof.metal.top",
+    "type": "block"
+  },
+  "texture:1A": {
+    "key": "wjsurvialmod:wjIronRoof.side",
+    "domain": "wjsurvialmod",
+    "name": "roof.metal.side",
+    "type": "block"
+  },
+  "texture:1B": {
+    "key": "wjsurvialmod:wjIronRoof.bottom",
+    "domain": "wjsurvialmod",
+    "name": "roof.metal.bottom",
+    "type": "block"
+  },
+  "texture:2": {
+    "key": "wjsurvialmod:wjIronFloor.top",
+    "domain": "wjsurvialmod",
+    "name": "floor.metal.top",
+    "type": "block"
+  },
+  "texture:2A": {
+    "key": "wjsurvialmod:wjIronFloor.side",
+    "domain": "wjsurvialmod",
+    "name": "floor.metal.side",
+    "type": "block"
+  },
+  "texture:2B": {
+    "key": "wjsurvialmod:wjIronFloor.bottom",
+    "domain": "wjsurvialmod",
+    "name": "floor.metal.bottom",
     "type": "block"
   }
 }

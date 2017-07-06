@@ -35,5 +35,16 @@ tile.wjsurvialmod:powerGen.gui.name=Fuel Generator
 tile.wjsurvialmod:powerGen.gui.inventory.name=Inventory
 
 tile.wjsurvialmod:wall.iron.name=Metal Wall
+tile.wjsurvialmod:wall.iron.0.name=Metal Wall
+tile.wjsurvialmod:wall.iron.1.name=Metal Floor
+tile.wjsurvialmod:wall.iron.2.name=Metal Roof
+
 tile.wjsurvialmod:wall.stone.name=Stone Wall
+tile.wjsurvialmod:wall.stone.0.name=Stone Wall
+tile.wjsurvialmod:wall.stone.1.name=Stone Floor
+tile.wjsurvialmod:wall.stone.2.name=Stone Roof
+
 tile.wjsurvialmod:wall.wood.name=Wood Wall
+tile.wjsurvialmod:wall.wood.0.name=Wood Wall
+tile.wjsurvialmod:wall.wood.1.name=Wood Floor
+tile.wjsurvialmod:wall.wood.2.name=Wood Roof
