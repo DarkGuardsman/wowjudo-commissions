@@ -7,6 +7,7 @@ import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.framework.block.BlockBase;
 import com.builtbroken.mc.framework.logic.TileNode;
+import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.helper.MaterialDict;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.wowjudo.SurvivalMod;
@@ -31,6 +32,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     private float hp = -1;
     private WallMaterial mat_cache;
+    private StructureType struct_cache;
 
     public TileNodeWall()
     {
@@ -50,7 +52,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             Block block = getHost().getHostBlock();
             Material material = block.getMaterial();
 
-            if(material != ((BlockBase)block).data.getMaterial())
+            if (material != ((BlockBase) block).data.getMaterial())
             {
                 System.out.println("Error mats do not match");
             }
@@ -71,11 +73,25 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         return mat_cache;
     }
 
+    public StructureType getStructureType()
+    {
+        if (struct_cache == null)
+        {
+            int meta = getHost().getHostMeta();
+            if (meta > 0 && meta < StructureType.values().length)
+            {
+                struct_cache = StructureType.values()[meta];
+            }
+            struct_cache = StructureType.WALL;
+        }
+        return struct_cache;
+    }
+
     public float getHp()
     {
         if (hp == -1)
         {
-            hp = getMaterial().hp;
+            hp = getMaterial().getHp(getStructureType());
         }
         return hp;
     }
@@ -101,7 +117,6 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     @Override
     public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        energyCostPerHP = 20;
         float energyCost = Math.max(getHp(), 1) * energyCostPerHP;
         hp -= Math.min(hp, Math.max(0, energy / energyCostPerHP));
         return energyCost;
@@ -119,13 +134,15 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum WallMaterial
     {
-        WOOD("wood", 10),
-        STONE("rock", 40),
-        IRON("iron", 100);
+        WOOD("wood", 5),
+        STONE("rock", 20),
+        IRON("iron", 50);
 
-        public int hp;
+        public float hp;
         private final String materialName;
         private Material material;
+
+        private float[] types;
 
         WallMaterial(String materialName, int hp)
         {
@@ -137,7 +154,11 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         {
             for (WallMaterial material : values())
             {
-                material.hp = configuration.getInt(material.name().toLowerCase(), "Wall_HP", material.hp, 1, 10000, "How many hits of damage the wall can take before being destroyed.");
+                material.types = new float[StructureType.values().length];
+                for (StructureType type : StructureType.values())
+                {
+                    material.types[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_HP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 100000, "How many hits of damage does the structure take before being destroyed.");
+                }
             }
         }
 
@@ -148,6 +169,25 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
                 material = MaterialDict.get(materialName);
             }
             return material;
+        }
+
+        public float getHp(StructureType structureType)
+        {
+            return types[structureType.ordinal()];
+        }
+    }
+
+    public enum StructureType
+    {
+        WALL(2),
+        FLOOR(4),
+        ROOF(1);
+
+        float multi;
+
+        StructureType(float multi)
+        {
+            this.multi = multi;
         }
     }
 }
