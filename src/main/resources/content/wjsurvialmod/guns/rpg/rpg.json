@@ -16,8 +16,8 @@
     "damage": {
       "type": "blast",
       "blast": {
-        "id": "TNT",
-        "size": 3
+        "id": "wowjudo.damage",
+        "size": 6
       }
     }
   },

@@ -5,11 +5,13 @@ import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.mod.AbstractMod;
 import com.builtbroken.mc.lib.mod.AbstractProxy;
+import com.builtbroken.mc.lib.world.explosive.ExplosiveRegistry;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.crafting.BlockCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.ItemBlockCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
+import com.builtbroken.wowjudo.content.ex.ExDamage;
 import com.builtbroken.wowjudo.content.explosive.remote.ItemRemote;
 import com.builtbroken.wowjudo.content.explosive.tile.BlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
@@ -128,6 +130,8 @@ public class SurvivalMod extends AbstractMod
 
         //Load generator configs
         TilePowerGenerator.init(getConfig());
+
+        ExplosiveRegistry.registerExplosive(DOMAIN, "wowjudo.damage", new ExDamage());
     }
 
     @Mod.EventHandler

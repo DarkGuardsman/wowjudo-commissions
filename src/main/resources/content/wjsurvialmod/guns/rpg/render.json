@@ -99,35 +99,10 @@
       }
     ]
   },
-  "render:2": {
-    "contentID": "wjsurvialmod:ammo.rpg",
-    "type":"gun",
-    "states": [
-      {
-        "id": "item.inventory",
-        "renderType":"item",
-        "textureID": "wjsurvialmod:rpg.bullet"
-      },
-      {
-        "id": "projectile",
-        "renderType":"model",
-        "textureID": "wjsurvialmod:rpgTexture",
-        "modelID": "wjsurvialmod:rpgRoundModel",
-        "parts": "all",
-        "scale": 0.5
-      }
-    ]
-  },
   "texture": {
     "key": "wjsurvialmod:rpg",
     "domain": "wjsurvialmod",
     "name": "rpg",
-    "type": "item"
-  },
-  "texture:2": {
-    "key": "wjsurvialmod:rpg.bullet",
-    "domain": "wjsurvialmod",
-    "name": "rpg.bullet",
     "type": "item"
   },
   "texture:3": {
@@ -146,10 +121,5 @@
     "key": "wjsurvialmod:rpgModel",
     "domain": "wjsurvialmod",
     "name": "rpg.obj"
-  },
-  "model:2": {
-    "key": "wjsurvialmod:rpgRoundModel",
-    "domain": "wjsurvialmod",
-    "name": "rpg_rocket.obj"
   }
 }

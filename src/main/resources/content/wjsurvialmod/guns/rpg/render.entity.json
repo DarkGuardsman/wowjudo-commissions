@@ -1,0 +1,37 @@
+{
+  "render": {
+    "contentID": "wjsurvialmod:ammo.rpg",
+    "type": "gun",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType": "item",
+        "textureID": "wjsurvialmod:rpg.bullet"
+      },
+      {
+        "id": "projectile",
+        "renderType": "model",
+        "textureID": "wjsurvialmod:rpgTexture",
+        "modelID": "wjsurvialmod:rpgRoundModel",
+        "parts": "all",
+        "scale": 0.5,
+        "rotationOrder": [
+          "yaw",
+          "-pitch"
+        ]
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:rpg.bullet",
+    "domain": "wjsurvialmod",
+    "name": "rpg.bullet",
+    "type": "item"
+  },
+  "model": {
+    "key": "wjsurvialmod:rpgRoundModel",
+    "domain": "wjsurvialmod",
+    "name": "rpg_rocket.obj"
+  },
+  "_comment_": "texture for RPG round model is in render for RPG launcher item"
+}

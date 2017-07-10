@@ -11,6 +11,7 @@ import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.helper.MaterialDict;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.wowjudo.SurvivalMod;
+import com.builtbroken.wowjudo.content.ex.HPBlockEdit;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -28,7 +29,7 @@ import net.minecraftforge.common.config.Configuration;
 public class TileNodeWall extends TileNode implements IExplosiveDamageable
 {
     /** Cost of energy to take away 1 HP */
-    public static float energyCostPerHP = 10;
+    public static float energyCostPerHP = 100;
 
     private float hp = -1;
     private WallMaterial mat_cache;
@@ -110,33 +111,42 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public NBTTagCompound save(NBTTagCompound nbt)
     {
         super.save(nbt);
-        nbt.setFloat("hp", hp);
+        nbt.setFloat("hp", getHp());
         return nbt;
     }
 
     @Override
     public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        float energyCost = Math.max(getHp(), 1) * energyCostPerHP;
-        hp -= Math.min(hp, Math.max(0, energy / energyCostPerHP));
-        return energyCost;
+        return Math.max(getHp(), 1) * energyCostPerHP;
     }
 
     @Override
     public IBlastEdit getBlockEditOnBlastImpact(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        if (hp > 0)
+        float lostHP = Math.min(getHp(), Math.max(0, energy / energyCostPerHP));
+        if (getHp() > 0 && getHp() - lostHP > 1)
         {
+            if(lostHP > 0)
+            {
+                return new HPBlockEdit(world(), xi(), yi(), zi(), lostHP);
+            }
             return null;
         }
         return new BlockEdit(world(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 
+    public void reduceHP(float hp)
+    {
+        this.hp -= hp;
+        System.out.println(hp);
+    }
+
     public enum WallMaterial
     {
         WOOD("wood", 5),
-        STONE("rock", 20),
-        IRON("iron", 50);
+        STONE("rock", 25),
+        IRON("iron", 62);
 
         public float hp;
         private final String materialName;
@@ -179,9 +189,9 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum StructureType
     {
-        WALL(2),
-        FLOOR(4),
-        ROOF(1);
+        WALL(1),
+        FLOOR(1.2f),
+        ROOF(0.8f);
 
         float multi;
 
