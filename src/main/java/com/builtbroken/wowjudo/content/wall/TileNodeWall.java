@@ -28,8 +28,6 @@ import net.minecraftforge.common.config.Configuration;
 @TileWrapped(className = "TileEntityWrappedWall")
 public class TileNodeWall extends TileNode implements IExplosiveDamageable
 {
-    /** Cost of energy to take away 1 HP */
-    public static float energyCostPerHP = 100;
 
     private float hp = -1;
     private WallMaterial mat_cache;
@@ -118,16 +116,16 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     @Override
     public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        return Math.max(getHp(), 1) * energyCostPerHP;
+        return Math.max(getHp(), 1) * getMaterial().energyPerType[getStructureType().ordinal()];
     }
 
     @Override
     public IBlastEdit getBlockEditOnBlastImpact(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
     {
-        float lostHP = Math.min(getHp(), Math.max(0, energy / energyCostPerHP));
+        float lostHP = Math.min(getHp(), Math.max(0, energy / getMaterial().energyPerType[getStructureType().ordinal()]));
         if (getHp() > 0 && getHp() - lostHP > 1)
         {
-            if(lostHP > 0)
+            if (lostHP > 0)
             {
                 return new HPBlockEdit(world(), xi(), yi(), zi(), lostHP);
             }
@@ -144,30 +142,36 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum WallMaterial
     {
-        WOOD("wood", 5),
-        STONE("rock", 25),
-        IRON("iron", 62);
+        WOOD("wood", 5, 100),
+        STONE("rock", 25, 100),
+        IRON("iron", 62, 100);
 
         public float hp;
+        public float energyCostPerHP;
+
         private final String materialName;
         private Material material;
 
-        private float[] types;
+        private float[] hpPerType;
+        private float[] energyPerType;
 
-        WallMaterial(String materialName, int hp)
+        WallMaterial(String materialName, int hp, float energyCostPerHP)
         {
             this.materialName = materialName;
             this.hp = hp;
+            this.energyCostPerHP = energyCostPerHP;
         }
 
         public static void loadConfig(Configuration configuration)
         {
             for (WallMaterial material : values())
             {
-                material.types = new float[StructureType.values().length];
+                material.hpPerType = new float[StructureType.values().length];
+                material.energyPerType = new float[StructureType.values().length];
                 for (StructureType type : StructureType.values())
                 {
-                    material.types[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_HP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 100000, "How many hits of damage does the structure take before being destroyed.");
+                    material.hpPerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_HP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 100000, "How many hits of damage does the structure take before being destroyed.");
+                    material.energyPerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_energyPerHP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 1000000, "How much blast energy does it take to do 1 hp damage.");
                 }
             }
         }
@@ -183,7 +187,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
         public float getHp(StructureType structureType)
         {
-            return types[structureType.ordinal()];
+            return hpPerType[structureType.ordinal()];
         }
     }
 
