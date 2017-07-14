@@ -39,6 +39,12 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     }
 
     @Override
+    public String uniqueContentID()
+    {
+        return "structure." + getMaterial().materialName + "." + getStructureType().name().toLowerCase();
+    }
+
+    @Override
     public boolean requiresPerTickUpdate()
     {
         return false;
@@ -137,7 +143,6 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public void reduceHP(float hp)
     {
         this.hp -= hp;
-        System.out.println(hp);
     }
 
     public enum WallMaterial
