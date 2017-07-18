@@ -141,6 +141,8 @@ public class SurvivalMod extends AbstractMod
 
         //Load customization configs
         TileNodeWall.WallMaterial.loadConfig(getConfig());
+        TileEntityExplosive.BLAST_SIZE = getConfig().getFloat("size", "C4_Tile", TileEntityExplosive.BLAST_SIZE, 0, 1000, "Size of the blast in meters/blocks");
+        TileEntityExplosive.BLAST_DELAY = getConfig().getInt("timer", "C4_Tile", TileEntityExplosive.BLAST_DELAY, 0, 1000, "Delay in ticks (20 ticks a second) for the blast to trigger");
 
         //Register ore dictionary support
         for (ItemLog.LogTypes type : ItemLog.LogTypes.values())

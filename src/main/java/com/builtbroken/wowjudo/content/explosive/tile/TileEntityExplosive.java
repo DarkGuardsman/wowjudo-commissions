@@ -1,5 +1,8 @@
 package com.builtbroken.wowjudo.content.explosive.tile;
 
+import com.builtbroken.mc.api.event.TriggerCause;
+import com.builtbroken.mc.api.explosive.IExplosiveHandler;
+import com.builtbroken.mc.lib.world.explosive.ExplosiveRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +14,9 @@ import net.minecraft.util.ChatComponentText;
  */
 public class TileEntityExplosive extends TileEntity
 {
+    public static float BLAST_SIZE = 8;
+    public static int BLAST_DELAY = 20;
+
     public EntityPlayer triggerEntity;
 
     public int timer = 0;
@@ -22,7 +28,7 @@ public class TileEntityExplosive extends TileEntity
         if (isExploding)
         {
             timer++;
-            if (timer > 20)
+            if (timer > BLAST_DELAY)
             {
                 explode();
             }
@@ -31,7 +37,12 @@ public class TileEntityExplosive extends TileEntity
 
     public void explode()
     {
-        worldObj.createExplosion(triggerEntity, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 8, true);
+        IExplosiveHandler handler = ExplosiveRegistry.get("wowjudo.damage");
+        if (handler != null)
+        {
+            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+            ExplosiveRegistry.triggerExplosive(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, handler, new TriggerCause.TriggerCauseEntity(triggerEntity), BLAST_SIZE, new NBTTagCompound());
+        }
     }
 
     public void trigger(EntityPlayer player)
