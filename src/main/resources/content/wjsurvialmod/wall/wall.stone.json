@@ -12,6 +12,58 @@
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
     },
+    "listeners": [
+      {
+        "id": "adjacentPlacementListener",
+        "metadata": 0,
+        "doBreakCheck": true,
+        "blocks": [
+          {
+            "contentID": "wjsurvialmod:structure.wood.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.wood.floor"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.stone.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.stone.floor"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.iron.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.iron.floor"
+          }
+        ]
+      },
+      {
+        "id": "adjacentPlacementListener",
+        "metadata": 2,
+        "doBreakCheck": true,
+        "blocks": [
+          {
+            "contentID": "wjsurvialmod:structure.wood.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.wood.roof"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.stone.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.stone.roof"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.iron.wall"
+          },
+          {
+            "contentID": "wjsurvialmod:structure.iron.roof"
+          }
+        ]
+      }
+    ],
     "subtypes": [
       {
         "meta": 0

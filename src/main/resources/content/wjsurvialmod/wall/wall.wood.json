@@ -16,6 +16,7 @@
       {
         "id": "adjacentPlacementListener",
         "metadata": 0,
+        "doBreakCheck":true,
         "blocks": [
           {
             "contentID": "wjsurvialmod:structure.wood.wall"
@@ -40,6 +41,7 @@
       {
         "id": "adjacentPlacementListener",
         "metadata": 2,
+        "doBreakCheck":true,
         "blocks": [
           {
             "contentID": "wjsurvialmod:structure.wood.wall"
