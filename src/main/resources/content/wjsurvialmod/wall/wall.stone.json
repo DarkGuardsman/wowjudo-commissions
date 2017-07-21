@@ -17,6 +17,9 @@
         "id": "adjacentPlacementListener",
         "metadata": 0,
         "doBreakCheck": true,
+        "sides": [
+          "down"
+        ],
         "blocks": [
           {
             "contentID": "wjsurvialmod:structure.wood.wall"

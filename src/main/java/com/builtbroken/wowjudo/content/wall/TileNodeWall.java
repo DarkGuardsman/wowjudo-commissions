@@ -82,7 +82,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (struct_cache == null)
         {
-            int meta = getHost().getHostMeta();
+            int meta = world().getBlockMetadata(xi(), yi(), zi());
             if (meta > 0 && meta < StructureType.values().length)
             {
                 struct_cache = StructureType.values()[meta];
