@@ -87,7 +87,10 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             {
                 struct_cache = StructureType.values()[meta];
             }
-            struct_cache = StructureType.WALL;
+            else
+            {
+                struct_cache = StructureType.WALL;
+            }
         }
         return struct_cache;
     }
