@@ -28,10 +28,10 @@
             "contentID": "wjsurvialmod:structure.wood.floor"
           },
           {
-            "contentID": "wjsurvialmod:structure.stone.wall"
+            "contentID": "wjsurvialmod:structure.rock.wall"
           },
           {
-            "contentID": "wjsurvialmod:structure.stone.floor"
+            "contentID": "wjsurvialmod:structure.rock.floor"
           },
           {
             "contentID": "wjsurvialmod:structure.iron.wall"
@@ -42,27 +42,30 @@
         ]
       },
       {
-        "id": "adjacentPlacementListener",
+        "id": "pathFinderPlacementListener",
         "metadata": 2,
         "doBreakCheck": true,
+        "pathRange": 10,
         "blocks": [
           {
             "contentID": "wjsurvialmod:structure.wood.wall"
           },
           {
-            "contentID": "wjsurvialmod:structure.wood.roof"
-          },
-          {
             "contentID": "wjsurvialmod:structure.stone.wall"
           },
           {
-            "contentID": "wjsurvialmod:structure.stone.roof"
-          },
-          {
             "contentID": "wjsurvialmod:structure.iron.wall"
+          }
+        ],
+        "canPath": [
+          {
+            "block": "wjsurvialmod:wjWoodWall"
           },
           {
-            "contentID": "wjsurvialmod:structure.iron.roof"
+            "block": "wjsurvialmod:wjStoneWall"
+          },
+          {
+            "block": "wjsurvialmod:wjIronWall"
           }
         ]
       }
