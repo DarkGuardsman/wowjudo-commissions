@@ -1,7 +1,6 @@
 package com.builtbroken.wowjudo.content.wall;
 
 import com.builtbroken.mc.lib.render.RenderUtility;
-import com.builtbroken.mc.lib.render.block.BlockRenderHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
@@ -16,17 +15,18 @@ import net.minecraft.world.IBlockAccess;
  */
 public class ISBRWall implements ISimpleBlockRenderingHandler
 {
-    public int ID = RenderingRegistry.getNextAvailableRenderId();
+    public int ID;
 
     public ISBRWall()
     {
         ID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(this);
     }
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
     {
-        RenderUtility.renderCube(0, 0, 0, 1, 1, 1, block, null, metadata);
+        RenderUtility.renderCube(0, 0.1, 0, 1.1, 1, 1, block, null, metadata);
     }
 
     @Override
@@ -37,6 +37,7 @@ public class ISBRWall implements ISimpleBlockRenderingHandler
         //Damage
         IIcon icon = Blocks.vine.getIcon(0, 0); //TODO get breaking icon
 
+        renderer.setRenderBounds(-0.01, -0.01, -0.01, 1.01, 1.01, 1.01);
         if (block.shouldSideBeRendered(access, x, y, z, 0))
         {
             renderer.renderFaceYNeg(block, (double) x, (double) y, (double) z, icon);
@@ -74,6 +75,6 @@ public class ISBRWall implements ISimpleBlockRenderingHandler
     @Override
     public int getRenderId()
     {
-        return BlockRenderHandler.ID;
+        return ID;
     }
 }

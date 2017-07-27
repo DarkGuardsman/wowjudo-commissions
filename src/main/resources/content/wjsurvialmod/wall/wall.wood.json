@@ -9,6 +9,7 @@
     "material": "wood",
     "hardness": 5,
     "renderTypeName":"wjsurvialmod:wall",
+    "renderAsNormalBlock":false,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
