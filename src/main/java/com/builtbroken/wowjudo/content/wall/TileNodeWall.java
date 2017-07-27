@@ -12,6 +12,7 @@ import com.builtbroken.mc.lib.helper.MaterialDict;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.ex.HPBlockEdit;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -28,7 +29,6 @@ import net.minecraftforge.common.config.Configuration;
 @TileWrapped(className = "TileEntityWrappedWall")
 public class TileNodeWall extends TileNode implements IExplosiveDamageable
 {
-
     private float hp = -1;
     private WallMaterial mat_cache;
     private StructureType struct_cache;
@@ -99,9 +99,14 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (hp == -1)
         {
-            hp = getMaterial().getHp(getStructureType());
+            hp = getMaxHp();
         }
         return hp;
+    }
+
+    public float getMaxHp()
+    {
+        return getMaterial().getHp(getStructureType());
     }
 
     @Override
@@ -120,6 +125,25 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         super.save(nbt);
         nbt.setFloat("hp", getHp());
         return nbt;
+    }
+
+    @Override
+    public void readDescPacket(ByteBuf buf)
+    {
+        super.readDescPacket(buf);
+        float old = hp;
+        hp = buf.readFloat();
+        if (Math.abs(old - hp) > 0.001)
+        {
+            world().markBlockRangeForRenderUpdate(xi(), yi(), zi(), xi(), yi(), zi());
+        }
+    }
+
+    @Override
+    public void writeDescPacket(ByteBuf buf)
+    {
+        super.writeDescPacket(buf);
+        buf.writeFloat(hp);
     }
 
     @Override
@@ -146,6 +170,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public void reduceHP(float hp)
     {
         this.hp -= hp;
+        sendDescPacket(); //TODO find way to fire only 1 time per tick
     }
 
     public enum WallMaterial
