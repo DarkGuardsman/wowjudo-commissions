@@ -1,10 +1,12 @@
 package com.builtbroken.wowjudo;
 
+import com.builtbroken.mc.client.json.ClientDataHandler;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityRenderCampFire;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.TileEntityRenderCraftingTable;
 import com.builtbroken.wowjudo.content.explosive.tile.ISBRExplosive;
+import com.builtbroken.wowjudo.content.wall.ISBRWall;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -20,5 +22,11 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerBlockHandler(new ISBRExplosive());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfire.class, new TileEntityRenderCampFire());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingTable.class, new TileEntityRenderCraftingTable());
+    }
+
+    @Override
+    public void loadJsonContentHandlers()
+    {
+        ClientDataHandler.INSTANCE.addBlockRenderer(SurvivalMod.DOMAIN + ":wall", new ISBRWall());
     }
 }

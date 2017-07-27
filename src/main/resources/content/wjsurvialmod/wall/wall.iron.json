@@ -8,6 +8,7 @@
     "mod": "wjsurvialmod",
     "material": "metal",
     "hardness": 1000,
+    "renderTypeName":"wjsurvialmod:wall",
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
