@@ -43,5 +43,10 @@
   {
     "key":"wjsurvialmod:rpg.round.fired",
     "effectID":"armory:gunSmoke"
+  },
+  "effect:2":
+  {
+    "key":"wjsurvialmod:ammo.rpg.motion.tick",
+    "effectID":"rocketTrail"
   }
 }
