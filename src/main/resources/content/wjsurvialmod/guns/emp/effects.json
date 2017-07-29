@@ -1,0 +1,23 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "audio:1": {
+    "key": "wjsurvialmod:empgun.empty",
+    "domain": "armory",
+    "name": "gun.empty"
+  },
+  "audio:2": {
+    "key": "wjsurvialmod:empgun.round.fired",
+    "domain": "wjsurvialmod",
+    "name": "handgun"
+  },
+  "effect:1": {
+    "key": "wjsurvialmod:empgun.round.fired.rayTrace",
+    "effectID": "laser",
+    "additionalEffectData": {
+      "color": 4405463,
+      "lifeTime": 20
+    }
+  }
+}

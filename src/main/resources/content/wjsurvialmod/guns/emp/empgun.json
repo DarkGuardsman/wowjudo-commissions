@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "empgun",
+    "id": "wjsurvialmod:ammoType.empgun",
+    "projectileType": "laser"
+  },
+  "ammo": {
+    "name": "empgun",
+    "id": "wjsurvialmod:ammo.empgun",
+    "ammoType": "wjsurvialmod:ammoType.empgun",
+    "damage": {
+      "type": "blast",
+      "blast": {
+        "size": 10,
+        "id": "emp"
+      }
+    }
+  },
+  "clip": {
+    "name": "empgun",
+    "id": "wjsurvialmod:clip.empgun",
+    "reloadType": "clip",
+    "ammoType": "wjsurvialmod:ammoType.empgun",
+    "maxAmmo": 5
+  },
+  "gun": {
+    "name": "empgun",
+    "gunType": "empgun",
+    "ID": "wjsurvialmod:empgun",
+    "ammoType": "wjsurvialmod:ammoType.empgun",
+    "reloadType": "clip",
+    "fallOff": "0.05D",
+    "mass": 630,
+    "rateOfFire": 20,
+    "reloadTime": 5
+  }
+}
