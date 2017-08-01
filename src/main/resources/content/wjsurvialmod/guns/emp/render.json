@@ -9,13 +9,13 @@
       {
         "id": "item.inventory",
         "renderType":"item",
-        "textureID": "wjsurvialmod:handgun"
+        "textureID": "wjsurvialmod:empgun"
       },
       {
         "id": "item.equipped",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "offset": {
           "x": 0.1,
@@ -32,8 +32,8 @@
       {
         "id": "item.equipped.gun.aimed",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "offset": {
           "x": -0.1,
@@ -50,8 +50,8 @@
       {
         "id": "item.equipped.lowered",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "offset": {
           "x": -0.03,
@@ -68,8 +68,8 @@
       {
         "id": "item.first",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "offset": {
           "x": -0.4,
@@ -86,8 +86,8 @@
       {
         "id": "item.first.gun.aimed",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "offset": {
           "x": 0.18,
@@ -104,8 +104,8 @@
       {
         "id": "item.entity",
         "renderType":"model",
-        "modelID": "wjsurvialmod:handgun.model",
-        "textureID": "wjsurvialmod:handgun.model",
+        "modelID": "wjsurvialmod:empgun.model",
+        "textureID": "wjsurvialmod:empgun.model",
         "parts": "all",
         "scale": 1
       }
@@ -118,7 +118,7 @@
       {
         "id": "item.inventory",
         "renderType": "item",
-        "textureID": "wjsurvialmod:handgun.clip"
+        "textureID": "wjsurvialmod:empgun.clip"
       }
     ]
   },
@@ -129,37 +129,37 @@
       {
         "id": "item.inventory",
         "renderType": "item",
-        "textureID": "wjsurvialmod:handgun.bullet"
+        "textureID": "wjsurvialmod:empgun.bullet"
       }
     ]
   },
   "texture": {
-    "key": "wjsurvialmod:handgun",
+    "key": "wjsurvialmod:empgun",
     "domain": "wjsurvialmod",
-    "name": "handgun",
+    "name": "empgun",
     "type": "item"
   },
   "texture:1": {
-    "key": "wjsurvialmod:handgun.clip",
+    "key": "wjsurvialmod:empgun.clip",
     "domain": "wjsurvialmod",
     "name": "handgun.clip",
     "type": "item"
   },
   "texture:2": {
-    "key": "wjsurvialmod:handgun.bullet",
+    "key": "wjsurvialmod:empgun.bullet",
     "domain": "wjsurvialmod",
     "name": "handgun.bullet",
     "type": "item"
   },
   "texture:3": {
-    "key": "wjsurvialmod:handgun.model",
+    "key": "wjsurvialmod:empgun.model",
     "domain": "wjsurvialmod",
-    "name": "pistol",
+    "name": "empgun",
     "type": "model"
   },
    "model:1": {
-    "key": "wjsurvialmod:handgun.model",
+    "key": "wjsurvialmod:empgun.model",
     "domain": "wjsurvialmod",
-    "name": "pistol.obj"
+    "name": "empgun.obj"
   }
 }

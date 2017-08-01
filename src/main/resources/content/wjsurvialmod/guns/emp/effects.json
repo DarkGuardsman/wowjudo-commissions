@@ -16,8 +16,8 @@
     "key": "wjsurvialmod:empgun.round.fired.rayTrace",
     "effectID": "laser",
     "additionalEffectData": {
-      "color": 4405463,
-      "lifeTime": 20
+      "color:int": 4405463,
+      "lifeTime:int": 20
     }
   }
 }

@@ -24,7 +24,7 @@
     "id": "wjsurvialmod:clip.empgun",
     "reloadType": "clip",
     "ammoType": "wjsurvialmod:ammoType.empgun",
-    "maxAmmo": 5
+    "maxAmmo": 1
   },
   "gun": {
     "name": "empgun",

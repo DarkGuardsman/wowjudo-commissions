@@ -1,0 +1,33 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:grenade",
+    "type":"gun",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType":"item",
+        "textureID": "wjsurvialmod:grenade"
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:grenade",
+    "domain": "wjsurvialmod",
+    "name": "grenade",
+    "type": "item"
+  },
+  "texture:1": {
+    "key": "wjsurvialmod:grenade.model",
+    "domain": "wjsurvialmod",
+    "name": "grenade",
+    "type": "model"
+  },
+   "model:1": {
+    "key": "wjsurvialmod:grenade.model",
+    "domain": "wjsurvialmod",
+    "name": "grenade.obj"
+  }
+}

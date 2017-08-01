@@ -1,0 +1,29 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "grenade",
+    "id": "wjsurvialmod:ammoType.grenade",
+    "projectileType": "bullet"
+  },
+  "ammo": {
+    "name": "grenade",
+    "id": "wjsurvialmod:ammo.grenade",
+    "ammoType": "wjsurvialmod:ammoType.grenade",
+    "velocity": 0.6,
+    "damage": {
+      "type": "blast",
+      "blast": {
+        "id": "wowjudo.damage",
+        "size": 2
+      }
+    }
+  },
+  "throwable": {
+    "name": "grenade",
+    "id": "wjsurvialmod:grenade",
+    "ammoType": "wjsurvialmod:ammoType.grenade",
+    "ammo": "wjsurvialmod:ammo.grenade"
+  }
+}
