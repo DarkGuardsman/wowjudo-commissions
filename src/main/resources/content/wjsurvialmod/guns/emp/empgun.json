@@ -19,22 +19,23 @@
       }
     }
   },
-  "clip": {
-    "name": "empgun",
-    "id": "wjsurvialmod:clip.empgun",
-    "reloadType": "clip",
-    "ammoType": "wjsurvialmod:ammoType.empgun",
-    "maxAmmo": 1
-  },
   "gun": {
     "name": "empgun",
     "gunType": "empgun",
     "ID": "wjsurvialmod:empgun",
     "ammoType": "wjsurvialmod:ammoType.empgun",
-    "reloadType": "clip",
+    "overrideAmmo": "wjsurvialmod:ammo.empgun",
+    "reloadType": "ENERGY",
     "fallOff": "0.05D",
     "mass": 630,
     "rateOfFire": 20,
-    "reloadTime": 5
+    "reloadTime": 5,
+    "energyChargeData": {
+      "input": 25,
+      "output": -1
+    },
+    "energyBufferData": {
+      "power": 500
+    }
   }
 }
