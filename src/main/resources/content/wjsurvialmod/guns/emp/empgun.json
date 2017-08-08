@@ -11,6 +11,7 @@
     "name": "empgun",
     "id": "wjsurvialmod:ammo.empgun",
     "ammoType": "wjsurvialmod:ammoType.empgun",
+    "energyCost": 100,
     "damage": {
       "type": "blast",
       "blast": {
