@@ -8,8 +8,8 @@
     "mod": "wjsurvialmod",
     "material": "wood",
     "hardness": 5,
-    "renderTypeName":"wjsurvialmod:wall",
-    "renderAsNormalBlock":false,
+    "renderTypeName": "wjsurvialmod:wall",
+    "renderAsNormalBlock": false,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
@@ -83,6 +83,63 @@
         "meta": 2
       }
     ]
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "_comment": "wall",
+    "output": {
+      "item": "block@wjsurvialmod:wjWoodWall",
+      "meta": 0
+    },
+    "grid": [
+      "WRRW",
+      "WLLW",
+      "WLLW",
+      "WRRW"
+    ],
+    "items": {
+      "W": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "_comment": "floor",
+    "output": {
+      "item": "block@wjsurvialmod:wjWoodWall",
+      "meta": 1
+    },
+    "grid": [
+      "WWWW",
+      "WWWW",
+      "LLLL",
+      "RRRR"
+    ],
+    "items": {
+      "W": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen"
+    }
+  },
+  "craftingGridRecipe:2": {
+    "type": "shaped",
+    "_comment": "roof",
+    "output": {
+      "item": "block@wjsurvialmod:wjWoodWall",
+      "meta": 2
+    },
+    "grid": [
+      "WWWW",
+      "HLLH",
+      "HLLH",
+      "WWWW"
+    ],
+    "items": {
+      "W": "ore@log",
+      "H": "ore@leather",
+      "L": "ore@linen"
+    }
   },
   "render": {
     "contentID": "wjsurvialmod:wjWoodWall",

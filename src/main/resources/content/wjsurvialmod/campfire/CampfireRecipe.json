@@ -1,10 +1,10 @@
 {
   "author": {
-    "name": "${wowjudo}"
+    "name": "wjsurvialmod"
   },
   "craftingGridRecipe": {
     "type": "shaped",
-    "output":"block@wowjudo:wjCampFire",
+    "output":"block@wjsurvialmod:wjCampFire",
     "grid": "SSSS,RRRR",
     "items": {
       "S": "ore@log",

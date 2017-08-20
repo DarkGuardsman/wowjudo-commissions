@@ -26,6 +26,7 @@
       {
         "id": "rock",
         "name": "rock",
+        "ore": "rock",
         "index": 3
       },
       {
@@ -36,6 +37,7 @@
       {
         "id": "linen",
         "name": "linen",
+        "ore": "linen",
         "index": 5
       },
       {

@@ -1,0 +1,112 @@
+{
+  "render": {
+    "contentID": "wjsurvialmod:craftingItem",
+    "type": "item",
+    "states": [
+      {
+        "id": "rod.uranium",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.rod.uranium"
+        }
+      },
+      {
+        "id": "wire.copper",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.wire.copper"
+        }
+      },
+      {
+        "id": "wire.silver",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.wire.silver"
+        }
+      },
+      {
+        "id": "rock",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.rock"
+        }
+      },
+      {
+        "id": "ingot.titanium",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.ingot.titanium"
+        }
+      },
+      {
+        "id": "linen",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.linen"
+        }
+      },
+      {
+        "id": "sapphire.refined",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.sapphire.refined"
+        }
+      },
+      {
+        "id": "ruby.refined",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.ruby.refined"
+        }
+      },
+      {
+        "id": "polymer",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.polymer"
+        }
+      },
+      {
+        "id": "microchip",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.microchip"
+        }
+      },
+      {
+        "id": "module.turret.power",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.module.turret.power"
+        }
+      },
+      {
+        "id": "module.turret.control",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.module.turret.control"
+        }
+      },
+      {
+        "id": "module.turret.aiming",
+        "renderType": "item",
+        "texture": {
+          "domain": "wjsurvialmod",
+          "name": "craftingPart.module.turret.aiming"
+        }
+      }
+    ]
+  }
+}

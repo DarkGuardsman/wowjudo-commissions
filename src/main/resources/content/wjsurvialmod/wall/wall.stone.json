@@ -84,6 +84,63 @@
       }
     ]
   },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "_comment": "wall",
+    "output": {
+      "item": "block@wjsurvialmod:wjStoneWall",
+      "meta": 0
+    },
+    "grid": [
+      "RWLR",
+      "RWLR",
+      "RWLR",
+      "RWLR"
+    ],
+    "items": {
+      "W": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "_comment": "floor",
+    "output": {
+      "item": "block@wjsurvialmod:wjStoneWall",
+      "meta": 1
+    },
+    "grid": [
+      "RRRR",
+      "RRRR",
+      "LLLL",
+      "WWWW"
+    ],
+    "items": {
+      "W": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen"
+    }
+  },
+  "craftingGridRecipe:2": {
+    "type": "shaped",
+    "_comment": "roof",
+    "output": {
+      "item": "block@wjsurvialmod:wjStoneWall",
+      "meta": 2
+    },
+    "grid": [
+      "RRRR",
+      "LLLL",
+      "RRRR",
+      "WWWW"
+    ],
+    "items": {
+      "W": "ore@log",
+      "R": "ore@rock",
+      "L": "ore@linen"
+    }
+  },
   "render": {
     "contentID": "wjsurvialmod:wjStoneWall",
     "type": "block",
