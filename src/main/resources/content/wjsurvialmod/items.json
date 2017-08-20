@@ -12,6 +12,66 @@
         "id": "rod.uranium",
         "name": "rod.uranium",
         "index": 0
+      },
+      {
+        "id": "wire.copper",
+        "name": "wire.copper",
+        "index": 1
+      },
+      {
+        "id": "wire.silver",
+        "name": "wire.silver",
+        "index": 2
+      },
+      {
+        "id": "rock",
+        "name": "rock",
+        "index": 3
+      },
+      {
+        "id": "ingot.titanium",
+        "name": "ingot.titanium",
+        "index": 4
+      },
+      {
+        "id": "linen",
+        "name": "linen",
+        "index": 5
+      },
+      {
+        "id": "sapphire.refined",
+        "name": "sapphire.refined",
+        "index": 6
+      },
+      {
+        "id": "ruby.refined",
+        "name": "ruby.refined",
+        "index": 7
+      },
+      {
+        "id": "polymer",
+        "name": "polymer",
+        "index": 8
+      },
+      {
+        "id": "microchip",
+        "name": "microchip",
+        "index": 9
+      },
+      {
+        "id": "module.turret.power",
+        "name": "module.turret.power",
+        "index": 10
+      },
+      {
+        "id": "module.turret.control",
+        "name": "module.turret.control",
+        "index": 11
+      },
+      {
+        "id": "module.turret.aiming",
+        "name": "module.turret.aiming",
+        "index": 12
       }
     ]
   }
