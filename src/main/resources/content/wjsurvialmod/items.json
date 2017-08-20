@@ -1,0 +1,18 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "item": {
+    "id": "craftingItem",
+    "mod": "wjsurvialmod",
+    "name": "craftingItem",
+    "hasSubTypes": true,
+    "subTypes": [
+      {
+        "id": "rod.uranium",
+        "name": "rod.uranium",
+        "index": 0
+      }
+    ]
+  }
+}
