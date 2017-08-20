@@ -7,7 +7,7 @@ import com.builtbroken.mc.core.network.packet.PacketTile;
 import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
-import com.builtbroken.mc.prefab.items.ItemStackWrapper;
+import com.builtbroken.mc.lib.data.item.ItemStackWrapper;
 import com.builtbroken.mc.prefab.tile.entity.TileEntityInv;
 import com.builtbroken.wowjudo.content.campfire.gui.ContainerCampFire;
 import com.builtbroken.wowjudo.content.campfire.gui.GuiCampFire;
@@ -149,7 +149,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
             }
 
             //Update client to sync render state
-            Engine.instance.packetHandler.sendToAllAround(getDescPacket(), this);
+            Engine.packetHandler.sendToAllAround(getDescPacket(), this);
         }
     }
 
@@ -197,7 +197,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     @Override
     public Packet getDescriptionPacket()
     {
-        return Engine.instance.packetHandler.toMCPacket(getDescPacket());
+        return Engine.packetHandler.toMCPacket(getDescPacket());
     }
 
     public PacketTile getDescPacket()

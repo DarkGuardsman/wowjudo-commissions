@@ -5,7 +5,6 @@ import com.builtbroken.mc.api.explosive.IBlastEdit;
 import com.builtbroken.mc.api.explosive.IExplosiveDamageable;
 import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
-import com.builtbroken.mc.framework.block.BlockBase;
 import com.builtbroken.mc.framework.logic.TileNode;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.helper.MaterialDict;
@@ -57,11 +56,6 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             Block block = getHost().getHostBlock();
             Material material = block.getMaterial();
 
-            if (material != ((BlockBase) block).data.getMaterial())
-            {
-                System.out.println("Error mats do not match");
-            }
-
             for (WallMaterial mat : WallMaterial.values())
             {
                 if (mat.getMaterial() == material)
@@ -82,7 +76,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     {
         if (struct_cache == null)
         {
-            int meta = world().getBlockMetadata(xi(), yi(), zi());
+            int meta = world().unwrap().getBlockMetadata(xi(), yi(), zi());
             if (meta > 0 && meta < StructureType.values().length)
             {
                 struct_cache = StructureType.values()[meta];
@@ -135,7 +129,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         hp = buf.readFloat();
         if (Math.abs(old - hp) > 0.001)
         {
-            world().markBlockRangeForRenderUpdate(xi(), yi(), zi(), xi(), yi(), zi());
+            world().unwrap().markBlockRangeForRenderUpdate(xi(), yi(), zi(), xi(), yi(), zi());
         }
     }
 
@@ -160,11 +154,11 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         {
             if (lostHP > 0)
             {
-                return new HPBlockEdit(world(), xi(), yi(), zi(), lostHP);
+                return new HPBlockEdit(world().unwrap(), xi(), yi(), zi(), lostHP);
             }
             return null;
         }
-        return new BlockEdit(world(), xi(), yi(), zi()).set(Blocks.air, 0);
+        return new BlockEdit(world().unwrap(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 
     public void reduceHP(float hp)

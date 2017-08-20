@@ -23,7 +23,7 @@ public class ItemBlockCraftingTable extends ItemBlock
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
     {
-        metadata = BlockUtility.determineRotation(player);
+        metadata = BlockUtility.determineRotation(player.rotationYaw);
 
         ForgeDirection direction = ForgeDirection.UNKNOWN;
         switch (metadata)

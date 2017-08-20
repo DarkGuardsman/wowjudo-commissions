@@ -10,7 +10,7 @@ package com.builtbroken.wowjudo.content.wall;
 
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import com.builtbroken.mc.api.tile.node.ITileNode;
-import com.builtbroken.mc.framework.logic.wrapper.TileEntityWrapper;
+import com.builtbroken.mc.seven.framework.logic.TileEntityWrapper;
 
 public class TileEntityWrappedWall extends TileEntityWrapper
 {

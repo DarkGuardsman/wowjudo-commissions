@@ -23,7 +23,7 @@ public class BlastDamage extends BlastSimplePath<BlastDamage>
     @Override
     public IWorldEdit changeBlock(BlockPos location)
     {
-        return new BlockEdit(world(), xi(), yi(), zi()).set(Blocks.air, 0);
+        return new BlockEdit(oldWorld(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 
     public float getEnergy(BlockPos location, double distance)

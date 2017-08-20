@@ -4,17 +4,13 @@ import com.builtbroken.mc.api.tile.IPlayerUsing;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.api.tile.provider.ITankProvider;
-import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
-import com.builtbroken.mc.codegen.annotations.MultiBlockWrapped;
-import com.builtbroken.mc.codegen.annotations.TankProviderWrapped;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
-import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.packet.PacketType;
-import com.builtbroken.mc.lib.energy.UniversalEnergySystem;
+import com.builtbroken.mc.framework.energy.UniversalEnergySystem;
 import com.builtbroken.mc.lib.world.map.TileMapRegistry;
-import com.builtbroken.mc.lib.world.radar.RadarMap;
-import com.builtbroken.mc.lib.world.radar.data.RadarObject;
-import com.builtbroken.mc.lib.world.radar.data.RadarTile;
+import com.builtbroken.mc.lib.world.map.radar.RadarMap;
+import com.builtbroken.mc.lib.world.map.radar.data.RadarObject;
+import com.builtbroken.mc.lib.world.map.radar.data.RadarTile;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
@@ -40,10 +36,7 @@ import java.util.List;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 5/4/2017.
  */
-@TileWrapped(className = "TileWrapperPowerGenerator")
-@ExternalInventoryWrapped()
-@TankProviderWrapped()
-@MultiBlockWrapped()
+@TileWrapped(className = "TileWrapperPowerGenerator", wrappers = "ExternalInventory;TankProvider;MultiBlock")
 public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile, IPlayerUsing
 {
     //Supported tiles to power
@@ -233,13 +226,13 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 //Power devices nearby
                 if (isPowered)
                 {
-                    if (tick % 90 == 0 && Engine.instance != null && Engine.proxy != null && Engine.instance.packetHandler != null)
+                    if (tick % 90 == 0)
                     {
                         //TODO translate to center of machine
-                        Engine.proxy.playJsonAudio(world(), "wjsurvialmod:wjPowerGenerator.tick", x(), y() + 1f, z(), 1, 1);
+                        world().playAudio("wjsurvialmod:wjPowerGenerator.tick", x(), y() + 1f, z(), 1, 1);
                     }
 
-                    RadarMap map = TileMapRegistry.getRadarMapForWorld(world());
+                    RadarMap map = TileMapRegistry.getRadarMapForWorld(world().unwrap());
                     List<RadarObject> objects = map.getRadarObjects(xi() + 0.5, zi() + 0.5, powerProviderRange + 3); //TODO center correctly
                     for (RadarObject object : objects)
                     {
@@ -303,7 +296,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     {
         if (dirCache == null)
         {
-            dirCache = ForgeDirection.getOrientation(world().getBlockMetadata(xi(), yi(), zi()));
+            dirCache = ForgeDirection.getOrientation(world().unwrap().getBlockMetadata(xi(), yi(), zi()));
         }
         return dirCache;
     }

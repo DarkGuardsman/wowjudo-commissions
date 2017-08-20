@@ -1,10 +1,12 @@
 package com.builtbroken.wowjudo.content.crafting;
 
 import com.builtbroken.jlib.data.vector.IPos3D;
+import com.builtbroken.mc.api.abstraction.world.IWorld;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.client.IIconCallBack;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.handler.TileTaskTickHandler;
 import com.builtbroken.mc.imp.transform.vector.Pos;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
@@ -160,5 +162,11 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     public IIcon getIconForSide(IBlockAccess world, int x, int y, int z, int side)
     {
         return SurvivalMod.blockCraftingTable.getIcon(side, world.getBlockMetadata(x, y, z));
+    }
+
+    @Override
+    public IWorld world()
+    {
+        return Engine.minecraft.getWorld(worldObj.provider.dimensionId);
     }
 }

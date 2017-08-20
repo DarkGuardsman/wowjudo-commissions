@@ -1,22 +1,19 @@
 //=======================================================
 //DISCLAIMER: THIS IS A GENERATED CLASS FILE
 //THUS IS PROVIDED 'AS-IS' WITH NO WARRANTY
-//FUNCTIONALITY CAN NOT BE GUARANTIED IN ANY WAY 
-//USE AT YOUR OWN RISK 
+//FUNCTIONALITY CAN NOT BE GUARANTIED IN ANY WAY
+//USE AT YOUR OWN RISK
 //-------------------------------------------------------
 //Built on: Rober
 //=======================================================
 package com.builtbroken.wowjudo.content.generator;
 
-import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.jlib.data.vector.IPos3D;
-import com.builtbroken.mc.api.tile.listeners.IBlockListener;
-import com.builtbroken.mc.api.tile.listeners.ITileEventListener;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
-import com.builtbroken.mc.api.tile.node.ITileNode;
-import com.builtbroken.mc.framework.block.BlockBase;
-import com.builtbroken.mc.framework.logic.wrapper.TileEntityWrapper;
+import com.builtbroken.mc.framework.block.imp.IBlockListener;
+import com.builtbroken.mc.framework.block.imp.ITileEventListener;
+import com.builtbroken.mc.seven.framework.logic.TileEntityWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +21,6 @@ import com.builtbroken.mc.api.tile.provider.ITankProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import com.builtbroken.mc.api.tile.provider.IInventoryProvider;
-import com.builtbroken.mc.codegen.annotations.ExternalInventoryWrapped;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -41,14 +37,6 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
 	//============================
 
 
-    private List[] _getMultiTileListeners()
-    {
-        if (!(getBlockType() instanceof BlockBase))
-        {
-            return new List[]{getListeners("multiblock")};
-        }
-        return new List[]{getListeners("multiblock"), ((BlockBase) getBlockType()).listeners.get("multiblock")};
-    }
 
     @Override
     public void onMultiTileAdded(IMultiTile tileMulti)
@@ -57,7 +45,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
         {
             ((IMultiTileHost) getTileNode()).onMultiTileAdded(tileMulti);
         }
-        for (List<ITileEventListener> list : _getMultiTileListeners())
+        for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
         {
             if (list != null && !list.isEmpty())
             {
@@ -67,7 +55,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                     {
                         if (listener instanceof IBlockListener)
                         {
-                            ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                            ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                         }
                         if (listener.isValidForTile())
                         {
@@ -88,7 +76,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
             {
                 return ((IMultiTileHost) getTileNode()).onMultiTileBroken(tileMulti, source, harvest);
             }
-            for (List<ITileEventListener> list : _getMultiTileListeners())
+            for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
             {
                 if (list != null && !list.isEmpty())
                 {
@@ -99,7 +87,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                         {
                             if (listener instanceof IBlockListener)
                             {
-                                ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                                ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                             }
                             if (listener.isValidForTile())
                             {
@@ -126,7 +114,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
             {
                 ((IMultiTileHost) getTileNode()).onTileInvalidate(tileMulti);
             }
-            for (List<ITileEventListener> list : _getMultiTileListeners())
+            for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
             {
                 if (list != null && !list.isEmpty())
                 {
@@ -136,7 +124,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                         {
                             if (listener instanceof IBlockListener)
                             {
-                                ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                                ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                             }
                             if (listener.isValidForTile())
                             {
@@ -157,7 +145,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
         {
             b = ((IMultiTileHost) getTileNode()).onMultiTileActivated(tile, player, side, xHit, yHit, zHit);
         }
-        for (List<ITileEventListener> list : _getMultiTileListeners())
+        for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
         {
             if (list != null && !list.isEmpty())
             {
@@ -167,7 +155,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                     {
                         if (listener instanceof IBlockListener)
                         {
-                            ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                            ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                         }
                         if (listener.isValidForTile())
                         {
@@ -190,7 +178,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
         {
             ((IMultiTileHost) getTileNode()).onMultiTileClicked(tile, player);
         }
-        for (List<ITileEventListener> list : _getMultiTileListeners())
+        for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
         {
             if (list != null && !list.isEmpty())
             {
@@ -200,7 +188,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                     {
                         if (listener instanceof IBlockListener)
                         {
-                            ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                            ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                         }
                         if (listener.isValidForTile())
                         {
@@ -223,7 +211,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                 return map;
             }
         }
-        for (List<ITileEventListener> list : _getMultiTileListeners())
+        for (List<ITileEventListener> list : getMultiTileListeners("multiblock"))
         {
             if (list != null && !list.isEmpty())
             {
@@ -233,7 +221,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
                     {
                         if (listener instanceof IBlockListener)
                         {
-                            ((IBlockListener) listener).inject(world(), xi(), yi(), zi());
+                            ((IBlockListener) listener).inject(worldObj, xi(), yi(), zi());
                         }
                         if (listener.isValidForTile())
                         {
@@ -249,7 +237,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
         }
         return null;
     }
-    
+
 	//============================
 	//==Methods:TankProviderWrapped
 	//============================
@@ -328,7 +316,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
     {
         return new FluidTankInfo[0];
     }
-    
+
 	//============================
 	//==Methods:ExternalInventoryWrapped
 	//============================
@@ -490,5 +478,5 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IMul
         }
         return false;
     }
-    
+
 }

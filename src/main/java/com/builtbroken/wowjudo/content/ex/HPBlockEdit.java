@@ -83,7 +83,7 @@ public class HPBlockEdit implements IBlastEdit
     }
 
     @Override
-    public World world()
+    public World oldWorld()
     {
         return world;
     }
