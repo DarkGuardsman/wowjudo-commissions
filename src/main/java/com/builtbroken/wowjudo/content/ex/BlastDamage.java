@@ -26,6 +26,7 @@ public class BlastDamage extends BlastSimplePath<BlastDamage>
         return new BlockEdit(oldWorld(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 
+    @Override
     public float getEnergy(BlockPos location, double distance)
     {
         double start = size * energyPerMeter;

@@ -125,9 +125,9 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public void readDescPacket(ByteBuf buf)
     {
         super.readDescPacket(buf);
-        float old = hp;
+        float old = getHp();
         hp = buf.readFloat();
-        if (Math.abs(old - hp) > 0.001)
+        if (Math.abs(old - getHp()) > 0.001)
         {
             world().unwrap().markBlockRangeForRenderUpdate(xi(), yi(), zi(), xi(), yi(), zi());
         }
@@ -137,7 +137,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public void writeDescPacket(ByteBuf buf)
     {
         super.writeDescPacket(buf);
-        buf.writeFloat(hp);
+        buf.writeFloat(getHp());
     }
 
     @Override
