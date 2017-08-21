@@ -1,0 +1,38 @@
+{
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "armory:armoryAmmo",
+      "meta": "wjsurvialmod:ammo.rpg"
+    },
+    "grid": [
+      " SS ",
+      "IGGI",
+      "IGGI",
+      "IGGI"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "S": "ore@sapphireRefined",
+      "G": "ore@gunpowder"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "output": {
+      "item": "armory:armoryGun",
+      "meta": "wjsurvialmod:rpg"
+    },
+    "grid": [
+      " IT ",
+      "RT T",
+      "T TI",
+      " TI "
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "T": "ore@ingotTitanium",
+      "R": "ore@rubyRefined"
+    }
+  }
+}

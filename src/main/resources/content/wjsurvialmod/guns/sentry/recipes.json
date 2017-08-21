@@ -1,0 +1,22 @@
+{
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "armory:armorySentry",
+      "meta": "wjsurvialmod:sentry"
+    },
+    "grid": [
+      "IIII",
+      "IACI",
+      "IPPI",
+      "TTTT"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "A": "ore@moduleTurretAiming",
+      "C": "ore@moduleTurretControl",
+      "P": "ore@moduleTurretPower",
+      "T": "ore@ingotTitanium"
+    }
+  }
+}

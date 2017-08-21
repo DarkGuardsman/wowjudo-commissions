@@ -1,0 +1,20 @@
+{
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "armory:armoryAmmo",
+      "meta": "wjsurvialmod:ammo.grenade"
+    },
+    "grid": [
+      "LIIL",
+      "IGGI",
+      "IGGI",
+      "LIIL"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "L": "ore@leather",
+      "G": "ore@gunpowder"
+    }
+  }
+}

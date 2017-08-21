@@ -1,0 +1,147 @@
+{
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "module.turret.aiming"
+    },
+    "grid": [
+      "SSSS",
+      "IRRI",
+      "IRRI",
+      "SSSS"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "S": "ore@ingotSilver",
+      "R": "ore@rubyRefined"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "module.turret.power"
+    },
+    "grid": [
+      "SSSS",
+      "SMMS",
+      "WWWW",
+      "CCCC"
+    ],
+    "items": {
+      "S": "ore@sapphireRefined",
+      "M": "ore@microchip",
+      "W": "ore@wireSilver",
+      "C": "ore@wireCopper"
+    }
+  },
+  "craftingGridRecipe:2": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "module.turret.control"
+    },
+    "grid": [
+      "STTS",
+      "STTS",
+      "RRRR",
+      "SWWS"
+    ],
+    "items": {
+      "S": "ore@sapphireRefined",
+      "T": "ore@ingotTitanium",
+      "W": "ore@wireSilver",
+      "R": "ore@rubyRefined"
+    }
+  },
+  "craftingGridRecipe:3": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "microchip"
+    },
+    "grid": [
+      "SPPS",
+      "SPPS",
+      "SPPS",
+      "SPPS"
+    ],
+    "items": {
+      "S": "ore@wireSilver",
+      "P": "ore@polymer"
+    }
+  },
+  "craftingGridRecipe:4": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "wire.copper"
+    },
+    "grid": [
+      "CCCC",
+      "CCCC"
+    ],
+    "items": {
+      "C": "ore@ingotCopper"
+    }
+  },
+  "craftingGridRecipe:5": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "wire.silver"
+    },
+    "grid": [
+      "CCCC",
+      "CCCC"
+    ],
+    "items": {
+      "C": "ore@ingotSilver"
+    }
+  },
+  "craftingGridRecipe:6": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "rod.uranium"
+    },
+    "grid": [
+      "CC",
+      "CC",
+      "CC",
+      "CC"
+    ],
+    "items": {
+      "C": "ore@oreUranium"
+    }
+  },
+  "craftingGridRecipe:7": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "ruby.refined"
+    },
+    "grid": [
+      "RRRR",
+      "RRRR"
+    ],
+    "items": {
+      "R": "ore@ruby"
+    }
+  },
+  "craftingGridRecipe:8": {
+    "type": "shaped",
+    "output": {
+      "item": "item@wjsurvialmod:craftingItem",
+      "meta": "sapphire.refined"
+    },
+    "grid": [
+      "RRRR",
+      "RRRR"
+    ],
+    "items": {
+      "R": "ore@sapphire"
+    }
+  }
+}

@@ -84,6 +84,63 @@
       }
     ]
   },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "_comment": "wall",
+    "output": {
+      "item": "block@wjsurvialmod:wjIronWall",
+      "meta": 0
+    },
+    "grid": [
+      "ISSI",
+      "ITTI",
+      "ITTI",
+      "ISSI"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "S": "ore@ingotSilver",
+      "T": "ore@ingotTitanium"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "_comment": "floor",
+    "output": {
+      "item": "block@wjsurvialmod:wjIronWall",
+      "meta": 1
+    },
+    "grid": [
+      "IIII",
+      "IIII",
+      "STTS",
+      "STTS"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "S": "ore@ingotSilver",
+      "T": "ore@ingotTitanium"
+    }
+  },
+  "craftingGridRecipe:2": {
+    "type": "shaped",
+    "_comment": "roof",
+    "output": {
+      "item": "block@wjsurvialmod:wjIronWall",
+      "meta": 2
+    },
+    "grid": [
+      "IIII",
+      "STST",
+      "TSTS",
+      "IIII"
+    ],
+    "items": {
+      "I": "ore@ingotIron",
+      "S": "ore@ingotSilver",
+      "T": "ore@ingotTitanium"
+    }
+  },
   "render": {
     "contentID": "wjsurvialmod:wjIronWall",
     "type": "block",

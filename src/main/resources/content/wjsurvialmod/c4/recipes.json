@@ -1,0 +1,34 @@
+{
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": "block@wjsurvialmod:wjExplosive",
+    "grid": [
+      "PMWP",
+      "PGGP",
+      "PGGP",
+      "PPPP"
+    ],
+    "items": {
+      "M": "ore@microchip",
+      "W": "ore@wireSilver",
+      "P": "ore@polymer",
+      "G": "ore@gunpowder"
+    }
+  },
+  "craftingGridRecipe:1": {
+    "type": "shaped",
+    "output": "item@wjsurvialmod:wjExplosiveRemote",
+    "grid": [
+      "PPWP",
+      "PBWP",
+      "PMWP",
+      "PPPP"
+    ],
+    "items": {
+      "M": "ore@microchip",
+      "W": "ore@wireSilver",
+      "P": "ore@polymer",
+      "B": "block@minecraft:stone_button"
+    }
+  }
+}

@@ -11,16 +11,19 @@
       {
         "id": "rod.uranium",
         "name": "rod.uranium",
+        "ore": "rodUranium",
         "index": 0
       },
       {
         "id": "wire.copper",
         "name": "wire.copper",
+        "ore": "wireCopper",
         "index": 1
       },
       {
         "id": "wire.silver",
         "name": "wire.silver",
+        "ore": "wireSilver",
         "index": 2
       },
       {
@@ -32,6 +35,7 @@
       {
         "id": "ingot.titanium",
         "name": "ingot.titanium",
+        "ore": "ingotTitanium",
         "index": 4
       },
       {
@@ -43,36 +47,43 @@
       {
         "id": "sapphire.refined",
         "name": "sapphire.refined",
+        "ore": "sapphireRefined",
         "index": 6
       },
       {
         "id": "ruby.refined",
         "name": "ruby.refined",
+        "ore": "rubyRefined",
         "index": 7
       },
       {
         "id": "polymer",
         "name": "polymer",
+        "ore": "polymer",
         "index": 8
       },
       {
         "id": "microchip",
         "name": "microchip",
+        "ore": "microchip",
         "index": 9
       },
       {
         "id": "module.turret.power",
         "name": "module.turret.power",
+        "ore": "moduleTurretPower",
         "index": 10
       },
       {
         "id": "module.turret.control",
         "name": "module.turret.control",
+        "ore": "moduleTurretControl",
         "index": 11
       },
       {
         "id": "module.turret.aiming",
         "name": "module.turret.aiming",
+        "ore": "moduleTurretAiming",
         "index": 12
       }
     ]
