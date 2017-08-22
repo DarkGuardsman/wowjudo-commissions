@@ -1,6 +1,7 @@
 package com.builtbroken.wowjudo.content.generator.gui;
 
 import com.builtbroken.mc.prefab.gui.ContainerBase;
+import com.builtbroken.mc.prefab.gui.slot.SlotEnergyItem;
 import com.builtbroken.mc.prefab.gui.slot.SlotOutput;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +17,17 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
     public ContainerPowerGen(EntityPlayer player, TilePowerGenerator generator)
     {
         super(player, generator);
+        //Bucket slots
         this.addSlotToContainer(new SlotFuelBucket(generator.getInventory(), TilePowerGenerator.BUCKET_INPUT_SLOT, 16, 17));
         this.addSlotToContainer(new SlotOutput(generator.getInventory(), TilePowerGenerator.BUCKET_OUTPUT_SLOT, 16, 53));
+
+        //Charging slots
+        for (int slot = TilePowerGenerator.CHARGE_SLOT_START; slot <= TilePowerGenerator.CHARGE_SLOT_END; slot++)
+        {
+            this.addSlotToContainer(new SlotEnergyItem(generator.getInventory(), slot, 50, 17 + (slot - TilePowerGenerator.CHARGE_SLOT_START) * 18));
+        }
+
+        //Inventory
         addPlayerInventory(player);
     }
 
@@ -27,7 +37,7 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
         final int playerInventoryEnd = 38;
         final int playerHotBarStart = playerInventoryEnd - 9;
         ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+        Slot slot = (Slot) this.inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack())
         {
@@ -71,7 +81,7 @@ public class ContainerPowerGen extends ContainerBase<TilePowerGenerator>
 
             if (itemstack1.stackSize == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack((ItemStack) null);
             }
             else
             {

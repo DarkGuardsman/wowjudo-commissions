@@ -124,11 +124,12 @@ public class GuiPowerGen extends GuiContainerBase
         int renderHeight = (int) Math.ceil(50 * volume_render);
         this.drawTexturedModalRect(x + 1, y + (50 - renderHeight), 95 + 20, 167, 94, renderHeight);
 
-        //Gauge
+        //Render fluid tank
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(x + 1, y, 95, 167, 20, 50);
 
         //---------------------------------------------------------
+        //Render slots
         for (Object object : inventorySlots.inventorySlots)
         {
             if (object instanceof Slot)
@@ -136,14 +137,17 @@ public class GuiPowerGen extends GuiContainerBase
                 drawSlot((Slot) object);
             }
         }
-
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+
+        //GUI name
         drawStringCentered(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.name"), 88, 4);
+
+        //Inventory name
         drawString(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "powerGen.gui.inventory.name"), 8, 74);
 
         int x = guiLeft + 70;
@@ -151,6 +155,7 @@ public class GuiPowerGen extends GuiContainerBase
         int w = 94;
         int h = 50;
 
+        //Tooltip for fluid tank
         if (new Rectangle(x, y, x + w, y + h).isWithin(new Point(mouseX, mouseY)))
         {
             FluidStack fluid = generator.tank.getFluid();

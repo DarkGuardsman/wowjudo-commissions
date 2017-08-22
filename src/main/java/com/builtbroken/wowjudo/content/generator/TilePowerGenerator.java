@@ -45,6 +45,8 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     //Slots
     public static final int BUCKET_INPUT_SLOT = 0;
     public static final int BUCKET_OUTPUT_SLOT = 1;
+    public static final int CHARGE_SLOT_START = 2;
+    public static final int CHARGE_SLOT_END = 4;
 
     //Fuel Settings
     public static int fuelConsumedPerRun = 1;
@@ -88,7 +90,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     @Override
     protected ExternalInventory createInventory()
     {
-        return new ExternalInventory(this, 2);
+        return new ExternalInventory(this, 5); // 2 slots for buckets, 3 slots for charging
     }
 
     @Override
@@ -247,6 +249,19 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                                     UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
                                 }
                             }
+                        }
+                    }
+
+                    //Loop to charge all items
+                    for(int slot = CHARGE_SLOT_START; slot <= CHARGE_SLOT_END; slot++)
+                    {
+                        //Get item
+                        ItemStack stack = getInventory().getStackInSlot(slot);
+
+                        //Only work on items that can handle energy
+                        if(stack != null && UniversalEnergySystem.isHandler(stack, ForgeDirection.UNKNOWN))
+                        {
+                            UniversalEnergySystem.chargeItem(stack, Integer.MAX_VALUE, true);
                         }
                     }
                 }
