@@ -1,0 +1,31 @@
+{
+  "render": {
+    "contentID": "wjsurvialmod:ammo.grenade",
+    "type": "gun",
+    "states": [
+      {
+        "id": "projectile",
+        "renderType": "model",
+        "textureID": "wjsurvialmod:grenadeTexture",
+        "modelID": "wjsurvialmod:grenadeRoundModel",
+        "parts": "all",
+        "scale": 0.5,
+        "rotationOrder": [
+          "yaw",
+          "-pitch"
+        ]
+      }
+    ]
+  },
+  "texture": {
+    "key": "wjsurvialmod:grenadeTexture",
+    "domain": "wjsurvialmod",
+    "name": "grenade",
+    "type": "model"
+  },
+  "model": {
+    "key": "wjsurvialmod:grenadeRoundModel",
+    "domain": "wjsurvialmod",
+    "name": "grenade.obj"
+  }
+}
