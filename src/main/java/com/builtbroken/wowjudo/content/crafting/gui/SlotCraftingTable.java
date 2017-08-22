@@ -20,14 +20,14 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class SlotCraftingTable extends Slot
 {
     /** The craft matrix inventory linked to this result slot. */
-    private final InventoryCraftingMatrix craftMatrix;
+    private final InventoryCraftingMatrix4x4 craftMatrix;
     private final TileEntityCraftingTable craftingTable;
     /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
     /** The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset. */
     private int amountCrafted;
 
-    public SlotCraftingTable(EntityPlayer player, TileEntityCraftingTable craftingTable, InventoryCraftingMatrix matrix, IInventory result, int id, int x, int y)
+    public SlotCraftingTable(EntityPlayer player, TileEntityCraftingTable craftingTable, InventoryCraftingMatrix4x4 matrix, IInventory result, int id, int x, int y)
     {
         super(result, id, x, y);
         this.thePlayer = player;

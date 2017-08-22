@@ -17,7 +17,11 @@ public class ContainerCraftingTable extends ContainerBase
 {
     TileEntityCraftingTable craftingTable;
 
-    public InventoryCraftingMatrix craftMatrix;
+    public InventoryCraftingMatrix4x4 craftMatrix4x4;
+
+    /** Work around for supporting smaller recipes */
+    public InventoryCraftingMatrix3x3[] craftingMatrix3x3;
+
     public IInventory craftResult = new InventoryCraftResult();
 
     public ContainerCraftingTable(EntityPlayer player, TileEntityCraftingTable table)
@@ -26,17 +30,58 @@ public class ContainerCraftingTable extends ContainerBase
         this.craftingTable = table;
 
         //Crafting grid
-        craftMatrix = new InventoryCraftingMatrix(this, table);
+        craftMatrix4x4 = new InventoryCraftingMatrix4x4(this, table);
+        //Crafting grid slots
+        // 0  1  2  3
+        // 4  5  6  7
+        // 8  9 10 11
+        //12 13 14 15
+
+        //Great the 4x4 up into 4 3x3 grids to map slots correctly
+        craftingMatrix3x3 = new InventoryCraftingMatrix3x3[4]; //TODO automate process to allow for larger grids in the future
+        craftingMatrix3x3[0] = new InventoryCraftingMatrix3x3(this, table,
+                new int[]
+                        {
+                                0, 1, 2,
+                                4, 5, 6,
+                                8, 9, 10
+                        }
+        );
+        craftingMatrix3x3[1] = new InventoryCraftingMatrix3x3(this, table,
+                new int[]
+                        {
+                                1, 2, 3,
+                                5, 6, 7,
+                                9, 10, 11
+                        }
+        );
+        craftingMatrix3x3[2] = new InventoryCraftingMatrix3x3(this, table,
+                new int[]
+                        {
+                                4, 5, 6,
+                                8, 9, 10,
+                                12, 13, 14
+                        }
+        );
+        craftingMatrix3x3[3] = new InventoryCraftingMatrix3x3(this, table,
+                new int[]
+                        {
+                                5, 6, 7,
+                                9, 10, 11,
+                                13, 14, 15
+                        }
+        );
+
         for (int row = 0; row < 4; ++row)
         {
             for (int col = 0; col < 4; ++col)
             {
-                this.addSlotToContainer(new Slot(this.craftMatrix, col + row * 4, 20 + col * 18, 13 + row * 18));
+                this.addSlotToContainer(new Slot(this.craftMatrix4x4, col + row * 4, 20 + col * 18, 13 + row * 18));
             }
         }
 
         //Output slot
-        this.addSlotToContainer(new SlotCraftingTable(player, table, this.craftMatrix, this.craftResult, 0, 124, 39));
+        this.addSlotToContainer(new SlotCraftingTable(player, table, this.craftMatrix4x4, this.craftResult, 0, 124, 39));
 
         //Secondary inventory
         for (int row = 0; row < 2; ++row)
@@ -51,13 +96,66 @@ public class ContainerCraftingTable extends ContainerBase
         addPlayerInventory(player, 8, 135);
 
         //Init crafting grid
-        this.onCraftMatrixChanged(this.craftMatrix);
+        this.onCraftMatrixChanged(this.craftMatrix4x4);
     }
 
     @Override
-    public void onCraftMatrixChanged(IInventory inventory)
+    public void onCraftMatrixChanged(IInventory _notUsed)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, craftingTable.getWorldObj()));
+        this.craftResult.setInventorySlotContents(0, null);
+        //If our recipe is a 3x3 we need to fake the results
+        if (!is4x4Recipe())
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                ItemStack result = CraftingManager.getInstance().findMatchingRecipe(this.craftingMatrix3x3[i], craftingTable.getWorldObj());
+                if (result != null && result.getItem() != null)
+                {
+                    this.craftResult.setInventorySlotContents(0, result);
+                }
+            }
+        }
+        else
+        {
+            this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix4x4, craftingTable.getWorldObj()));
+        }
+    }
+
+    protected boolean is4x4Recipe()
+    {
+        int width = 0;
+        int height = 0;
+        int items = 0;
+
+        for (int row = 0; row < 4; ++row)
+        {
+            int cWidth = 0;
+            boolean hasItem = false;
+            for (int col = 0; col < 4; ++col)
+            {
+                int slot = col + row * 4;
+
+                //Count up items
+                ItemStack stack = craftingTable.getInventory().getStackInSlot(slot);
+                if (stack != null)
+                {
+                    items++;
+                    cWidth++;
+                    hasItem = true;
+                }
+            }
+
+            if (cWidth > width)
+            {
+                width = cWidth;
+            }
+            if (hasItem)
+            {
+                height++;
+            }
+        }
+
+        return items > 9 || width == 4 || height == 4;
     }
 
     @Override
