@@ -18,7 +18,6 @@ import com.builtbroken.wowjudo.content.explosive.tile.ItemBlockExplosive;
 import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
-import com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -48,7 +47,7 @@ import org.apache.logging.log4j.Logger;
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 3/7/2017.
  */
-@cpw.mods.fml.common.Mod(modid = SurvivalMod.DOMAIN, name = "Wowjudo's Survival Mod", version = SurvivalMod.VERSION)
+@Mod(modid = SurvivalMod.DOMAIN, name = "Wowjudo's Survival Mod", version = SurvivalMod.VERSION, dependencies = SurvivalMod.DEPENDENCIES)
 public class SurvivalMod extends AbstractMod
 {
     public static final boolean runningAsDev = System.getProperty("development") != null && System.getProperty("development").equalsIgnoreCase("true");
@@ -58,6 +57,7 @@ public class SurvivalMod extends AbstractMod
     public static final String REVISION_VERSION = "@REVIS@";
     public static final String BUILD_VERSION = "@BUILD@";
     public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD_VERSION;
+    public static final String DEPENDENCIES = "required-after:voltzengine;";
 
     public static final String DOMAIN = "wjsurvialmod";
     public static final String PREFX = DOMAIN + ":";
@@ -212,7 +212,7 @@ public class SurvivalMod extends AbstractMod
     public void blastEvent(BlastEventDestroyBlock.Pre eventBlockEdit)
     {
         TileEntity tile = eventBlockEdit.world.getTileEntity(eventBlockEdit.x, eventBlockEdit.y, eventBlockEdit.z);
-        if (!(tile instanceof TileEntityWrappedWall))
+        if (!(tile.getClass().getName().contains("TileEntityWrappedWall")))
         {
             eventBlockEdit.setCanceled(true);
         }
