@@ -4,13 +4,14 @@ import com.builtbroken.mc.api.edit.BlockEditResult;
 import com.builtbroken.mc.api.edit.IWorldEdit;
 import com.builtbroken.mc.api.explosive.IBlastEdit;
 import com.builtbroken.mc.api.tile.node.ITileNodeHost;
+import com.builtbroken.mc.data.Direction;
 import com.builtbroken.mc.imp.transform.region.Cube;
+import com.builtbroken.mc.imp.transform.vector.BlockPos;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -21,35 +22,33 @@ import net.minecraft.world.World;
  */
 public class HPBlockEdit implements IBlastEdit
 {
-    World world;
-    int x, y, z;
-    float hp;
+    public final World world;
+    public final BlockPos pos;
+    public final float hp;
 
-    public HPBlockEdit(World world, int xi, int yi, int zi, float lostHP)
+    public HPBlockEdit(World world, BlockPos pos, float lostHP)
     {
         this.world = world;
-        this.x = xi;
-        this.y = yi;
-        this.z = zi;
+        this.pos = pos;
         this.hp = lostHP;
     }
 
     @Override
     public double x()
     {
-        return x;
+        return pos.xi();
     }
 
     @Override
     public double y()
     {
-        return y;
+        return pos.yi();
     }
 
     @Override
     public double z()
     {
-        return z;
+        return pos.zi();
     }
 
     @Override
@@ -59,13 +58,13 @@ public class HPBlockEdit implements IBlastEdit
     }
 
     @Override
-    public void setBlastDirection(EnumFacing dir)
+    public void setBlastDirection(Direction dir)
     {
 
     }
 
     @Override
-    public EnumFacing getBlastDirection()
+    public Direction getBlastDirection()
     {
         return null;
     }
@@ -126,19 +125,19 @@ public class HPBlockEdit implements IBlastEdit
     @Override
     public Block getBlock()
     {
-        return world.getBlock(x, y, z);
+        return pos.getBlock(world);
     }
 
     @Override
     public int getBlockMetadata()
     {
-        return world.getBlockMetadata(x, y, z);
+        return pos.getBlockMetadata(world);
     }
 
     @Override
     public TileEntity getTileEntity()
     {
-        return world.getTileEntity(x, y, z);
+        return pos.getTileEntity(world);
     }
 
     @Override
@@ -151,5 +150,39 @@ public class HPBlockEdit implements IBlastEdit
     public IWorldEdit set(Block newBlock, int newMeta)
     {
         return this;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = 17;
+        result = 31 * result + (oldWorld() != null && oldWorld().provider != null ? oldWorld().provider.dimensionId : 0);
+        result = 31 * result + xi();
+        result = 31 * result + yi();
+        result = 31 * result + zi();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this)
+        {
+            return true;
+        }
+        if (obj instanceof IBlastEdit)
+        {
+            return ((IBlastEdit) obj).oldWorld() == world
+                    && ((IBlastEdit) obj).xi() == xi()
+                    && ((IBlastEdit) obj).yi() == yi()
+                    && ((IBlastEdit) obj).zi() == zi();
+        }
+        return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "HPBlockEdit[" + world.provider.dimensionId + ", " + pos + ", " + hp + "]";
     }
 }

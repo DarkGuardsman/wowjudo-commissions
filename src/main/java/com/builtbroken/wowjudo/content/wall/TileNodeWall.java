@@ -5,7 +5,10 @@ import com.builtbroken.mc.api.explosive.IBlastEdit;
 import com.builtbroken.mc.api.explosive.IExplosiveDamageable;
 import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
+import com.builtbroken.mc.core.Engine;
+import com.builtbroken.mc.data.Direction;
 import com.builtbroken.mc.framework.logic.TileNode;
+import com.builtbroken.mc.imp.transform.vector.BlockPos;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.lib.helper.MaterialDict;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
@@ -16,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -66,7 +68,11 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             }
             if (mat_cache == null)
             {
-                mat_cache = WallMaterial.WOOD;
+                mat_cache = WallMaterial.STONE;
+                if (Engine.runningAsDev)
+                {
+                    SurvivalMod.logger.error("TileNodeWall: Failed to read material for " + block);
+                }
             }
         }
         return mat_cache;
@@ -84,6 +90,10 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
             else
             {
                 struct_cache = StructureType.WALL;
+                if (Engine.runningAsDev)
+                {
+                    SurvivalMod.logger.error("TileNodeWall: Failed to read structure for meta value " + meta);
+                }
             }
         }
         return struct_cache;
@@ -141,23 +151,27 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     }
 
     @Override
-    public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
+    public float getEnergyCostOfTile(IExplosiveHandler explosive, IBlast blast, Direction facing, float energy, float distance)
     {
         return Math.max(getHp(), 1) * getMaterial().energyPerType[getStructureType().ordinal()];
     }
 
     @Override
-    public IBlastEdit getBlockEditOnBlastImpact(IExplosiveHandler explosive, IBlast blast, EnumFacing facing, float energy, float distance)
+    public IBlastEdit getBlockEditOnBlastImpact(IExplosiveHandler explosive, IBlast blast, Direction facing, float energy, float distance)
     {
         float lostHP = Math.min(getHp(), Math.max(0, energy / getMaterial().energyPerType[getStructureType().ordinal()]));
         if (getHp() > 0 && getHp() - lostHP > 1)
         {
             if (lostHP > 0)
             {
-                return new HPBlockEdit(world().unwrap(), xi(), yi(), zi(), lostHP);
+                //Reduce HP
+                return new HPBlockEdit(world().unwrap(), new BlockPos(xi(), yi(), zi()), lostHP);
             }
+
+            //No damage
             return null;
         }
+        //Kill block
         return new BlockEdit(world().unwrap(), xi(), yi(), zi()).set(Blocks.air, 0);
     }
 

@@ -5,7 +5,6 @@ import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.imp.transform.vector.BlockPos;
 import com.builtbroken.mc.lib.world.edit.BlockEdit;
 import com.builtbroken.mc.prefab.explosive.blast.BlastSimplePath;
-import net.minecraft.init.Blocks;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -23,7 +22,7 @@ public class BlastDamage extends BlastSimplePath<BlastDamage>
     @Override
     public IWorldEdit changeBlock(BlockPos location)
     {
-        return new BlockEdit(oldWorld(), xi(), yi(), zi()).set(Blocks.air, 0);
+        return new BlockEdit(oldWorld(), xi(), yi(), zi());
     }
 
     @Override

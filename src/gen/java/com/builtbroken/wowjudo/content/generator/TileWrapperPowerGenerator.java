@@ -1,28 +1,29 @@
 //=======================================================
 //DISCLAIMER: THIS IS A GENERATED CLASS FILE
 //THUS IS PROVIDED 'AS-IS' WITH NO WARRANTY
-//FUNCTIONALITY CAN NOT BE GUARANTIED IN ANY WAY
-//USE AT YOUR OWN RISK
+//FUNCTIONALITY CAN NOT BE GUARANTIED IN ANY WAY 
+//USE AT YOUR OWN RISK 
 //-------------------------------------------------------
 //Built on: Rober
 //=======================================================
 package com.builtbroken.wowjudo.content.generator;
 
-import com.builtbroken.jlib.data.vector.IPos3D;
-import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
-import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
+import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
+import com.builtbroken.mc.api.tile.node.ITileNode;
 import com.builtbroken.mc.api.tile.provider.IInventoryProvider;
-import com.builtbroken.mc.api.tile.provider.ITankProvider;
-import com.builtbroken.mc.framework.block.imp.IBlockListener;
-import com.builtbroken.mc.framework.block.imp.ITileEventListener;
 import com.builtbroken.mc.seven.framework.logic.TileEntityWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import com.builtbroken.mc.api.tile.provider.ITankProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
-
+import com.builtbroken.jlib.data.vector.IPos3D;
+import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
+import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
+import com.builtbroken.mc.framework.block.imp.IBlockListener;
+import com.builtbroken.mc.framework.block.imp.ITileEventListener;
 import java.util.HashMap;
 import java.util.List;
 
@@ -194,7 +195,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IInv
         }
         return false;
     }
-
+    
 	//============================
 	//==Methods:TankProvider
 	//============================
@@ -273,7 +274,7 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IInv
     {
         return new FluidTankInfo[0];
     }
-
+    
 	//============================
 	//==Methods:MultiBlock
 	//============================
@@ -479,5 +480,5 @@ public class TileWrapperPowerGenerator extends TileEntityWrapper implements IInv
         }
         return null;
     }
-
+    
 }
