@@ -121,7 +121,7 @@ public class SurvivalMod extends AbstractMod
         itemExplosiveRemote = new ItemRemote();
         GameRegistry.registerItem(itemExplosiveRemote, "wjExplosiveRemote");
 
-        itemLog = new ItemLog();
+        itemLog = new ItemLog(); //TODO JSON
         GameRegistry.registerItem(itemLog, "wjLog");
         MinecraftForge.EVENT_BUS.register(itemLog);
         GameRegistry.registerFuelHandler(itemLog);

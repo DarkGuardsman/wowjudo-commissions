@@ -145,7 +145,11 @@ public class ItemLog extends Item implements IFuelHandler
     @Override
     public int getBurnTime(ItemStack fuel)
     {
-        return 300;
+        if (fuel != null && fuel.getItem() == this)
+        {
+            return 300;
+        }
+        return 0;
     }
 
     /**
