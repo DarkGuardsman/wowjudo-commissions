@@ -24,6 +24,7 @@
   "throwable": {
     "name": "grenade",
     "id": "wjsurvialmod:grenade",
+    "creativeTab":"wowjudo",
     "ammoType": "wjsurvialmod:ammoType.grenade",
     "ammo": "wjsurvialmod:ammo.grenade"
   }

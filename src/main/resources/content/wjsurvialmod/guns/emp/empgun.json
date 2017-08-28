@@ -25,6 +25,7 @@
     "name": "empgun",
     "gunType": "empgun",
     "ID": "wjsurvialmod:empgun",
+    "creativeTab":"wowjudo",
     "ammoType": "wjsurvialmod:ammoType.empgun",
     "overrideAmmo": "wjsurvialmod:ammo.empgun",
     "reloadType": "ENERGY",
