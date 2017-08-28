@@ -74,12 +74,15 @@
     ],
     "subtypes": [
       {
+        "id":"wall",
         "meta": 0
       },
       {
+        "id":"floor",
         "meta": 1
       },
       {
+        "id":"roof",
         "meta": 2
       }
     ]
