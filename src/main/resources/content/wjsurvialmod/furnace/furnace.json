@@ -1,0 +1,48 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "block": {
+    "name": "furnace",
+    "id": "wjFurnace",
+    "mod": "wjsurvialmod",
+    "material": "rock",
+    "renderType": 0,
+    "isOpaque": false,
+    "tileEntity": {
+      "id": "wjFurnace",
+      "class": "com.builtbroken.wowjudo.content.furnace.TileWrapperDualFurnace"
+    },
+    "renderBounds": {
+      "min": {
+        "x": -1,
+        "y": 0,
+        "z": -1
+      },
+      "max": {
+        "x": 1,
+        "y": 3,
+        "z": 1
+      }
+    },
+    "listeners": [
+      "rotation",
+      {
+        "id": "multiblock",
+        "layoutKey": "wjsurvialmod:wjFurnace"
+      }
+    ]
+  },
+  "multiblock": {
+    "key": "wjsurvialmod:wjFurnace",
+    "tiles": [
+      {
+        "pos": {
+          "x": 0,
+          "y": 1,
+          "z": 0
+        }
+      }
+    ]
+  }
+}
