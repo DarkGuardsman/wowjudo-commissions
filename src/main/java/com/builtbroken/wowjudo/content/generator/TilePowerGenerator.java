@@ -1,6 +1,5 @@
 package com.builtbroken.wowjudo.content.generator;
 
-import com.builtbroken.mc.api.tile.IPlayerUsing;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.api.tile.provider.ITankProvider;
@@ -28,7 +27,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,7 +35,7 @@ import java.util.List;
  * Created by Dark(DarkGuardsman, Robert) on 5/4/2017.
  */
 @TileWrapped(className = "TileWrapperPowerGenerator", wrappers = "ExternalInventory;TankProvider;MultiBlock")
-public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile, IPlayerUsing
+public class TilePowerGenerator extends TileMachineNode<ExternalInventory> implements ITankProvider, IRotation, IGuiTile
 {
     //Supported tiles to power
     public static final List<String> supportedTiles = new ArrayList();
@@ -79,8 +77,6 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     protected boolean isPowered = false;
 
     private ForgeDirection dirCache;
-
-    private List<EntityPlayer> players = new ArrayList();
 
     public TilePowerGenerator()
     {
@@ -424,11 +420,5 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     protected String getClassDisplayName()
     {
         return "TilePowerGenerator";
-    }
-
-    @Override
-    public Collection<EntityPlayer> getPlayersUsing()
-    {
-        return players;
     }
 }
