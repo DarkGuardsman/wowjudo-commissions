@@ -70,7 +70,7 @@ public class TileEntityRenderCampFire extends TileEntitySpecialRenderer
         GL11.glPopMatrix();
     }
 
-    public boolean renderBlockFire()
+    public static boolean renderBlockFire()
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL11.GL_QUADS);

@@ -7,8 +7,9 @@
     "id": "wjFurnace",
     "mod": "wjsurvialmod",
     "material": "rock",
-    "renderType": 0,
+    "renderTypeName": "dualFurnaceRender",
     "isOpaque": false,
+    "renderAsNormalBlock": false,
     "tileEntity": {
       "id": "wjFurnace",
       "class": "com.builtbroken.wowjudo.content.furnace.TileWrapperDualFurnace"

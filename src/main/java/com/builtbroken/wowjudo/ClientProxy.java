@@ -6,6 +6,9 @@ import com.builtbroken.wowjudo.content.campfire.TileEntityRenderCampFire;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.TileEntityRenderCraftingTable;
 import com.builtbroken.wowjudo.content.explosive.tile.ISBRExplosive;
+import com.builtbroken.wowjudo.content.furnace.ISBRDualFurance;
+import com.builtbroken.wowjudo.content.furnace.TESRDualFurnace;
+import com.builtbroken.wowjudo.content.furnace.TileWrapperDualFurnace;
 import com.builtbroken.wowjudo.content.wall.ISBRWall;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -22,11 +25,13 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerBlockHandler(new ISBRExplosive());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfire.class, new TileEntityRenderCampFire());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingTable.class, new TileEntityRenderCraftingTable());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWrapperDualFurnace.class, new TESRDualFurnace());
     }
 
     @Override
     public void loadJsonContentHandlers()
     {
+        RenderingRegistry.registerBlockHandler(new ISBRDualFurance());
         ClientDataHandler.INSTANCE.addBlockRenderer(SurvivalMod.DOMAIN + ":wall", new ISBRWall());
     }
 }
