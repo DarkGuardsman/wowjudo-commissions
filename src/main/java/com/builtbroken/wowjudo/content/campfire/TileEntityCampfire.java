@@ -5,9 +5,9 @@ import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.network.IPacketIDReceiver;
 import com.builtbroken.mc.core.network.packet.PacketTile;
 import com.builtbroken.mc.core.network.packet.PacketType;
+import com.builtbroken.mc.lib.data.item.ItemStackWrapper;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
-import com.builtbroken.mc.lib.data.item.ItemStackWrapper;
 import com.builtbroken.mc.prefab.tile.entity.TileEntityInv;
 import com.builtbroken.wowjudo.content.campfire.gui.ContainerCampFire;
 import com.builtbroken.wowjudo.content.campfire.gui.GuiCampFire;
@@ -67,23 +67,35 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                 }
             }
 
-            //If we have no fuel get fuel
+            //If we have no fuel or need to update render state, do fuel check
             if (hasRecipe && fuelTimer <= 0 || !hasFuel)
             {
+                //Reset fuel check, used for rendering
                 hasFuel = false;
+
+                //Get item in fuel slot
                 ItemStack stack = getStackInSlot(SLOT_FUEL);
                 if (stack != null)
                 {
+                    //Get burn time / check if is fuel
                     int burnTime = TileEntityFurnace.getItemBurnTime(stack);
                     if (burnTime > 0)
                     {
+                        //Update instance to note we have fuel, used for rendering
                         hasFuel = true;
-                        itemFuelTime = burnTime;
-                        //Only consume fuel if we are cooking items
-                        if (hasRecipe)
+
+                        //Only do fuel addition if we have no fuel burning
+                        //      as this section is run each time inventory changes
+                        if (fuelTimer <= 0)
                         {
-                            fuelTimer += burnTime;
-                            decrStackSize(SLOT_FUEL, 1);
+                            itemFuelTime = burnTime;
+
+                            //Only consume fuel if we are cooking items
+                            if (hasRecipe)
+                            {
+                                fuelTimer += burnTime;
+                                decrStackSize(SLOT_FUEL, 1);
+                            }
                         }
                     }
                 }
@@ -97,7 +109,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                 if (fuelTimer > 0)
                 {
                     fuelTimer--;
-                    if(fuelTimer <= 0)
+                    if (fuelTimer <= 0)
                     {
                         hasFuel = false;
                     }
