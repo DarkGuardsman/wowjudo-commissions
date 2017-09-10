@@ -1,7 +1,9 @@
 package com.builtbroken.wowjudo.content.furnace.gui;
 
 import com.builtbroken.mc.client.SharedAssets;
+import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.prefab.gui.GuiContainerBase;
+import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.furnace.TileDualFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -20,6 +22,12 @@ public class GuiDualFurnace extends GuiContainerBase
         this.furnace = furnace;
     }
 
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        drawStringCentered(LanguageUtility.getLocal("tile." + SurvivalMod.PREFX + "furnace.gui.grid"), xSize / 2, 5);
+    }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)

@@ -5,6 +5,7 @@ import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.mc.prefab.gui.GuiContainerBase;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
+import com.builtbroken.wowjudo.content.furnace.TileDualFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 
@@ -37,27 +38,10 @@ public class GuiCampFire extends GuiContainerBase
         this.mc.renderEngine.bindTexture(SharedAssets.GUI_COMPONENTS);
 
         //Render fire for fuel timer
-        int x = 54;
-        int y = 34;
-        this.drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 18 * 3, 18, 18);
-        if(campFire.fuelTimer > 0)
-        {
-            int offsetY = (int)Math.floor(campFire.fuelTimer * 18f / (campFire.itemFuelTime + 0.0f));
-            if(offsetY > 0)
-            {
-                this.drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y + 17 - offsetY, 18, 18 * 3 - offsetY, 18, 1 + offsetY);
-            }
-        }
+        renderFurnaceCookFire(54, 34, campFire.fuelTimer, campFire.itemFuelTime );
 
         //Render arrow for crafting timer
-        x = 84;
-        y = 35;
-        drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 0, 22, 15);
-        if(campFire.cookTimer > 0)
-        {
-            float p = campFire.cookTimer / (TileEntityCampfire.COOK_TIMER + 0.0f);
-            drawTexturedModalRect(this.containerWidth + x, this.containerHeight + y, 18, 15, (int)Math.floor(22 * p), 15);
-        }
+        renderFurnaceCookArrow(84, 35, campFire.cookTimer, TileDualFurnace.MAX_COOK_TIMER);
     }
 
     @Override

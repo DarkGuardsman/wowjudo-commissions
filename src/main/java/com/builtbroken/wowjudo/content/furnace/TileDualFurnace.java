@@ -9,6 +9,7 @@ import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.furnace.gui.ContainerDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.gui.GuiDualFurnace;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +41,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     private boolean burnBothSlots = false;
 
     private boolean checkRecipes = true;
+    private boolean sendDescPacket = false;
     private boolean hasRecipeForSlot1 = false;
     private boolean hasRecipeForSlot2 = false;
     public boolean hasFuel = false;
@@ -51,6 +53,11 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     public int burnTimerItem2;
 
     public int cookTime;
+
+    public ItemStack renderStack1;
+    public ItemStack renderStack2;
+
+
 
     public TileDualFurnace()
     {
@@ -64,7 +71,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
 
         if (isServer())
         {
-            if (checkRecipes)
+            if (checkRecipes || ticks % 100 == 0)
             {
                 //Check slot 1
                 ItemStack input = getInventory().getStackInSlot(INPUT_SLOT_1);
@@ -74,8 +81,6 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
                 input = getInventory().getStackInSlot(INPUT_SLOT_2);
                 hasRecipeForSlot2 = input != null && FurnaceRecipes.smelting().getSmeltingResult(input) != null;
             }
-
-            hasRecipeForSlot1 = getInventory().getStackInSlot(FUEL_SLOT_1) != null || getInventory().getStackInSlot(FUEL_SLOT_2) != null;
 
             //Consume fuel
             if (hasRecipeForSlot1)
@@ -129,7 +134,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             }
 
             //Send update packet TODO change if packet bandwidth is a problem
-            if (ticks % 3 == 0)
+            if (sendDescPacket || ticks % 3 == 0)
             {
                 sendDescPacket();
             }
@@ -209,6 +214,25 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         buf.writeInt(burnTimer2);
         buf.writeInt(burnTimerItem2);
         buf.writeBoolean(hasFuel);
+        if(getInventory().getStackInSlot(INPUT_SLOT_1) != null)
+        {
+            buf.writeBoolean(true);
+            ByteBufUtils.writeItemStack(buf, getInventory().getStackInSlot(INPUT_SLOT_1));
+        }
+        else
+        {
+            buf.writeBoolean(false);
+        }
+
+        if(getInventory().getStackInSlot(INPUT_SLOT_2) != null)
+        {
+            buf.writeBoolean(true);
+            ByteBufUtils.writeItemStack(buf, getInventory().getStackInSlot(INPUT_SLOT_2));
+        }
+        else
+        {
+            buf.writeBoolean(false);
+        }
     }
 
     @Override
@@ -220,6 +244,24 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         burnTimer2 = buf.readInt();
         burnTimerItem2 = buf.readInt();
         hasFuel = buf.readBoolean();
+
+        if(buf.readBoolean())
+        {
+            renderStack1 = ByteBufUtils.readItemStack(buf);
+        }
+        else
+        {
+            renderStack1 = null;
+        }
+
+        if(buf.readBoolean())
+        {
+            renderStack2 = ByteBufUtils.readItemStack(buf);
+        }
+        else
+        {
+            renderStack2 = null;
+        }
     }
 
     @Override
@@ -228,6 +270,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         if (slot == INPUT_SLOT_1 || slot == INPUT_SLOT_2)
         {
             checkRecipes = true;
+            sendDescPacket = true;
         }
     }
 

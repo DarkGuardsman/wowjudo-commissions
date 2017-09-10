@@ -6,7 +6,7 @@ import com.builtbroken.wowjudo.content.campfire.TileEntityRenderCampFire;
 import com.builtbroken.wowjudo.content.crafting.TileEntityCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.TileEntityRenderCraftingTable;
 import com.builtbroken.wowjudo.content.explosive.tile.ISBRExplosive;
-import com.builtbroken.wowjudo.content.furnace.ISBRDualFurance;
+import com.builtbroken.wowjudo.content.furnace.ISBRDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.TESRDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.TileWrapperDualFurnace;
 import com.builtbroken.wowjudo.content.wall.ISBRWall;
@@ -31,7 +31,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void loadJsonContentHandlers()
     {
-        RenderingRegistry.registerBlockHandler(new ISBRDualFurance());
+        RenderingRegistry.registerBlockHandler(new ISBRDualFurnace());
         ClientDataHandler.INSTANCE.addBlockRenderer(SurvivalMod.DOMAIN + ":wall", new ISBRWall());
     }
 }

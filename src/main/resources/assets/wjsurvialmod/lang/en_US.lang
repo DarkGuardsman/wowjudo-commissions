@@ -12,6 +12,9 @@ tile.wjsurvialmod:campFire.name=Camp Fire
 tile.wjsurvialmod:campFire.gui.name=Camp Fire
 tile.wjsurvialmod:campFire.gui.inventory=Inventory
 
+tile.wjsurvialmod:furnace.name=Double Furnace
+tile.wjsurvialmod:furnace.gui.grid=Double Furnace
+
 gun.wjsurvialmod:handgun.name=Handgun
 clip.wjsurvialmod:handgun.name=Handgun Clip
 ammo.wjsurvialmod:handgun.name=Handgun Round
