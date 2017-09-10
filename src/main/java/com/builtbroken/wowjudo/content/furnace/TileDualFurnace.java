@@ -10,6 +10,7 @@ import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.furnace.gui.ContainerDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.gui.GuiDualFurnace;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -41,6 +42,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     private boolean checkRecipes = true;
     private boolean hasRecipeForSlot1 = false;
     private boolean hasRecipeForSlot2 = false;
+    public boolean hasFuel = false;
 
     public int burnTimer1;
     public int burnTimer2;
@@ -72,6 +74,8 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
                 input = getInventory().getStackInSlot(INPUT_SLOT_2);
                 hasRecipeForSlot2 = input != null && FurnaceRecipes.smelting().getSmeltingResult(input) != null;
             }
+
+            hasRecipeForSlot1 = getInventory().getStackInSlot(FUEL_SLOT_1) != null || getInventory().getStackInSlot(FUEL_SLOT_2) != null;
 
             //Consume fuel
             if (hasRecipeForSlot1)
@@ -128,6 +132,16 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             if (ticks % 3 == 0)
             {
                 sendDescPacket();
+            }
+        }
+        else if (burnTimer1 > 0 || burnTimer2 > 0)
+        {
+            Block block = world().unwrap().getBlock(xi(), yi() + 2, zi());
+            if (block == null || block.isAir(world().unwrap(), xi(), yi() + 2, zi()))
+            {
+                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
+                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
+                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
             }
         }
     }
@@ -194,6 +208,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         buf.writeInt(burnTimerItem1);
         buf.writeInt(burnTimer2);
         buf.writeInt(burnTimerItem2);
+        buf.writeBoolean(hasFuel);
     }
 
     @Override
@@ -204,6 +219,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         burnTimerItem1 = buf.readInt();
         burnTimer2 = buf.readInt();
         burnTimerItem2 = buf.readInt();
+        hasFuel = buf.readBoolean();
     }
 
     @Override

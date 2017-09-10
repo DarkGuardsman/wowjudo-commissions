@@ -21,8 +21,8 @@ public class TESRDualFurnace extends TileEntitySpecialRenderer
         {
             TileDualFurnace furnace = (TileDualFurnace) ((ITileNodeHost) tile).getTileNode();
 
-            boolean hasFuel = true; //has fuel time
-            boolean isCooking = true; //has cook time
+            boolean hasFuel = furnace.hasFuel; //has fuel time
+            boolean isCooking = furnace.burnTimer1 > 0 || furnace.burnTimer2 > 0; //has cook time
 
             GL11.glPushMatrix();
             GL11.glTranslated(xx, yy, zz);
@@ -33,6 +33,13 @@ public class TESRDualFurnace extends TileEntitySpecialRenderer
                 GL11.glPushMatrix();
                 GL11.glTranslated(0, 0.6, 0);
                 RenderUtility.renderCube(0.2, 0, 0.2, 0.8, 0.1, 0.8, Blocks.coal_block);
+                GL11.glPopMatrix();
+            }
+            else
+            {
+                GL11.glPushMatrix();
+                GL11.glTranslated(0, 0.6, 0);
+                RenderUtility.renderCube(0.2, 0, 0.2, 0.8, 0.01, 0.8, Blocks.coal_block);
                 GL11.glPopMatrix();
             }
 
