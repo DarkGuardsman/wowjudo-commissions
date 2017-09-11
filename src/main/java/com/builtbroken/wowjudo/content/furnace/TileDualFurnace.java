@@ -1,8 +1,10 @@
 package com.builtbroken.wowjudo.content.furnace;
 
+import com.builtbroken.jlib.helpers.MathHelper;
 import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
+import com.builtbroken.mc.framework.block.imp.ILightLevelListener;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
@@ -18,12 +20,14 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Random;
+
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 8/30/2017.
  */
 @TileWrapped(className = "TileWrapperDualFurnace", wrappers = "ExternalInventory;MultiBlock")
-public class TileDualFurnace extends TileMachineNode<ExternalInventory> implements IRotation, IGuiTile
+public class TileDualFurnace extends TileMachineNode<ExternalInventory> implements IRotation, IGuiTile, ILightLevelListener
 {
     public static final int INVENTORY_SIZE = 6;
 
@@ -44,7 +48,10 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     private boolean sendDescPacket = false;
     private boolean hasRecipeForSlot1 = false;
     private boolean hasRecipeForSlot2 = false;
+
     public boolean hasFuel = false;
+    public boolean isOn = false;
+    public boolean prevOnState = false;
 
     public int burnTimer1;
     public int burnTimer2;
@@ -58,7 +65,6 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     public ItemStack renderStack2;
 
 
-
     public TileDualFurnace()
     {
         super("furnace", SurvivalMod.DOMAIN);
@@ -68,18 +74,37 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     public void update(long ticks)
     {
         super.update(ticks);
-
+        isOn = cookTime > 0 || burnTimer1 > 0 || burnTimer2 > 0;
         if (isServer())
         {
             if (checkRecipes || ticks % 100 == 0)
             {
+                //Reset
+                hasRecipeForSlot2 = hasRecipeForSlot1 = false;
+
                 //Check slot 1
                 ItemStack input = getInventory().getStackInSlot(INPUT_SLOT_1);
-                hasRecipeForSlot1 = input != null && FurnaceRecipes.smelting().getSmeltingResult(input) != null;
+                if (input != null)
+                {
+                    ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
+                    if (result != null)
+                    {
+                        ItemStack output = getInventory().getStackInSlot(OUTPUT_SLOT_1);
+                        hasRecipeForSlot1 = output == null || InventoryUtility.stacksMatch(output, result) && InventoryUtility.roomLeftInSlotForStack(getInventory(), output, OUTPUT_SLOT_1) >= result.stackSize;
+                    }
+                }
 
                 //Check slot 2
                 input = getInventory().getStackInSlot(INPUT_SLOT_2);
-                hasRecipeForSlot2 = input != null && FurnaceRecipes.smelting().getSmeltingResult(input) != null;
+                if (input != null)
+                {
+                    ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
+                    if (result != null)
+                    {
+                        ItemStack output = getInventory().getStackInSlot(OUTPUT_SLOT_2);
+                        hasRecipeForSlot2 = output == null || InventoryUtility.stacksMatch(output, result) && InventoryUtility.roomLeftInSlotForStack(getInventory(), output, OUTPUT_SLOT_2) >= result.stackSize;
+                    }
+                }
             }
 
             //Consume fuel
@@ -118,9 +143,20 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
                 }
             }
 
+            if (burnTimer1 > 0)
+            {
+                burnTimer1--;
+            }
+
+            if (burnTimer2 > 0)
+            {
+                burnTimer2--;
+            }
+
             //Cook time
             if (hasRecipeForSlot1 && burnTimer1 > 0 || hasRecipeForSlot2 && burnTimer2 > 0)
             {
+                isOn = true;
                 cookTime++;
                 if (cookTime >= MAX_COOK_TIMER)
                 {
@@ -130,6 +166,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             }
             else
             {
+                isOn = false;
                 this.cookTime = 0;
             }
 
@@ -138,17 +175,48 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             {
                 sendDescPacket();
             }
+
+            if (prevOnState != isOn)
+            {
+                world().unwrap().markBlockForUpdate(xi(), yi(), zi());
+            }
         }
         else if (burnTimer1 > 0 || burnTimer2 > 0)
         {
+            final Random random = world().unwrap().rand;
+            //TODO if front blocked, turn off animation
             Block block = world().unwrap().getBlock(xi(), yi() + 2, zi());
             if (block == null || block.isAir(world().unwrap(), xi(), yi() + 2, zi()))
             {
-                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
-                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
-                world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
+                final int smokePerBurner = 3;
+                for (int i = 0; i < 0 + (burnTimer1 > 0 ? smokePerBurner : 0) + (burnTimer2 > 0 ? smokePerBurner : 0); i++)
+                {
+                    world().spawnParticle("smoke", x(), y() + 1.3, z(), 0, 0, 0);
+                }
+            }
+            if (random.nextFloat() > 0.8)
+            {
+                world().spawnParticle("flame", x() + (random.nextFloat() * 0.3 - random.nextFloat() * 0.3), y() + (random.nextFloat() * 0.3 - random.nextFloat() * 0.3), z() + (random.nextFloat() * 0.3 - random.nextFloat() * 0.3), 0, 0.01, 0);
+            }
+            if (ticks % 24 == 0)
+            {
+                world().unwrap().playSound(x(), y(), z(), "fire.fire", 0.8F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+            }
+
+            if (prevOnState != isOn)
+            {
+                if (prevOnState)
+                {
+                    world().unwrap().playSound(x(), y(), z(), "random.fizz", 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F, false);
+                }
+                else
+                {
+                    world().unwrap().playSound(x(), y(), z(), "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F, false);
+                }
             }
         }
+
+        prevOnState = isOn;
     }
 
     /**
@@ -194,12 +262,16 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
                 {
                     getInventory().setInventorySlotContents(outputSlot, result.copy());
                     getInventory().decrStackSize(inputSlot, 1);
+
+                    world().playAudio("random.fizz", x(), y(), z(), 0.5F, 2.6F + (MathHelper.rand.nextFloat() - MathHelper.rand.nextFloat()) * 0.8F);
                 }
                 else if (InventoryUtility.stacksMatch(result, output) && InventoryUtility.roomLeftInSlot(getInventory(), outputSlot) >= result.stackSize)
                 {
                     output.stackSize += result.stackSize;
                     getInventory().setInventorySlotContents(outputSlot, output.copy());
                     getInventory().decrStackSize(inputSlot, 1);
+
+                    world().playAudio("random.fizz", x(), y(), z(), 0.5F, 2.6F + (MathHelper.rand.nextFloat() - MathHelper.rand.nextFloat()) * 0.8F);
                 }
             }
         }
@@ -214,7 +286,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         buf.writeInt(burnTimer2);
         buf.writeInt(burnTimerItem2);
         buf.writeBoolean(hasFuel);
-        if(getInventory().getStackInSlot(INPUT_SLOT_1) != null)
+        if (getInventory().getStackInSlot(INPUT_SLOT_1) != null)
         {
             buf.writeBoolean(true);
             ByteBufUtils.writeItemStack(buf, getInventory().getStackInSlot(INPUT_SLOT_1));
@@ -224,7 +296,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             buf.writeBoolean(false);
         }
 
-        if(getInventory().getStackInSlot(INPUT_SLOT_2) != null)
+        if (getInventory().getStackInSlot(INPUT_SLOT_2) != null)
         {
             buf.writeBoolean(true);
             ByteBufUtils.writeItemStack(buf, getInventory().getStackInSlot(INPUT_SLOT_2));
@@ -245,7 +317,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
         burnTimerItem2 = buf.readInt();
         hasFuel = buf.readBoolean();
 
-        if(buf.readBoolean())
+        if (buf.readBoolean())
         {
             renderStack1 = ByteBufUtils.readItemStack(buf);
         }
@@ -254,7 +326,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
             renderStack1 = null;
         }
 
-        if(buf.readBoolean())
+        if (buf.readBoolean())
         {
             renderStack2 = ByteBufUtils.readItemStack(buf);
         }
@@ -320,5 +392,15 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     public Object getClientGuiElement(int ID, EntityPlayer player)
     {
         return new GuiDualFurnace(player, this);
+    }
+
+    @Override
+    public int getLightLevel()
+    {
+        if (cookTime > 0)
+        {
+            return 13;
+        }
+        return 0;
     }
 }

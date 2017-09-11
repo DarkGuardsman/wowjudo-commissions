@@ -34,6 +34,20 @@
       }
     ]
   },
+  "render": {
+    "contentID": "wjsurvialmod:wjFurnace",
+    "type": "block",
+    "states": [
+      {
+        "id": "block",
+        "renderType": "block",
+        "texture": {
+          "domain": "minecraft",
+          "name": "cobblestone"
+        }
+      }
+    ]
+  },
   "multiblock": {
     "key": "wjsurvialmod:wjFurnace",
     "tiles": [
