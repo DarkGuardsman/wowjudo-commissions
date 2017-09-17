@@ -3,7 +3,7 @@
     "name": "wjsurvialmod"
   },
   "block": {
-    "name": "wall.stone",
+    "name": "wall.stone.${meta}",
     "id": "wjStoneWall",
     "mod": "wjsurvialmod",
     "material": "rock",

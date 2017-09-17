@@ -3,7 +3,7 @@
     "name": "wjsurvialmod"
   },
   "block": {
-    "name": "wall.metal",
+    "name": "wall.metal.${meta}",
     "id": "wjIronWall",
     "mod": "wjsurvialmod",
     "material": "metal",
