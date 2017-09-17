@@ -8,11 +8,11 @@ import com.builtbroken.mc.api.tile.multiblock.IMultiTile;
 import com.builtbroken.mc.api.tile.multiblock.IMultiTileHost;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.handler.TileTaskTickHandler;
+import com.builtbroken.mc.framework.multiblock.EnumMultiblock;
+import com.builtbroken.mc.framework.multiblock.MultiBlockHelper;
 import com.builtbroken.mc.imp.transform.vector.Pos;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.tile.entity.TileEntityInv;
-import com.builtbroken.mc.framework.multiblock.EnumMultiblock;
-import com.builtbroken.mc.framework.multiblock.MultiBlockHelper;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.crafting.gui.ContainerCraftingTable;
 import com.builtbroken.wowjudo.content.crafting.gui.GuiCraftingTable;
@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -168,5 +169,12 @@ public class TileEntityCraftingTable extends TileEntityInv<ExternalInventory> im
     public IWorld world()
     {
         return Engine.minecraft.getWorld(worldObj.provider.dimensionId);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 1, zCoord + 2);
     }
 }
