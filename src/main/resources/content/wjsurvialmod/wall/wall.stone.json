@@ -10,6 +10,7 @@
     "hardness": 20,
     "renderTypeName":"wjsurvialmod:wall",
     "renderAsNormalBlock":false,
+    "isSolid": true,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"

@@ -10,6 +10,7 @@
     "hardness": 5,
     "renderTypeName": "wjsurvialmod:wall",
     "renderAsNormalBlock": false,
+    "isSolid": true,
     "tileEntity": {
       "id": "wjDamageWall",
       "class": "com.builtbroken.wowjudo.content.wall.TileEntityWrappedWall"
@@ -74,15 +75,15 @@
     ],
     "subtypes": [
       {
-        "id":"wall",
+        "id": "wall",
         "meta": 0
       },
       {
-        "id":"floor",
+        "id": "floor",
         "meta": 1
       },
       {
-        "id":"roof",
+        "id": "roof",
         "meta": 2
       }
     ]
