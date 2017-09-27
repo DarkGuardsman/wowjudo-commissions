@@ -1,0 +1,10 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "meleeWeapon": {
+    "name": "spear",
+    "id": "wjsurvialmod:spear",
+    "attack": 2
+  }
+}

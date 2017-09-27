@@ -1,0 +1,20 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:mace",
+    "type": "item",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType": "item",
+        "texture":
+        {
+          "domain": "wjsurvialmod",
+          "name": "mace"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "render": {
+    "contentID": "wjsurvialmod:sword",
+    "type": "item",
+    "states": [
+      {
+        "id": "item.inventory",
+        "renderType": "item",
+        "texture":
+        {
+          "domain": "wjsurvialmod",
+          "name": "sword"
+        }
+      }
+    ]
+  }
+}
