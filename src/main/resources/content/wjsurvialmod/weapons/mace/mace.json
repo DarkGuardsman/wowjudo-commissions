@@ -5,6 +5,15 @@
   "meleeWeapon": {
     "name": "mace",
     "id": "wjsurvialmod:mace",
-    "attack": 2
+    "creativeTab": "wowjudo",
+    "attack": 2,
+    "damageEffects": [
+      {
+        "type": "potion",
+        "potion": "moveSlowdown",
+        "duration": 20,
+        "amplifier": 1
+      }
+    ]
   }
 }

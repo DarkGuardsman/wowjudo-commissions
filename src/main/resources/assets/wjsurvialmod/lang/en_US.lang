@@ -75,3 +75,9 @@ item.wjsurvialmod:craftingItem.microchip.name=Microchip
 item.wjsurvialmod:craftingItem.module.turret.power=Turret Power Module
 item.wjsurvialmod:craftingItem.module.turret.control=Turret Control Module
 item.wjsurvialmod:craftingItem.module.turret.aiming=Turret Aiming Module
+
+meleeWeapon.wjsurvialmod:ax.name=Combat Ax
+meleeWeapon.wjsurvialmod:mace.name=Combat Mace
+meleeWeapon.wjsurvialmod:sword.name=Combat Sword
+meleeWeapon.wjsurvialmod:spear.name=Combat Spear
+

@@ -5,6 +5,15 @@
   "meleeWeapon": {
     "name": "ax",
     "id": "wjsurvialmod:ax",
-    "attack": 2
+    "creativeTab": "wowjudo",
+    "attack": 2,
+    "damageEffects": [
+      {
+        "type": "potion",
+        "potion": "bleeding",
+        "duration": 1,
+        "amplifier": 1
+      }
+    ]
   }
 }

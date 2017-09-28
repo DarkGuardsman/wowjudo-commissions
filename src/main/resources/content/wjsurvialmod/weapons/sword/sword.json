@@ -5,6 +5,7 @@
   "meleeWeapon": {
     "name": "sword",
     "id": "wjsurvialmod:sword",
+    "creativeTab": "wowjudo",
     "attack": 3,
     "blocksToBreak": [
       {
