@@ -8,6 +8,7 @@ import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.data.Direction;
 import com.builtbroken.mc.framework.block.imp.IHardnessListener;
+import com.builtbroken.mc.framework.block.imp.IToolListener;
 import com.builtbroken.mc.framework.logic.TileNode;
 import com.builtbroken.mc.imp.transform.vector.BlockPos;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
@@ -30,7 +31,7 @@ import net.minecraftforge.common.config.Configuration;
  * Created by Dark(DarkGuardsman, Robert) on 5/12/2017.
  */
 @TileWrapped(className = "TileEntityWrappedWall")
-public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHardnessListener
+public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHardnessListener, IToolListener
 {
     private float hp = -1;
     private WallMaterial mat_cache;
@@ -56,11 +57,18 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHar
     @Override
     public float getBlockHardness(EntityPlayer player)
     {
+        ///setblock 46 74 258 wjsurvialmod:wjIronWall
         if (!isOwner(player))
         {
             return Short.MAX_VALUE;
         }
-        return getBlockHardness();
+        return 5;
+    }
+
+    @Override
+    public String getBlockHarvestTool(int metadata)
+    {
+        return null;
     }
 
     public WallMaterial getMaterial()
@@ -224,6 +232,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHar
             {
                 material.hpPerType = new float[StructureType.values().length];
                 material.energyPerType = new float[StructureType.values().length];
+                material.weaponDamageScalePerType = new float[StructureType.values().length];
                 for (StructureType type : StructureType.values())
                 {
                     material.hpPerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_HP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 100000, "How many hits of damage does the structure take before being destroyed.");
