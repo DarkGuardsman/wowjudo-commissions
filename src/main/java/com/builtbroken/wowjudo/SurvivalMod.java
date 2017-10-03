@@ -1,11 +1,12 @@
 package com.builtbroken.wowjudo;
 
 import com.builtbroken.mc.api.event.blast.BlastEventDestroyBlock;
+import com.builtbroken.mc.api.tile.node.ITileNodeHost;
 import com.builtbroken.mc.core.Engine;
-import com.builtbroken.mc.lib.helper.LanguageUtility;
+import com.builtbroken.mc.framework.explosive.ExplosiveRegistry;
 import com.builtbroken.mc.framework.mod.AbstractMod;
 import com.builtbroken.mc.framework.mod.AbstractProxy;
-import com.builtbroken.mc.framework.explosive.ExplosiveRegistry;
+import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
 import com.builtbroken.wowjudo.content.crafting.BlockCraftingTable;
@@ -30,6 +31,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -37,6 +39,7 @@ import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -215,6 +218,47 @@ public class SurvivalMod extends AbstractMod
         if (!(tile.getClass().getName().contains("TileEntityWrappedWall")))
         {
             eventBlockEdit.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void clickListener(PlayerInteractEvent event)
+    {
+        if (!event.world.isRemote && !event.entityPlayer.capabilities.isCreativeMode)
+        {
+            //Only do actions with held items
+            ItemStack heldItem = event.entityPlayer.getHeldItem();
+            if (heldItem != null)
+            {
+                //Check if attack tile is our wall
+                TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+                if (tile instanceof ITileNodeHost && ((ITileNodeHost) tile).getTileNode() instanceof TileNodeWall)
+                {
+                    //Get damage of item + player
+                    double damage = event.entityPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+
+                    //Get our wall
+                    TileNodeWall wall = (TileNodeWall) ((ITileNodeHost) tile).getTileNode();
+
+                    //Action is to attack wall
+                    if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK)
+                    {
+                        //Make sure damage is greater than zero
+                        if (damage > 0)
+                        {
+                            TileNodeWall.WallMaterial material = wall.getMaterial();
+                            if (!wall.isOwner(event.entityPlayer))
+                            {
+                                wall.reduceHP((float) (damage * material.getWeaponDamageScale(wall.getStructureType())));
+                            }
+                        }
+                    }
+                    else if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
+                    {
+                        //maybe repair wall?
+                    }
+                }
+            }
         }
     }
 }

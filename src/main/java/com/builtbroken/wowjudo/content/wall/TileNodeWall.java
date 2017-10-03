@@ -7,6 +7,7 @@ import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.data.Direction;
+import com.builtbroken.mc.framework.block.imp.IHardnessListener;
 import com.builtbroken.mc.framework.logic.TileNode;
 import com.builtbroken.mc.imp.transform.vector.BlockPos;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
@@ -17,6 +18,7 @@ import com.builtbroken.wowjudo.content.ex.HPBlockEdit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
@@ -28,7 +30,7 @@ import net.minecraftforge.common.config.Configuration;
  * Created by Dark(DarkGuardsman, Robert) on 5/12/2017.
  */
 @TileWrapped(className = "TileEntityWrappedWall")
-public class TileNodeWall extends TileNode implements IExplosiveDamageable
+public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHardnessListener
 {
     private float hp = -1;
     private WallMaterial mat_cache;
@@ -40,7 +42,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     }
 
     @Override
-    public String uniqueContentID()
+    public String getUniqueID()
     {
         return "structure." + getMaterial().materialName + "." + getStructureType().name().toLowerCase();
     }
@@ -49,6 +51,16 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
     public boolean requiresPerTickUpdate()
     {
         return false;
+    }
+
+    @Override
+    public float getBlockHardness(EntityPlayer player)
+    {
+        if (!isOwner(player))
+        {
+            return Short.MAX_VALUE;
+        }
+        return getBlockHardness();
     }
 
     public WallMaterial getMaterial()
@@ -183,9 +195,9 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
     public enum WallMaterial
     {
-        WOOD("wood", 5, 100),
-        STONE("rock", 25, 100),
-        IRON("iron", 62, 100);
+        WOOD("wood", 5, 100, 0.02f), //weapon that does 3 damage should take 100 hits to kill a wood wall
+        STONE("rock", 25, 100, 0.005f),
+        IRON("iron", 62, 100, 0);
 
         public float hp;
         public float energyCostPerHP;
@@ -195,12 +207,15 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
 
         private float[] hpPerType;
         private float[] energyPerType;
+        private float[] weaponDamageScalePerType;
+        private float weaponDamageScale;
 
-        WallMaterial(String materialName, int hp, float energyCostPerHP)
+        WallMaterial(String materialName, int hp, float energyCostPerHP, float weaponDamageScale)
         {
             this.materialName = materialName;
             this.hp = hp;
             this.energyCostPerHP = energyCostPerHP;
+            this.weaponDamageScale = weaponDamageScale;
         }
 
         public static void loadConfig(Configuration configuration)
@@ -213,6 +228,7 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
                 {
                     material.hpPerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_HP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 100000, "How many hits of damage does the structure take before being destroyed.");
                     material.energyPerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_energyPerHP", material.name().toLowerCase() + "_structures", material.hp * type.multi, 1, 1000000, "How much blast energy does it take to do 1 hp damage.");
+                    material.weaponDamageScalePerType[type.ordinal()] = configuration.getFloat(LanguageUtility.capitalizeFirst(type.name().toLowerCase()) + "_weaponDamageScale", material.name().toLowerCase() + "_structures", material.weaponDamageScale, -1000, 1000, "How much to scale entity and item damage when attacking walls.");
                 }
             }
         }
@@ -229,6 +245,11 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable
         public float getHp(StructureType structureType)
         {
             return hpPerType[structureType.ordinal()];
+        }
+
+        public float getWeaponDamageScale(StructureType structureType)
+        {
+            return weaponDamageScalePerType[structureType.ordinal()];
         }
     }
 
