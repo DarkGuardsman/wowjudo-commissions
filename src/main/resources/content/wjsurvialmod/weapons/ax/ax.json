@@ -9,10 +9,12 @@
     "attack": 2,
     "damageEffects": [
       {
-        "type": "potion",
-        "potion": "bleeding",
-        "duration": 1,
-        "amplifier": 1
+        "type": "effect",
+        "effectID": "bleeding",
+        "data": {
+          "duration:int": 10,
+          "damage:float": 0.1
+        }
       }
     ]
   }
