@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,6 +91,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     @Override
     public void update(long tick)
     {
+        super.update(tick);
         if (isServer())
         {
             //Clear invalid fluids
@@ -101,75 +101,125 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                 tank.drain(Integer.MAX_VALUE, true);
             }
 
-            //Fill tank from input items
-            if (!isFull())
+            //Drain items of fluid
+            drainFluidContainers(BUCKET_INPUT_SLOT, BUCKET_OUTPUT_SLOT);
+
+            //Only run when on
+            if (turnedOn)
             {
-                ItemStack bucketStack = getInventory().getStackInSlot(BUCKET_INPUT_SLOT);
-                if (bucketStack != null)
+                doFuelConsumption(tick);
+
+                //Power devices nearby
+                if (isPowered)
                 {
-                    if (bucketStack.getItem() instanceof IFluidContainerItem)
+                    triggerPowerEffects(tick);
+                    chargeTiles();
+                    chargeItems();
+                }
+            }
+        }
+    }
+
+    protected void triggerPowerEffects(long tick)
+    {
+        if (tick % 90 == 0)
+        {
+            //TODO translate to center of machine
+            world().playAudio("wjsurvialmod:wjPowerGenerator.tick", x(), y() + 1f, z(), 1, 1); //TODO config for volume
+        }
+    }
+
+    protected void chargeTiles()
+    {
+        RadarMap map = TileMapRegistry.getRadarMapForWorld(world().unwrap());
+        List<RadarObject> objects = map.getRadarObjects(xi() + 0.5, zi() + 0.5, powerProviderRange + 3); //TODO center correctly
+        for (RadarObject object : objects)
+        {
+            if (object instanceof RadarTile)
+            {
+                TileEntity tileEntity = ((RadarTile) object).tile;
+                if (tileEntity != null && tileEntity != getHost())
+                {
+                    String className = tileEntity.getClass().getName();
+                    if (supportedTiles.contains(className))
                     {
-                        FluidStack fluidStack = ((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack);
-                        if (bucketStack.stackSize == 1 && fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
-                        {
-                            int room = tank.getCapacity() - tank.getFluidAmount();
-
-                            if (room > 0)
-                            {
-                                //Fill tank
-                                int filled = tank.fill(fluidStack, true);
-
-                                //Drain bucket
-                                ((IFluidContainerItem) bucketStack.getItem()).drain(bucketStack, filled, true);
-
-                                //If empty, eject to output slot
-                                if (((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack) == null)
-                                {
-                                    ItemStack output = getInventory().getStackInSlot(BUCKET_OUTPUT_SLOT);
-                                    if (output == null || InventoryUtility.stacksMatch(bucketStack, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1)
-                                    {
-                                        //Get tank
-                                        IFluidTank tank = getTankForFluid(fluidStack.getFluid());
-
-                                        //Ensure tank is not null and will accept the fluid
-                                        if (tank != null && tank.fill(fluidStack, false) >= fluidStack.amount)
-                                        {
-
-
-                                            //Decrease input
-                                            getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
-
-                                            //Output empty container
-                                            if (output == null)
-                                            {
-                                                output = bucketStack.copy();
-                                            }
-                                            else
-                                            {
-                                                output.stackSize++;
-                                            }
-                                            getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //TODO if containers are stacked, eject containers
-                        }
+                        UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
                     }
-                    else if (FluidContainerRegistry.isFilledContainer(bucketStack))
+                }
+            }
+        }
+    }
+
+    protected void chargeItems()
+    {
+        //Loop to charge all items
+        for(int slot = CHARGE_SLOT_START; slot <= CHARGE_SLOT_END; slot++)
+        {
+            //Get item
+            ItemStack stack = getInventory().getStackInSlot(slot);
+
+            //Only work on items that can handle energy
+            if(stack != null && UniversalEnergySystem.isHandler(stack, ForgeDirection.UNKNOWN))
+            {
+                UniversalEnergySystem.chargeItem(stack, Integer.MAX_VALUE, true);
+            }
+        }
+    }
+
+    protected void doFuelConsumption(long tick)
+    {
+        //Only update power cycle every so many ticks
+        if (tick % delayBetweenRuns == 0)
+        {
+            //Cycle power
+            isPowered = false;
+
+            //Consume full, update power state
+            if (hasFuel())
+            {
+                if (tank.getFluidAmount() > fuelConsumedPerRun)
+                {
+                    isPowered = true;
+                }
+                tank.drain(fuelConsumedPerRun, true);
+            }
+        }
+    }
+
+    /**
+     * Drains the fluid item in the input slot and moves it to the output slot
+     * @param inputSlot
+     * @param outputSlot
+     */
+    protected void drainFluidContainers(int inputSlot, int outputSlot)
+    {
+        //TODO document and move to helper class for reuse
+        //Fill tank from input items
+        if (!isFull())
+        {
+            ItemStack bucketStack = getInventory().getStackInSlot(inputSlot);
+            if (bucketStack != null)
+            {
+                if (bucketStack.getItem() instanceof IFluidContainerItem)
+                {
+                    FluidStack fluidStack = ((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack);
+                    if (bucketStack.stackSize == 1 && fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
                     {
-                        FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(bucketStack);
-                        if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
+                        int room = tank.getCapacity() - tank.getFluidAmount();
+
+                        if (room > 0)
                         {
-                            int room = tank.getCapacity() - tank.getFluidAmount();
-                            if (room >= fluidStack.amount) //Ensure can take entire bucket to prevent issues
+                            //Fill tank
+                            int filled = tank.fill(fluidStack, true);
+
+                            //Drain bucket
+                            ((IFluidContainerItem) bucketStack.getItem()).drain(bucketStack, filled, true);
+
+                            //If empty, eject to output slot
+                            if (((IFluidContainerItem) bucketStack.getItem()).getFluid(bucketStack) == null)
                             {
-                                ItemStack container = FluidContainerRegistry.drainFluidContainer(bucketStack.copy());
-                                ItemStack output = getInventory().getStackInSlot(BUCKET_OUTPUT_SLOT);
-                                if (container != null && (output == null || InventoryUtility.stacksMatch(container, output) && InventoryUtility.roomLeftInSlot(getInventory(), BUCKET_OUTPUT_SLOT) >= 1))
+                                ItemStack output = getInventory().getStackInSlot(outputSlot);
+                                if (output == null || InventoryUtility.stacksMatch(bucketStack, output) && InventoryUtility.roomLeftInSlot(getInventory(), outputSlot) >= 1)
                                 {
                                     //Get tank
                                     IFluidTank tank = getTankForFluid(fluidStack.getFluid());
@@ -177,107 +227,70 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
                                     //Ensure tank is not null and will accept the fluid
                                     if (tank != null && tank.fill(fluidStack, false) >= fluidStack.amount)
                                     {
-                                        //Fill tank
-                                        tank.fill(fluidStack, true);
+
 
                                         //Decrease input
-                                        getInventory().decrStackSize(BUCKET_INPUT_SLOT, 1);
+                                        getInventory().decrStackSize(inputSlot, 1);
 
                                         //Output empty container
                                         if (output == null)
                                         {
-                                            output = container.copy();
+                                            output = bucketStack.copy();
                                         }
                                         else
                                         {
                                             output.stackSize++;
                                         }
-                                        getInventory().setInventorySlotContents(BUCKET_OUTPUT_SLOT, output);
+                                        getInventory().setInventorySlotContents(outputSlot, output);
                                     }
                                 }
                             }
                         }
                     }
-                }
-            }
-
-            //Only run when on
-            if (turnedOn)
-            {
-                //Only update power cycle every so many ticks
-                if (tick % delayBetweenRuns == 0)
-                {
-                    //Cycle power
-                    isPowered = false;
-
-                    //Consume full, update power state
-                    if (hasFuel())
+                    else
                     {
-                        if (tank.getFluidAmount() > fuelConsumedPerRun)
-                        {
-                            isPowered = true;
-                        }
-                        tank.drain(fuelConsumedPerRun, true);
+                        //TODO if containers are stacked, eject containers
                     }
                 }
-
-                //Power devices nearby
-                if (isPowered)
+                else if (FluidContainerRegistry.isFilledContainer(bucketStack))
                 {
-                    if (tick % 90 == 0)
+                    FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(bucketStack);
+                    if (fluidStack != null && fluidStack.getFluid() == SurvivalMod.fuel)
                     {
-                        //TODO translate to center of machine
-                        world().playAudio("wjsurvialmod:wjPowerGenerator.tick", x(), y() + 1f, z(), 1, 1);
-                    }
-
-                    RadarMap map = TileMapRegistry.getRadarMapForWorld(world().unwrap());
-                    List<RadarObject> objects = map.getRadarObjects(xi() + 0.5, zi() + 0.5, powerProviderRange + 3); //TODO center correctly
-                    for (RadarObject object : objects)
-                    {
-                        if (object instanceof RadarTile)
+                        int room = tank.getCapacity() - tank.getFluidAmount();
+                        if (room >= fluidStack.amount) //Ensure can take entire bucket to prevent issues
                         {
-                            TileEntity tileEntity = ((RadarTile) object).tile;
-                            if (tileEntity != null && tileEntity != getHost())
+                            ItemStack container = FluidContainerRegistry.drainFluidContainer(bucketStack.copy());
+                            ItemStack output = getInventory().getStackInSlot(outputSlot);
+                            if (container != null && (output == null || InventoryUtility.stacksMatch(container, output) && InventoryUtility.roomLeftInSlot(getInventory(), outputSlot) >= 1))
                             {
-                                String className = tileEntity.getClass().getName();
-                                if (supportedTiles.contains(className))
+                                //Get tank
+                                IFluidTank tank = getTankForFluid(fluidStack.getFluid());
+
+                                //Ensure tank is not null and will accept the fluid
+                                if (tank != null && tank.fill(fluidStack, false) >= fluidStack.amount)
                                 {
-                                    UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+                                    //Fill tank
+                                    tank.fill(fluidStack, true);
+
+                                    //Decrease input
+                                    getInventory().decrStackSize(inputSlot, 1);
+
+                                    //Output empty container
+                                    if (output == null)
+                                    {
+                                        output = container.copy();
+                                    }
+                                    else
+                                    {
+                                        output.stackSize++;
+                                    }
+                                    getInventory().setInventorySlotContents(outputSlot, output);
                                 }
                             }
                         }
                     }
-
-                    //Loop to charge all items
-                    for(int slot = CHARGE_SLOT_START; slot <= CHARGE_SLOT_END; slot++)
-                    {
-                        //Get item
-                        ItemStack stack = getInventory().getStackInSlot(slot);
-
-                        //Only work on items that can handle energy
-                        if(stack != null && UniversalEnergySystem.isHandler(stack, ForgeDirection.UNKNOWN))
-                        {
-                            UniversalEnergySystem.chargeItem(stack, Integer.MAX_VALUE, true);
-                        }
-                    }
                 }
-            }
-
-            //GUI update
-            if (tick % 3 == 0)
-            {
-                Iterator<EntityPlayer> it = getPlayersUsing().iterator();
-                while (it.hasNext())
-                {
-                    EntityPlayer next = it.next();
-                    if (!(next.openContainer instanceof ContainerPowerGen))
-                    {
-                        it.remove();
-                    }
-                    //TODO if container is open, check it matches this tile
-                }
-                //Sync data to GUI users
-                sendPacketToGuiUsers(getDescPacket());
             }
         }
     }
@@ -377,6 +390,20 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
         NBTTagCompound tag = new NBTTagCompound();
         tank.writeToNBT(tag);
         ByteBufUtils.writeTag(buf, tag);
+    }
+
+    @Override
+    protected void writeGuiPacket(EntityPlayer player, ByteBuf buf)
+    {
+        super.writeGuiPacket(player, buf);
+        writeDescPacket(player, buf);
+    }
+
+    @Override
+    protected void readGuiPacket(EntityPlayer player, ByteBuf buf)
+    {
+        super.readGuiPacket(player, buf);
+        readDescPacket(player, buf);
     }
 
     @Override
