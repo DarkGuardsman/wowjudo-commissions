@@ -7,6 +7,8 @@
     "id": "wjsurvialmod:sentry",
     "creativeTab": "wowjudo",
     "gunID": "wjsurvialmod:sentry",
+    "rotationSpeed" : 15,
+    "targetRange" : 30,
     "energyCostTick": 100,
     "energyBufferSize": 300,
     "bodyWidth": 0.5,
