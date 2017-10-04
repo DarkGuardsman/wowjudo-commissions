@@ -38,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -246,10 +247,20 @@ public class SurvivalMod extends AbstractMod
                         //Make sure damage is greater than zero
                         if (damage > 0)
                         {
-                            TileNodeWall.WallMaterial material = wall.getMaterial();
                             if (!wall.isOwner(event.entityPlayer))
                             {
-                                wall.reduceHP((float) (damage * material.getWeaponDamageScale(wall.getStructureType())));
+                                float attackDamage = (float) (damage * wall.getMaterial().getWeaponDamageScale(wall.getStructureType()));
+
+                                if(Engine.runningAsDev)
+                                {
+                                    event.entityPlayer.addChatComponentMessage(new ChatComponentText("Damage: " + attackDamage));
+                                }
+
+                                if(attackDamage > 0)
+                                {
+                                    wall.reduceHP(attackDamage);
+                                    event.setCanceled(true);
+                                }
                             }
                         }
                     }
