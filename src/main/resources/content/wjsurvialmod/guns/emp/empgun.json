@@ -16,7 +16,7 @@
     "damage": {
       "type": "blast",
       "blast": {
-        "size": 10,
+        "size": 3,
         "id": "emp"
       }
     }
