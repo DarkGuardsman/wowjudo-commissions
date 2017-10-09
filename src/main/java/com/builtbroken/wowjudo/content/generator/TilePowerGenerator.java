@@ -6,7 +6,7 @@ import com.builtbroken.mc.api.tile.provider.ITankProvider;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.framework.energy.UniversalEnergySystem;
-import com.builtbroken.mc.lib.world.map.TileMapRegistry;
+import com.builtbroken.mc.lib.world.map.tile.TileMapRegistry;
 import com.builtbroken.mc.lib.world.map.radar.RadarMap;
 import com.builtbroken.mc.lib.world.map.radar.data.RadarObject;
 import com.builtbroken.mc.lib.world.map.radar.data.RadarTile;
