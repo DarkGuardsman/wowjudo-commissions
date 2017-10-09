@@ -20,6 +20,7 @@ import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
+import com.builtbroken.wowjudo.stats.StatHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -106,6 +107,7 @@ public class SurvivalMod extends AbstractMod
         super.preInit(event);
 
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(StatHandler.INSTANCE);
 
         Engine.requestMultiBlock();
 
