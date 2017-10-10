@@ -16,6 +16,21 @@ public class StatHandler
 {
     public static final String PROPERTY_ID = SurvivalMod.PREFX + "stats";
 
+    //configs
+    public static float SPEED_SCALE = 0.1f;
+    public static int HEALTH_SCALE = 1;
+    public static float DAMAGE_SCALE = 1f;
+    public static float FOOD_SCALE = 1f;
+    public static int ARMOR_SCALE = 1;
+    public static int AIR_SCALE = 1;
+
+    public static int SPEED_MAX = 10;
+    public static int HEALTH_MAX = 10;
+    public static int DAMAGE_MAX = 10;
+    public static int FOOD_MAX = 10;
+    public static int ARMOR_MAX = 10;
+    public static int AIR_MAX = 10;
+
     public static StatHandler INSTANCE = new StatHandler();
 
     public static StatEntityProperty getPropertyForEntity(Entity entity)
