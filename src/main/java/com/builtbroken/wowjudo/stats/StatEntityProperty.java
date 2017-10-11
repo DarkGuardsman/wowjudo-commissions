@@ -1,13 +1,20 @@
 package com.builtbroken.wowjudo.stats;
 
+import com.builtbroken.wowjudo.SurvivalMod;
 import com.google.common.collect.HashMultimap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -16,6 +23,10 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class StatEntityProperty implements IExtendedEntityProperties
 {
     public static final String NBT_HP = "hp";
+    public static final String NBT_SPEED = "speed";
+
+    public static final String ATTR_HP = "stat." + SurvivalMod.DOMAIN + ":hp.max";
+    public static final String ATTR_SPEED = "stat." + SurvivalMod.DOMAIN + ":speed";
 
     public boolean hasChanged = true;
 
@@ -77,26 +88,58 @@ public class StatEntityProperty implements IExtendedEntityProperties
                 hasChanged = false;
 
                 //Clear
-                HashMultimap map = HashMultimap.create();
-                if (healthAttribute != null)
-                {
-                    map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
-                }
-                if (speedAttribute != null)
-                {
-                    map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
-                }
-                entity.getAttributeMap().removeAttributeModifiers(map);
+                removeAttributes();
 
                 //Create
-                healthAttribute = new AttributeModifier("Max Health Stat Modifier", getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
-                speedAttribute = new AttributeModifier("Speed Stat Modifier", getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
+                createAttributes();
 
                 //Apply
-                map.clear();
-                map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
-                map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
-                entity.getAttributeMap().applyAttributeModifiers(map);
+                applyAttributes();
+            }
+        }
+    }
+
+    protected void createAttributes()
+    {
+        healthAttribute = new AttributeModifier(ATTR_HP, getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
+        speedAttribute = new AttributeModifier(ATTR_SPEED, getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
+    }
+
+    protected void applyAttributes()
+    {
+        HashMultimap map = HashMultimap.create();
+        map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
+        map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
+        entity.getAttributeMap().applyAttributeModifiers(map);
+    }
+
+    /**
+     * Clear unconventional to catch attributes with same name but different UUID
+     */
+    protected void removeAttributes()
+    {
+        for (IAttribute attribute : new IAttribute[]{SharedMonsterAttributes.maxHealth, SharedMonsterAttributes.movementSpeed})
+        {
+            removeAttributes(entity.getEntityAttribute(attribute));
+        }
+    }
+
+    protected void removeAttributes(IAttributeInstance attributeInstance)
+    {
+        Collection collection = attributeInstance.func_111122_c();
+
+        if (collection != null)
+        {
+            ArrayList arraylist = new ArrayList(collection);
+            Iterator iterator = arraylist.iterator();
+
+            while (iterator.hasNext())
+            {
+                AttributeModifier attributemodifier = (AttributeModifier) iterator.next();
+                if (attributemodifier.getName().startsWith(SurvivalMod.DOMAIN))
+                {
+                    attributeInstance.removeModifier(attributemodifier);
+                }
             }
         }
     }

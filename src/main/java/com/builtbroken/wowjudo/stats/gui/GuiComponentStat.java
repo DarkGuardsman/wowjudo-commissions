@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo.stats.gui;
 
+import com.builtbroken.mc.client.helpers.Render2DHelper;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.prefab.gui.buttons.GuiButton9px;
 import com.builtbroken.mc.prefab.gui.components.GuiComponentContainer;
@@ -90,5 +91,10 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
     {
         int bars = (max - min);
         int widthPerBar = getWidth() / bars;
+        mc.getTextureManager().bindTexture(GuiStats.texture);
+        for (int i = 0; i < widthPerBar; i++)
+        {
+            Render2DHelper.renderWithRepeatHorizontal(x() + i * widthPerBar, y(), 182, 0, widthPerBar, 9, 2, 2, 3);
+        }
     }
 }

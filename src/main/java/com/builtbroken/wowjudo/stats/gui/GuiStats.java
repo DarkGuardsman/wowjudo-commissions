@@ -1,7 +1,10 @@
 package com.builtbroken.wowjudo.stats.gui;
 
+import com.builtbroken.mc.core.References;
 import com.builtbroken.mc.prefab.gui.screen.GuiScreenBase;
+import com.builtbroken.wowjudo.SurvivalMod;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -9,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class GuiStats extends GuiScreenBase
 {
+    public static ResourceLocation texture = new ResourceLocation(SurvivalMod.DOMAIN, References.GUI_DIRECTORY + "gui_stats.png");
     protected final EntityPlayer player;
 
     protected GuiFrameStats frameStats;
