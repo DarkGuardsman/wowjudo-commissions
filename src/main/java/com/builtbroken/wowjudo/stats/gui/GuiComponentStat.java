@@ -9,6 +9,7 @@ import com.builtbroken.wowjudo.stats.network.PacketStatSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -31,14 +32,14 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
 
     public GuiComponentStat(int id, int x, int y, Color barColor, int packetID)
     {
-        super(id, x, y, 300, 50, "");
+        super(id, x, y, 0, 0, "");
         this.barColor = barColor;
         this.packetID = packetID;
 
         increaseButton = add(GuiButton9px.newPlusButton(0, 0, 0));
-        increaseButton.setRelativePosition(new HugXSide(this, 0, true));
-        decreaseButton = add(GuiButton9px.newPlusButton(0, 0, 0));
-        decreaseButton.setRelativePosition(new HugXSide(this, -GuiButton9px.SIZE, false));
+        increaseButton.setRelativePosition(new HugXSide(this, -GuiButton9px.SIZE, false));
+        decreaseButton = add(GuiButton9px.newMinusButton(1, 0, 0));
+        decreaseButton.setRelativePosition(new HugXSide(this, 0, true));
     }
 
     public EntityPlayer player()
@@ -89,12 +90,24 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
     @Override
     protected void doRender(Minecraft mc, int mouseX, int mouseY)
     {
+        super.doRender(mc, mouseX, mouseY);
+
+        //Calculate box size
         int bars = (max - min);
-        int widthPerBar = getWidth() / bars;
+        int width = (getWidth() - GuiButton9px.SIZE * 2);
+        int widthPerBar = (int) Math.floor(width / (float) bars);
+        int extra = width - (widthPerBar * bars);
+
+        //Set properties
         mc.getTextureManager().bindTexture(GuiStats.texture);
-        for (int i = 0; i < widthPerBar; i++)
+        GL11.glColor3f(barColor.getRed() / 255f, barColor.getGreen() / 255f, barColor.getBlue() / 255f);
+
+        //Render boxes
+        int nextX = x() + GuiButton9px.SIZE + (extra / 2);
+        for (int i = 0; i < bars; i++)
         {
-            Render2DHelper.renderWithRepeatHorizontal(x() + i * widthPerBar, y(), 182, 0, widthPerBar, 9, 2, 2, 3);
+            Render2DHelper.renderWithRepeatHorizontal(nextX, y() + 2, 182, 0, widthPerBar, 5, 2, 2, 3);
+            nextX += widthPerBar;
         }
     }
 }

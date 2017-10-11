@@ -27,8 +27,12 @@ public class GuiStats extends GuiScreenBase
     {
         super.initGui();
         int guiWidth = 200;
-        frameStats = add(new GuiFrameStats(0, (width / 2) - (guiWidth / 2), 100));
+        frameStats = add(new GuiFrameStats(0, (width / 2) - (guiWidth / 2), 25));
         frameStats.setWidth(200);
-        frameStats.setHeight(height - 200);
+        frameStats.setHeight(height - 50);
+
+        frameStats.initGui();
+        frameStats.updatePositions();
+        frameStats.show();
     }
 }
