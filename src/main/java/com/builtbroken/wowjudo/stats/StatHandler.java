@@ -2,7 +2,6 @@ package com.builtbroken.wowjudo.stats;
 
 import com.builtbroken.wowjudo.SurvivalMod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -33,7 +32,7 @@ public class StatHandler
 
     public static StatHandler INSTANCE = new StatHandler();
 
-    public static StatEntityProperty getPropertyForEntity(Entity entity)
+    public static StatEntityProperty getPropertyForEntity(EntityPlayer entity)
     {
         IExtendedEntityProperties prop = entity.getExtendedProperties(PROPERTY_ID);
         if (prop instanceof StatEntityProperty)
@@ -46,10 +45,13 @@ public class StatHandler
     @SubscribeEvent
     public void livingUpdateEvent(LivingEvent.LivingUpdateEvent event)
     {
-        StatEntityProperty property = StatHandler.getPropertyForEntity(event.entity);
-        if (property != null)
+        if(event.entity instanceof EntityPlayer)
         {
-            property.update();
+            StatEntityProperty property = StatHandler.getPropertyForEntity((EntityPlayer) event.entity);
+            if (property != null)
+            {
+                property.update();
+            }
         }
     }
 

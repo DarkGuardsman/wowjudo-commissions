@@ -21,16 +21,17 @@ import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import com.builtbroken.wowjudo.stats.StatHandler;
+import com.builtbroken.wowjudo.stats.command.CommandStat;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
@@ -206,6 +207,15 @@ public class SurvivalMod extends AbstractMod
         {
             fuel = FluidRegistry.LAVA;
         }
+    }
+
+    @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        // Setup command
+        ICommandManager commandManager = FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager();
+        ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
+        serverCommandManager.registerCommand(new CommandStat());
     }
 
     @Override

@@ -70,7 +70,7 @@ public class PacketStatSet implements IPacket
         Entity entity = player.getEntityWorld().getEntityByID(this.entityId);
         if (entity instanceof EntityPlayer)
         {
-            StatEntityProperty property = StatHandler.getPropertyForEntity(entity);
+            StatEntityProperty property = StatHandler.getPropertyForEntity((EntityPlayer) entity);
             if (property != null)
             {
                 switch (id)
