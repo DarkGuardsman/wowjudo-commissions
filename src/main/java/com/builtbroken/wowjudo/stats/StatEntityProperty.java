@@ -136,7 +136,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
             while (iterator.hasNext())
             {
                 AttributeModifier attributemodifier = (AttributeModifier) iterator.next();
-                if (attributemodifier.getName().startsWith(SurvivalMod.DOMAIN))
+                if (attributemodifier.getName().contains(SurvivalMod.DOMAIN))
                 {
                     attributeInstance.removeModifier(attributemodifier);
                 }
