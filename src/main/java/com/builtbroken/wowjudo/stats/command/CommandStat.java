@@ -12,5 +12,6 @@ public class CommandStat extends ModularCommand
     {
         super("stats");
         addCommand(new CommandStatSet());
+        addCommand(new CommandStatGet());
     }
 }

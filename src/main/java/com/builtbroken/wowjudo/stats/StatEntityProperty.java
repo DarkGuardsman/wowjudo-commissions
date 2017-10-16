@@ -88,7 +88,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
                 hasChanged = false;
 
                 //Clear
-                removeAttributes();
+                removeAttributes(); //TODO remove extra hp
 
                 //Create
                 createAttributes();
