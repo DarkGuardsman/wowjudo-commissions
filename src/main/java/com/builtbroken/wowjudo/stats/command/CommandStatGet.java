@@ -4,6 +4,7 @@ import com.builtbroken.mc.core.commands.prefab.SubCommand;
 import com.builtbroken.wowjudo.stats.StatEntityProperty;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
@@ -32,9 +33,21 @@ public class CommandStatGet extends SubCommand
             if (statName.equalsIgnoreCase("all"))
             {
                 sender.addChatMessage(new ChatComponentText("Health level set to " + property.getHpIncrease()
-                        + (player == sender ? "" : " for " + player.getCommandSenderName())));
+                        + (player == sender ? "" : " for " + player.getCommandSenderName())
+                        + " resulting in +"
+                        + property.getHpIncrease() * StatHandler.HEALTH_SCALE
+                        + "hp for a total of "
+                        + player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue()
+
+
+                ));
                 sender.addChatMessage(new ChatComponentText("Speed level set to " + property.getSpeedIncrease()
-                        + (player == sender ? "" : " for " + player.getCommandSenderName())));
+                        + (player == sender ? "" : " for " + player.getCommandSenderName())
+                        + " resulting in +" + property.getSpeedIncrease() * StatHandler.SPEED_SCALE
+                        + "m/s for a total of "
+                        + player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() //TODO format
+
+                ));
             }
             else
             {
