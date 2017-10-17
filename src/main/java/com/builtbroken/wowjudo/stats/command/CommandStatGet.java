@@ -32,22 +32,12 @@ public class CommandStatGet extends SubCommand
         {
             if (statName.equalsIgnoreCase("all"))
             {
-                sender.addChatMessage(new ChatComponentText("Health level set to " + property.getHpIncrease()
-                        + (player == sender ? "" : " for " + player.getCommandSenderName())
-                        + " resulting in +"
-                        + property.getHpIncrease() * StatHandler.HEALTH_SCALE
-                        + "hp for a total of "
-                        + player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue()
-
-
-                ));
-                sender.addChatMessage(new ChatComponentText("Speed level set to " + property.getSpeedIncrease()
-                        + (player == sender ? "" : " for " + player.getCommandSenderName())
-                        + " resulting in +" + property.getSpeedIncrease() * StatHandler.SPEED_SCALE
-                        + "m/s for a total of "
-                        + player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() //TODO format
-
-                ));
+                printHp(sender, property);
+                printArmor(sender, property);
+                printAttack(sender, property);
+                printFood(sender, property);
+                printAir(sender, property);
+                printSpeed(sender, property);
             }
             else
             {
@@ -55,13 +45,20 @@ public class CommandStatGet extends SubCommand
                 {
                     case "hp":
                     case "health":
-                        sender.addChatMessage(new ChatComponentText("Health level set to " + property.getHpIncrease()
-                                + (player == sender ? "" : " for " + player.getCommandSenderName())));
+                        printHp(sender, property);
                         return;
                     case "speed":
-                        sender.addChatMessage(new ChatComponentText("Speed level set to " + property.getSpeedIncrease()
-                                + (player == sender ? "" : " for " + player.getCommandSenderName())));
+                        printSpeed(sender, property);
                         return;
+                    case "damage":
+                    case "attack":
+                        printAttack(sender, property);
+                    case "armor":
+                        printArmor(sender, property);
+                    case "food":
+                        printFood(sender, property);
+                    case "air":
+                        printAir(sender, property);
                     default:
                         sender.addChatMessage(new ChatComponentText("Error: Unknown stat '" + statName + "' either its not implement or doesn't exist"));
                         return;
@@ -73,6 +70,64 @@ public class CommandStatGet extends SubCommand
             sender.addChatMessage(new ChatComponentText("Error: Failed to load stat handler for '" + player.getCommandSenderName() + "' this is a bug"));
         }
     }
+
+    protected void printHp(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Health level set to " + property.getHpIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +"
+                + property.getHpIncrease() * StatHandler.HEALTH_SCALE
+                + "hp for a total of "
+                + property.entity.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue()
+        ));
+    }
+
+    protected void printSpeed(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Speed level set to " + property.getSpeedIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +" + property.getSpeedIncrease() * StatHandler.SPEED_SCALE
+                + "m/s for a total of "
+                + property.entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() //TODO format
+        ));
+    }
+
+    protected void printAttack(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Melee Damage level set to " + property.getMeleeDamageIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +" + property.getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE
+                + " extra damage"
+        ));
+    }
+
+    protected void printArmor(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Armor level set to " + property.getArmorIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +" + property.getArmorIncrease() * StatHandler.ARMOR_SCALE
+                + " extra armor"
+        ));
+    }
+
+    protected void printAir(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Air level set to " + property.getAirIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +" + property.getAirIncrease() * StatHandler.AIR_SCALE
+                + " extra air"
+        ));
+    }
+
+    protected void printFood(ICommandSender sender, StatEntityProperty property)
+    {
+        sender.addChatMessage(new ChatComponentText("Food level set to " + property.getFoodAmountIncrease()
+                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + " resulting in +" + property.getFoodAmountIncrease() * StatHandler.FOOD_SCALE
+                + " extra food"
+        ));
+    }
+
 
     @Override
     public boolean handleConsoleCommand(ICommandSender sender, String[] args)
