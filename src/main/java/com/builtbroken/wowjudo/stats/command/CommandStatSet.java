@@ -168,6 +168,115 @@ public class CommandStatSet extends SubCommand
                         }
                         return true;
                     }
+                    case "attack":
+                    case "damage":
+                    {
+                        prevLevel = property.getMeleeDamageIncrease();
+
+                        if (prevLevel == level)
+                        {
+                            sender.addChatMessage(new ChatComponentText("Ignored: Melee damage was already set to " + level));
+                        }
+                        else
+                        {
+                            property.setMeleeDamageIncrease(level);
+                            newLevel = property.getMeleeDamageIncrease();
+                            if (newLevel == level)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Success: Melee damage changed from " + prevLevel + " to " + newLevel));
+                            }
+                            else if (newLevel < level && newLevel == StatHandler.DAMAGE_MAX)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Warning: Melee damage changed from " + prevLevel + " to " + newLevel + " but limited by max value of " + StatHandler.DAMAGE_MAX));
+                            }
+                            else
+                            {
+                                sender.addChatMessage(new ChatComponentText("Error: Melee damage changed from " + prevLevel + " to " + newLevel + " but was not near expected"));
+                            }
+                        }
+                        return true;
+                    }
+                    case "food":
+                    {
+                        prevLevel = property.getFoodAmountIncrease();
+
+                        if (prevLevel == level)
+                        {
+                            sender.addChatMessage(new ChatComponentText("Ignored: Food level was already set to " + level));
+                        }
+                        else
+                        {
+                            property.setFoodAmountIncrease(level);
+                            newLevel = property.getFoodAmountIncrease();
+                            if (newLevel == level)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Success: Food level changed from " + prevLevel + " to " + newLevel));
+                            }
+                            else if (newLevel < level && newLevel == StatHandler.FOOD_MAX)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Warning: Food level changed from " + prevLevel + " to " + newLevel + " but limited by max value of " + StatHandler.FOOD_MAX));
+                            }
+                            else
+                            {
+                                sender.addChatMessage(new ChatComponentText("Error: Food level changed from " + prevLevel + " to " + newLevel + " but was not near expected"));
+                            }
+                        }
+                        return true;
+                    }
+                    case "armor":
+                    {
+                        prevLevel = property.getArmorIncrease();
+
+                        if (prevLevel == level)
+                        {
+                            sender.addChatMessage(new ChatComponentText("Ignored: Armor level was already set to " + level));
+                        }
+                        else
+                        {
+                            property.setArmorIncrease(level);
+                            newLevel = property.getArmorIncrease();
+                            if (newLevel == level)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Success: Armor level changed from " + prevLevel + " to " + newLevel));
+                            }
+                            else if (newLevel < level && newLevel == StatHandler.ARMOR_MAX)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Warning: Armor level changed from " + prevLevel + " to " + newLevel + " but limited by max value of " + StatHandler.ARMOR_MAX));
+                            }
+                            else
+                            {
+                                sender.addChatMessage(new ChatComponentText("Error: Armor level changed from " + prevLevel + " to " + newLevel + " but was not near expected"));
+                            }
+                        }
+                        return true;
+                    }
+                    case "air":
+                    {
+                        prevLevel = property.getAirIncrease();
+
+                        if (prevLevel == level)
+                        {
+                            sender.addChatMessage(new ChatComponentText("Ignored: Air level was already set to " + level));
+                        }
+                        else
+                        {
+                            property.setAirIncrease(level);
+                            newLevel = property.getAirIncrease();
+                            if (newLevel == level)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Success: Air level changed from " + prevLevel + " to " + newLevel));
+                            }
+                            else if (newLevel < level && newLevel == StatHandler.AIR_MAX)
+                            {
+                                sender.addChatMessage(new ChatComponentText("Warning: Air level changed from " + prevLevel + " to " + newLevel + " but limited by max value of " + StatHandler.AIR_MAX));
+                            }
+                            else
+                            {
+                                sender.addChatMessage(new ChatComponentText("Error: Air level changed from " + prevLevel + " to " + newLevel + " but was not near expected"));
+                            }
+                        }
+                        return true;
+                    }
                     default:
                         sender.addChatMessage(new ChatComponentText("Error: Unknown stat '" + statName + "' either its not implement or doesn't exist"));
                         return true;

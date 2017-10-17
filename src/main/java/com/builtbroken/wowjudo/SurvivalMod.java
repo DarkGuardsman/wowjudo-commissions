@@ -22,6 +22,8 @@ import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.command.CommandStat;
+import com.builtbroken.wowjudo.stats.network.PacketStatSet;
+import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -146,6 +148,9 @@ public class SurvivalMod extends AbstractMod
     {
         super.init(event);
 
+        Engine.packetHandler.packetHandler.addPacket(PacketStatSet.class);
+        Engine.packetHandler.packetHandler.addPacket(PacketStatUpdate.class);
+
         //Load customization configs
         TileNodeWall.WallMaterial.loadConfig(getConfig());
         TileEntityExplosive.BLAST_SIZE = getConfig().getFloat("size", "C4_Tile", TileEntityExplosive.BLAST_SIZE, 0, 1000, "Size of the blast in meters/blocks");
@@ -172,7 +177,7 @@ public class SurvivalMod extends AbstractMod
     {
         super.postInit(event);
 
-        //Food
+        //Food TODO move to JSON
         TileEntityCampfire.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
         TileEntityCampfire.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
         TileEntityCampfire.addRecipe(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);

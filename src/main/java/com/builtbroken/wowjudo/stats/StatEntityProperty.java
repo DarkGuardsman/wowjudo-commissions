@@ -1,6 +1,8 @@
 package com.builtbroken.wowjudo.stats;
 
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.wowjudo.SurvivalMod;
+import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import com.google.common.collect.HashMultimap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -8,6 +10,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -17,11 +20,14 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
+ * Handles stat modifications for the player
+ *
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
  * Created by Dark(DarkGuardsman, Robert) on 10/9/2017.
  */
 public class StatEntityProperty implements IExtendedEntityProperties
 {
+    //NBT keys
     public static final String NBT_HP = "hp";
     public static final String NBT_SPEED = "speed";
     public static final String NBT_MEELE = "melee";
@@ -29,12 +35,13 @@ public class StatEntityProperty implements IExtendedEntityProperties
     public static final String NBT_ARMOR = "armor";
     public static final String NBT_AIR = "air";
 
+    //Entity Attribute keys
     public static final String ATTR_HP = "stat." + SurvivalMod.DOMAIN + ":hp.max";
     public static final String ATTR_SPEED = "stat." + SurvivalMod.DOMAIN + ":speed";
     public static final String ATTR_ATTACK = "stat." + SurvivalMod.DOMAIN + ":damage.melee";
 
-    public boolean hasChanged = true;
 
+    //Levels
     private int hpIncrease = 0;
     private int speedIncrease = 0;
     private int meleeDamage = 0;
@@ -42,11 +49,13 @@ public class StatEntityProperty implements IExtendedEntityProperties
     private int armorIncrease = 0;
     private int airIncrease = 0;
 
+    //Attribute instances
     AttributeModifier healthAttribute;
     AttributeModifier speedAttribute;
     AttributeModifier attackAttribute;
 
-    public EntityPlayer entity;
+    public EntityPlayer entityPlayer;
+    public boolean hasChanged = true;
 
     @Override
     public void saveNBTData(NBTTagCompound compound)
@@ -84,13 +93,13 @@ public class StatEntityProperty implements IExtendedEntityProperties
     {
         if (entity instanceof EntityPlayer)
         {
-            this.entity = (EntityPlayer) entity;
+            this.entityPlayer = (EntityPlayer) entity;
         }
     }
 
     public void update()
     {
-        if (entity != null)
+        if (entityPlayer != null)
         {
             //Handle chance of more points being allocated then possible
             if (getPointsUsed() > getMaxPointUsed())
@@ -104,13 +113,31 @@ public class StatEntityProperty implements IExtendedEntityProperties
                 hasChanged = false;
 
                 //Clear
-                removeAttributes(); //TODO remove extra hp
+                removeAttributes();
 
                 //Create
                 createAttributes();
 
                 //Apply
                 applyAttributes();
+
+                if (!(entityPlayer.foodStats instanceof FoodStatOverride))
+                {
+                    StatHandler.overrideFoodStats(entityPlayer);
+                }
+
+                if (entityPlayer.foodStats instanceof FoodStatOverride)
+                {
+                    ((FoodStatOverride) entityPlayer.foodStats).setMaxFoodLevel(FoodStatOverride.MAX_FOOD_DEFAULT + foodAmount * StatHandler.FOOD_SCALE);
+                }
+
+                //TODO remove extra hp if over max
+
+                //TODO send update packet
+                if (!entityPlayer.worldObj.isRemote && entityPlayer instanceof EntityPlayerMP)
+                {
+                    Engine.packetHandler.sendToPlayer(new PacketStatUpdate(entityPlayer), (EntityPlayerMP) entityPlayer);
+                }
             }
         }
     }
@@ -128,7 +155,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
         map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
         map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
         map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), attackAttribute);
-        entity.getAttributeMap().applyAttributeModifiers(map);
+        entityPlayer.getAttributeMap().applyAttributeModifiers(map);
     }
 
     /**
@@ -138,7 +165,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
     {
         for (IAttribute attribute : new IAttribute[]{SharedMonsterAttributes.maxHealth, SharedMonsterAttributes.movementSpeed})
         {
-            removeAttributes(entity.getEntityAttribute(attribute));
+            removeAttributes(entityPlayer.getEntityAttribute(attribute));
         }
     }
 
@@ -188,7 +215,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     public int getMaxPointUsed()
     {
-        return entity.experienceLevel;
+        return entityPlayer.experienceLevel;
     }
 
     public int getHpIncrease()

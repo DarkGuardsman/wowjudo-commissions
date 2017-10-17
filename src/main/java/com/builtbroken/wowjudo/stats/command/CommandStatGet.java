@@ -1,6 +1,7 @@
 package com.builtbroken.wowjudo.stats.command;
 
 import com.builtbroken.mc.core.commands.prefab.SubCommand;
+import com.builtbroken.wowjudo.stats.FoodStatOverride;
 import com.builtbroken.wowjudo.stats.StatEntityProperty;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import net.minecraft.command.ICommandSender;
@@ -74,28 +75,28 @@ public class CommandStatGet extends SubCommand
     protected void printHp(ICommandSender sender, StatEntityProperty property)
     {
         sender.addChatMessage(new ChatComponentText("Health level set to " + property.getHpIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
                 + " resulting in +"
                 + property.getHpIncrease() * StatHandler.HEALTH_SCALE
                 + "hp for a total of "
-                + property.entity.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue()
+                + property.entityPlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue()
         ));
     }
 
     protected void printSpeed(ICommandSender sender, StatEntityProperty property)
     {
         sender.addChatMessage(new ChatComponentText("Speed level set to " + property.getSpeedIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
-                + " resulting in +" + property.getSpeedIncrease() * StatHandler.SPEED_SCALE
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
+                + " resulting in +" + String.format("%.2f", property.getSpeedIncrease() * StatHandler.SPEED_SCALE)
                 + "m/s for a total of "
-                + property.entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() //TODO format
+                + String.format("%.2f", property.entityPlayer.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue()) //TODO format
         ));
     }
 
     protected void printAttack(ICommandSender sender, StatEntityProperty property)
     {
         sender.addChatMessage(new ChatComponentText("Melee Damage level set to " + property.getMeleeDamageIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
                 + " resulting in +" + property.getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE
                 + " extra damage"
         ));
@@ -104,7 +105,7 @@ public class CommandStatGet extends SubCommand
     protected void printArmor(ICommandSender sender, StatEntityProperty property)
     {
         sender.addChatMessage(new ChatComponentText("Armor level set to " + property.getArmorIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
                 + " resulting in +" + property.getArmorIncrease() * StatHandler.ARMOR_SCALE
                 + " extra armor"
         ));
@@ -113,7 +114,7 @@ public class CommandStatGet extends SubCommand
     protected void printAir(ICommandSender sender, StatEntityProperty property)
     {
         sender.addChatMessage(new ChatComponentText("Air level set to " + property.getAirIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
                 + " resulting in +" + property.getAirIncrease() * StatHandler.AIR_SCALE
                 + " extra air"
         ));
@@ -121,11 +122,15 @@ public class CommandStatGet extends SubCommand
 
     protected void printFood(ICommandSender sender, StatEntityProperty property)
     {
-        sender.addChatMessage(new ChatComponentText("Food level set to " + property.getFoodAmountIncrease()
-                + (property.entity == sender ? "" : " for " + property.entity.getCommandSenderName())
-                + " resulting in +" + property.getFoodAmountIncrease() * StatHandler.FOOD_SCALE
-                + " extra food"
-        ));
+        String message = "Food level set to " + property.getFoodAmountIncrease()
+                + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
+                + " resulting in +" + property.getFoodAmountIncrease() * StatHandler.FOOD_SCALE;
+        if (property.entityPlayer.foodStats instanceof FoodStatOverride)
+        {
+            message += " for a total of "
+                    + ((FoodStatOverride) property.entityPlayer.foodStats).maxFoodLevel;
+        }
+        sender.addChatMessage(new ChatComponentText(message));
     }
 
 
