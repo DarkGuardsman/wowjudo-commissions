@@ -16,7 +16,7 @@ public class StatHandler
     public static final String PROPERTY_ID = SurvivalMod.PREFX + "stats";
 
     //configs
-    public static float SPEED_SCALE = 0.1f;
+    public static float SPEED_SCALE = 0.05f;
     public static int HEALTH_SCALE = 1;
     public static float DAMAGE_SCALE = 1f;
     public static float FOOD_SCALE = 1f;

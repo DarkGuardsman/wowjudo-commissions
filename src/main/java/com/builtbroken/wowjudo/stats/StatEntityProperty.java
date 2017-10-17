@@ -24,14 +24,19 @@ public class StatEntityProperty implements IExtendedEntityProperties
 {
     public static final String NBT_HP = "hp";
     public static final String NBT_SPEED = "speed";
+    public static final String NBT_MEELE = "melee";
+    public static final String NBT_FOOD = "food";
+    public static final String NBT_ARMOR = "armor";
+    public static final String NBT_AIR = "air";
 
     public static final String ATTR_HP = "stat." + SurvivalMod.DOMAIN + ":hp.max";
     public static final String ATTR_SPEED = "stat." + SurvivalMod.DOMAIN + ":speed";
+    public static final String ATTR_ATTACK = "stat." + SurvivalMod.DOMAIN + ":damage.melee";
 
     public boolean hasChanged = true;
 
-    private int hpIncrease = 10;
-    private int speedIncrease = 10;
+    private int hpIncrease = 0;
+    private int speedIncrease = 0;
     private int meleeDamage = 0;
     private int foodAmount = 0;
     private int armorIncrease = 0;
@@ -39,6 +44,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     AttributeModifier healthAttribute;
     AttributeModifier speedAttribute;
+    AttributeModifier attackAttribute;
 
     public EntityPlayer entity;
 
@@ -48,7 +54,11 @@ public class StatEntityProperty implements IExtendedEntityProperties
         NBTTagCompound save = new NBTTagCompound();
 
         save.setInteger(NBT_HP, getHpIncrease());
-
+        save.setInteger(NBT_SPEED, getSpeedIncrease());
+        save.setInteger(NBT_MEELE, getMeleeDamageIncrease());
+        save.setInteger(NBT_FOOD, getFoodAmountIncrease());
+        save.setInteger(NBT_ARMOR, getArmorIncrease());
+        save.setInteger(NBT_AIR, getAirIncrease());
 
         compound.setTag(StatHandler.PROPERTY_ID, save);
     }
@@ -59,7 +69,13 @@ public class StatEntityProperty implements IExtendedEntityProperties
         if (compound.hasKey(StatHandler.PROPERTY_ID, 10))
         {
             NBTTagCompound save = compound.getCompoundTag(StatHandler.PROPERTY_ID);
+
             setHpIncrease(save.getInteger(NBT_HP));
+            setSpeedIncrease(save.getInteger(NBT_SPEED));
+            setMeleeDamageIncrease(save.getInteger(NBT_MEELE));
+            setFoodAmountIncrease(save.getInteger(NBT_FOOD));
+            setArmorIncrease(save.getInteger(NBT_ARMOR));
+            setAirIncrease(save.getInteger(NBT_AIR));
         }
     }
 
@@ -103,6 +119,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
     {
         healthAttribute = new AttributeModifier(ATTR_HP, getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
         speedAttribute = new AttributeModifier(ATTR_SPEED, getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
+        attackAttribute = new AttributeModifier(ATTR_ATTACK, getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE, 0);
     }
 
     protected void applyAttributes()
@@ -110,6 +127,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
         HashMultimap map = HashMultimap.create();
         map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
         map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
+        map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), attackAttribute);
         entity.getAttributeMap().applyAttributeModifiers(map);
     }
 
@@ -144,15 +162,21 @@ public class StatEntityProperty implements IExtendedEntityProperties
         }
     }
 
-    public void reset()
+    public boolean reset()
     {
         setHpIncrease(0);
         setSpeedIncrease(0);
-        setMeleeDamage(0);
-        setFoodAmount(0);
+        setMeleeDamageIncrease(0);
+        setFoodAmountIncrease(0);
         setArmorIncrease(0);
         setAirIncrease(0);
         hasChanged = true;
+        return getHpIncrease() == 0
+                && getSpeedIncrease() == 0
+                && getMeleeDamageIncrease() == 0
+                && getFoodAmountIncrease() == 0
+                && getArmorIncrease() == 0
+                && getAirIncrease() == 0;
     }
 
     public int getPointsUsed()
@@ -195,12 +219,12 @@ public class StatEntityProperty implements IExtendedEntityProperties
         }
     }
 
-    public int getMeleeDamage()
+    public int getMeleeDamageIncrease()
     {
         return meleeDamage;
     }
 
-    public void setMeleeDamage(int value)
+    public void setMeleeDamageIncrease(int value)
     {
         if (value != meleeDamage && value >= 0)
         {
@@ -209,12 +233,12 @@ public class StatEntityProperty implements IExtendedEntityProperties
         }
     }
 
-    public int getFoodAmount()
+    public int getFoodAmountIncrease()
     {
         return foodAmount;
     }
 
-    public void setFoodAmount(int value)
+    public void setFoodAmountIncrease(int value)
     {
         if (value != foodAmount && value >= 0)
         {

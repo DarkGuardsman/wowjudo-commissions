@@ -85,10 +85,10 @@ public class PacketStatSet implements IPacket
                         property.setSpeedIncrease(value);
                         break;
                     case DAMAGE:
-                        property.setMeleeDamage(value);
+                        property.setMeleeDamageIncrease(value);
                         break;
                     case FOOD:
-                        property.setFoodAmount(value);
+                        property.setFoodAmountIncrease(value);
                         break;
                     case ARMOR:
                         property.setArmorIncrease(value);
