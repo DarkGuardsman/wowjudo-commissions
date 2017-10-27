@@ -8,6 +8,7 @@ import com.builtbroken.mc.prefab.gui.pos.size.GuiRelativeSize;
 import com.builtbroken.wowjudo.stats.StatEntityProperty;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.network.PacketStatSet;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.awt.*;
@@ -24,6 +25,11 @@ public class GuiFrameStats extends GuiFrame<GuiFrameStats>
     GuiComponentStat foodStat;
     GuiComponentStat armorStat;
     GuiComponentStat airStat;
+
+    private int valueUpdateCounter = 0;
+
+    public int maxStatPoints = 0;
+    public int currentPointsUsed = 0;
 
     public GuiFrameStats(int id, int x, int y)
     {
@@ -46,10 +52,10 @@ public class GuiFrameStats extends GuiFrame<GuiFrameStats>
 
         healthStat = addStat(0, x, (index++) * y_spacer + 10, PacketStatSet.HEALTH, Color.RED);
         armorStat = addStat(1, x, (index++) * y_spacer + 10, PacketStatSet.ARMOR, Color.BLUE);
-        damageStat = addStat(2, x, (index++) * y_spacer + 10, PacketStatSet.SPEED, Color.MAGENTA);
+        damageStat = addStat(2, x, (index++) * y_spacer + 10, PacketStatSet.DAMAGE, Color.MAGENTA);
         speedStat = addStat(3, x, (index++) * y_spacer + 10, PacketStatSet.SPEED, Color.YELLOW);
-        foodStat = addStat(4, x, (index++) * y_spacer + 10, PacketStatSet.SPEED, Color.GREEN);
-        airStat = addStat(5, x, (index++) * y_spacer + 10, PacketStatSet.SPEED, Color.CYAN);
+        foodStat = addStat(4, x, (index++) * y_spacer + 10, PacketStatSet.FOOD, Color.GREEN);
+        airStat = addStat(5, x, (index++) * y_spacer + 10, PacketStatSet.AIR, Color.CYAN);
 
         index = 0;
         x = 3;
@@ -61,6 +67,17 @@ public class GuiFrameStats extends GuiFrame<GuiFrameStats>
         addLabel("Air:", x, (index++) * y_spacer + 10);
 
         updateValues();
+    }
+
+    @Override
+    protected void update(Minecraft mc, int mouseX, int mouseY)
+    {
+        super.update(mc, mouseX, mouseY);
+        if (valueUpdateCounter++ >= 120) //TODO check that mouse is not over buttons
+        {
+            valueUpdateCounter = 0;
+            //updateValues();
+        }
     }
 
     protected void addLabel(String name, int x, int y)
@@ -82,8 +99,40 @@ public class GuiFrameStats extends GuiFrame<GuiFrameStats>
         StatEntityProperty property = StatHandler.getPropertyForEntity(player());
         if (property != null)
         {
+            maxStatPoints = player().experienceLevel;
+
             healthStat.setLimits(0, StatHandler.HEALTH_MAX);
+            speedStat.setLimits(0, StatHandler.SPEED_MAX);
+            damageStat.setLimits(0, StatHandler.DAMAGE_MAX);
+            foodStat.setLimits(0, StatHandler.FOOD_MAX);
+            armorStat.setLimits(0, StatHandler.ARMOR_MAX);
+            airStat.setLimits(0, StatHandler.AIR_MAX);
+
             healthStat.setValue(property.getHpIncrease());
+            speedStat.setValue(property.getSpeedIncrease());
+            damageStat.setValue(property.getMeleeDamageIncrease());
+            foodStat.setValue(property.getFoodAmountIncrease());
+            armorStat.setValue(property.getArmorIncrease());
+            airStat.setValue(property.getAirIncrease());
+        }
+
+        if (currentPointsUsed >= maxStatPoints)
+        {
+            healthStat.disable();
+            speedStat.disable();
+            damageStat.disable();
+            foodStat.disable();
+            armorStat.disable();
+            airStat.disable();
+        }
+        else
+        {
+            healthStat.enable();
+            speedStat.enable();
+            damageStat.enable();
+            foodStat.enable();
+            armorStat.enable();
+            airStat.enable();
         }
     }
 

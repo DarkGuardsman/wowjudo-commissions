@@ -52,6 +52,7 @@ public class PacketStatUpdate implements IPacket
         buffer.writeInt(entityId);
 
         buffer.writeInt(hpIncrease);
+        buffer.writeInt(speedIncrease);
         buffer.writeInt(meleeDamage);
         buffer.writeInt(foodAmount);
         buffer.writeInt(armorIncrease);
@@ -75,6 +76,12 @@ public class PacketStatUpdate implements IPacket
     public void handleClientSide(EntityPlayer player)
     {
         Entity entity = player.getEntityWorld().getEntityByID(this.entityId);
+
+        if (Engine.runningAsDev)
+        {
+            SurvivalMod.logger.info("PacketStatRequest: " + entity);
+        }
+
         if (entity instanceof EntityPlayer)
         {
             StatEntityProperty property = StatHandler.getPropertyForEntity((EntityPlayer) entity);

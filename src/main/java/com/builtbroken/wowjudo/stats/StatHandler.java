@@ -2,12 +2,18 @@ package com.builtbroken.wowjudo.stats;
 
 import com.builtbroken.wowjudo.SurvivalMod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -34,6 +40,9 @@ public class StatHandler
 
     public static StatHandler INSTANCE = new StatHandler();
 
+    HashMap<UUID, XpCacheObject> xpCache = new HashMap();
+    HashMap<UUID, StatEntityProperty> propCache = new HashMap();
+
     public static StatEntityProperty getPropertyForEntity(EntityPlayer entity)
     {
         IExtendedEntityProperties prop = entity.getExtendedProperties(PROPERTY_ID);
@@ -54,6 +63,76 @@ public class StatHandler
             {
                 property.update();
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void livingDamageEvent(LivingHurtEvent event)
+    {
+        if (event.entity instanceof EntityPlayer
+                && !event.entity.isEntityInvulnerable()
+                && !event.source.isDamageAbsolute()
+                && !event.source.isUnblockable())
+        {
+            EntityPlayer player = (EntityPlayer) event.entity;
+            StatEntityProperty property = StatHandler.getPropertyForEntity(player);
+            if (property != null)
+            {
+                int armor = property.getArmorIncrease() * ARMOR_SCALE;
+                if (armor > 0)
+                {
+                    int reductionRatio = 25 - armor; //TODO add config to scale, TODO remove magic number 25
+                    event.ammount = event.ammount * (float) reductionRatio;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void livingDeathEvent(LivingDeathEvent event)
+    {
+        if (event.entity instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) event.entity;
+
+            //Collect xp
+            XpCacheObject object = new XpCacheObject();
+            object.level = player.experienceLevel;
+            object.totalXp = player.experienceTotal;
+            object.xp = player.experience;
+            xpCache.put(player.getGameProfile().getId(), object);
+
+            //Clear xp
+            player.experienceTotal = 0;
+            player.experience = 0;
+            player.experienceLevel = 0;
+
+            //cache property
+            propCache.put(player.getGameProfile().getId(), getPropertyForEntity(player));
+        }
+    }
+
+    @SubscribeEvent
+    public void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event)
+    {
+        EntityPlayer player = event.player;
+        UUID uuid = player.getGameProfile().getId();
+        if (xpCache.containsKey(uuid))
+        {
+            XpCacheObject object = xpCache.get(uuid);
+            event.player.experience = object.xp;
+            event.player.experienceLevel = object.level;
+            event.player.experienceTotal = object.totalXp;
+            xpCache.remove(uuid);
+        }
+
+        if (propCache.containsKey(uuid))
+        {
+            StatEntityProperty property = propCache.get(uuid);
+            propCache.remove(uuid);
+
+            StatEntityProperty newProperty = getPropertyForEntity(event.player);
+            newProperty.copyData(property);
         }
     }
 
@@ -92,5 +171,14 @@ public class StatHandler
             return true;
         }
         return false;
+    }
+
+
+
+    protected static final class XpCacheObject
+    {
+        public float xp;
+        public int totalXp;
+        public int level;
     }
 }

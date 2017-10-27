@@ -4,6 +4,7 @@ import com.builtbroken.mc.core.Engine;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import com.google.common.collect.HashMultimap;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -57,6 +58,9 @@ public class StatEntityProperty implements IExtendedEntityProperties
     public EntityPlayer entityPlayer;
     public boolean hasChanged = true;
 
+    private boolean headInWater = false;
+    private boolean headPreviousInWater = false;
+
     @Override
     public void saveNBTData(NBTTagCompound compound)
     {
@@ -99,8 +103,21 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     public void update()
     {
-        if (entityPlayer != null)
+        if (entityPlayer != null && entityPlayer.isEntityAlive())
         {
+            //Check if player head in water
+            if (entityPlayer.isInsideOfMaterial(Material.water))
+            {
+                headInWater = true;
+            }
+
+            //If head in water but not last tick
+            if (headInWater && !headPreviousInWater)
+            {
+                //Increase default air supply
+                entityPlayer.setAir(entityPlayer.getAir() + getAirIncrease() * StatHandler.AIR_SCALE);
+            }
+
             //Handle chance of more points being allocated then possible
             if (getPointsUsed() > getMaxPointUsed())
             {
@@ -139,6 +156,8 @@ public class StatEntityProperty implements IExtendedEntityProperties
                     Engine.packetHandler.sendToPlayer(new PacketStatUpdate(entityPlayer), (EntityPlayerMP) entityPlayer);
                 }
             }
+
+            headPreviousInWater = headInWater;
         }
     }
 
@@ -209,6 +228,13 @@ public class StatEntityProperty implements IExtendedEntityProperties
     public int getPointsUsed()
     {
         int points = 0;
+
+        points += getHpIncrease();
+        points += getSpeedIncrease();
+        points += getMeleeDamageIncrease();
+        points += getFoodAmountIncrease();
+        points += getArmorIncrease();
+        points += getAirIncrease();
 
         return points;
     }
@@ -300,5 +326,16 @@ public class StatEntityProperty implements IExtendedEntityProperties
             this.airIncrease = value;
             hasChanged = true;
         }
+    }
+
+    public void copyData(StatEntityProperty property)
+    {
+        hpIncrease = property.hpIncrease;
+        speedIncrease = property.speedIncrease;
+        meleeDamage = property.meleeDamage;
+        foodAmount = property.foodAmount;
+        armorIncrease = property.armorIncrease;
+        airIncrease = property.airIncrease;
+        hasChanged = true;
     }
 }

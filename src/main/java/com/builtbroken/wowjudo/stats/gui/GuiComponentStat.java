@@ -42,6 +42,12 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
         decreaseButton.setRelativePosition(new HugXSide(this, 0, true));
     }
 
+    @Override
+    protected void update(Minecraft mc, int mouseX, int mouseY)
+    {
+        super.update(mc, mouseX, mouseY);
+    }
+
     public EntityPlayer player()
     {
         if (getHost() instanceof GuiStats)
@@ -56,12 +62,36 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
     {
         if (button == increaseButton)
         {
+            //Enable decrease
+            decreaseButton.enable();
+
+            //Update value
             value = Math.min(max, value + 1);
+
+            //Disable button if limit hit
+            if(value == max)
+            {
+                increaseButton.disable();
+            }
+
+            //Update server
             syncToServer();
         }
         else if (button == decreaseButton)
         {
+            //Enable increase button
+            increaseButton.enable();
+
+            //Update value
             value = Math.max(min, value - 1);
+
+            //Disable button if limit hit
+            if(value == min)
+            {
+                decreaseButton.disable();
+            }
+
+            //Update server
             syncToServer();
         }
     }
@@ -100,12 +130,19 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
 
         //Set properties
         mc.getTextureManager().bindTexture(GuiStats.texture);
-        GL11.glColor3f(barColor.getRed() / 255f, barColor.getGreen() / 255f, barColor.getBlue() / 255f);
 
         //Render boxes
         int nextX = x() + GuiButton9px.SIZE + (extra / 2);
         for (int i = 0; i < bars; i++)
         {
+            if(i <= value)
+            {
+                GL11.glColor3f(barColor.getRed() / 255f, barColor.getGreen() / 255f, barColor.getBlue() / 255f);
+            }
+            else
+            {
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+            }
             Render2DHelper.renderWithRepeatHorizontal(nextX, y() + 2, 182, 0, widthPerBar, 5, 2, 2, 3);
             nextX += widthPerBar;
         }

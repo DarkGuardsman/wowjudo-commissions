@@ -68,6 +68,12 @@ public class PacketStatSet implements IPacket
     public void handleServerSide(EntityPlayer player)
     {
         Entity entity = player.getEntityWorld().getEntityByID(this.entityId);
+
+        if (Engine.runningAsDev)
+        {
+            SurvivalMod.logger.info("PacketStatSet: " + entity + "  " + id + "  " + value);
+        }
+
         if (entity instanceof EntityPlayer)
         {
             StatEntityProperty property = StatHandler.getPropertyForEntity((EntityPlayer) entity);

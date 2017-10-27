@@ -1,8 +1,10 @@
 package com.builtbroken.wowjudo.stats.gui;
 
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.core.References;
 import com.builtbroken.mc.prefab.gui.screen.GuiScreenBase;
 import com.builtbroken.wowjudo.SurvivalMod;
+import com.builtbroken.wowjudo.stats.network.PacketStatRequest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -34,5 +36,7 @@ public class GuiStats extends GuiScreenBase
         frameStats.initGui();
         frameStats.updatePositions();
         frameStats.show();
+
+        Engine.packetHandler.sendToServer(new PacketStatRequest());
     }
 }

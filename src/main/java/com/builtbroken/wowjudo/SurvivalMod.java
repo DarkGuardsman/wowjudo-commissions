@@ -22,6 +22,7 @@ import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.command.CommandStat;
+import com.builtbroken.wowjudo.stats.network.PacketStatRequest;
 import com.builtbroken.wowjudo.stats.network.PacketStatSet;
 import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -111,6 +112,7 @@ public class SurvivalMod extends AbstractMod
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(StatHandler.INSTANCE);
+        FMLCommonHandler.instance().bus().register(StatHandler.INSTANCE);
 
         Engine.requestMultiBlock();
 
@@ -150,6 +152,7 @@ public class SurvivalMod extends AbstractMod
 
         Engine.packetHandler.packetHandler.addPacket(PacketStatSet.class);
         Engine.packetHandler.packetHandler.addPacket(PacketStatUpdate.class);
+        Engine.packetHandler.packetHandler.addPacket(PacketStatRequest.class);
 
         //Load customization configs
         TileNodeWall.WallMaterial.loadConfig(getConfig());
