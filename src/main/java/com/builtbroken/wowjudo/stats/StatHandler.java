@@ -28,7 +28,7 @@ public class StatHandler
     public static int HEALTH_SCALE = 1;
     public static float DAMAGE_SCALE = 1f;
     public static int FOOD_SCALE = 1;
-    public static int ARMOR_SCALE = 1;
+    public static float ARMOR_DAMAGE_REDUCTION_SCALE = .01f;
     public static int AIR_SCALE = 1;
 
     public static int SPEED_MAX = 10;
@@ -78,11 +78,11 @@ public class StatHandler
             StatEntityProperty property = StatHandler.getPropertyForEntity(player);
             if (property != null)
             {
-                int armor = property.getArmorIncrease() * ARMOR_SCALE;
+                int armor = property.getArmorIncrease();
                 if (armor > 0)
                 {
-                    int reductionRatio = 25 - armor; //TODO add config to scale, TODO remove magic number 25
-                    event.ammount = event.ammount * (float) reductionRatio;
+                    float damageReduction = armor * ARMOR_DAMAGE_REDUCTION_SCALE;
+                    event.ammount -= event.ammount * damageReduction;
                 }
             }
         }
@@ -172,7 +172,6 @@ public class StatHandler
         }
         return false;
     }
-
 
 
     protected static final class XpCacheObject

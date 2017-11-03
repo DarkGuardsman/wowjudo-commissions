@@ -106,8 +106,8 @@ public class CommandStatGet extends SubCommand
     {
         sender.addChatMessage(new ChatComponentText("Armor level set to " + property.getArmorIncrease()
                 + (property.entityPlayer == sender ? "" : " for " + property.entityPlayer.getCommandSenderName())
-                + " resulting in +" + property.getArmorIncrease() * StatHandler.ARMOR_SCALE
-                + " extra armor"
+                + " resulting in +" + property.getArmorIncrease() * StatHandler.ARMOR_DAMAGE_REDUCTION_SCALE
+                + "% damage reduction"
         ));
     }
 
