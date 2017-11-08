@@ -39,7 +39,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingTable.class, new TileEntityRenderCraftingTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileWrapperDualFurnace.class, new TESRDualFurnace());
 
-        openGuiKey = new KeyBinding("Open stats GUI", Keyboard.KEY_N, SurvivalMod.DOMAIN);
+        openGuiKey = new KeyBinding("key." + SurvivalMod.DOMAIN + ":gui.stats.open", Keyboard.KEY_Y, "itemGroup." + SurvivalMod.DOMAIN);
         ClientRegistry.registerKeyBinding(openGuiKey);
 
         FMLCommonHandler.instance().bus().register(this);

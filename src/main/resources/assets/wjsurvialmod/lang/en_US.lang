@@ -1,4 +1,6 @@
-itemGroup.wowjudo=WJ's Survial Mod
+itemGroup.wjsurvialmod=WJ's Survival Mod
+
+key.wjsurvialmod:gui.stats.open=Open Stats GUI
 
 item.wjsurvialmod:explosiveRemote.name=C4 Remote
 

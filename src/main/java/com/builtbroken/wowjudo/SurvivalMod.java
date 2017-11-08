@@ -94,7 +94,7 @@ public class SurvivalMod extends AbstractMod
     public SurvivalMod()
     {
         super(SurvivalMod.DOMAIN);
-        creativeTab = new CreativeTabs("wowjudo")
+        creativeTab = new CreativeTabs(DOMAIN)
         {
             @SideOnly(Side.CLIENT)
             public Item getTabIconItem()
@@ -109,6 +109,7 @@ public class SurvivalMod extends AbstractMod
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+        super.fireProxyPreInit = false;
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(StatHandler.INSTANCE);
@@ -137,7 +138,7 @@ public class SurvivalMod extends AbstractMod
         MinecraftForge.EVENT_BUS.register(itemLog);
         GameRegistry.registerFuelHandler(itemLog);
 
-        proxy.preInit();
+        loader.preInit();
 
         //Load generator configs
         TilePowerGenerator.init(getConfig());
