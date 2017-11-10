@@ -6,6 +6,7 @@ import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.framework.explosive.ExplosiveRegistry;
 import com.builtbroken.mc.framework.mod.AbstractMod;
 import com.builtbroken.mc.framework.mod.AbstractProxy;
+import com.builtbroken.mc.framework.mod.Mods;
 import com.builtbroken.mc.lib.helper.LanguageUtility;
 import com.builtbroken.wowjudo.content.campfire.BlockCampFire;
 import com.builtbroken.wowjudo.content.campfire.TileEntityCampfire;
@@ -20,6 +21,7 @@ import com.builtbroken.wowjudo.content.explosive.tile.TileEntityExplosive;
 import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
+import com.builtbroken.wowjudo.mods.applecore.AppleCoreModule;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.command.CommandStat;
 import com.builtbroken.wowjudo.stats.network.PacketStatRequest;
@@ -138,6 +140,7 @@ public class SurvivalMod extends AbstractMod
         MinecraftForge.EVENT_BUS.register(itemLog);
         GameRegistry.registerFuelHandler(itemLog);
 
+        loader.applyModule(AppleCoreModule.class, Mods.APPLE_CORE.isLoaded());
         loader.preInit();
 
         //Load generator configs

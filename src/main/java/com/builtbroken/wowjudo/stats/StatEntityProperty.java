@@ -149,8 +149,6 @@ public class StatEntityProperty implements IExtendedEntityProperties
                 }
 
                 //TODO remove extra hp if over max
-
-                //TODO send update packet
                 if (!entityPlayer.worldObj.isRemote && entityPlayer instanceof EntityPlayerMP)
                 {
                     Engine.packetHandler.sendToPlayer(new PacketStatUpdate(entityPlayer), (EntityPlayerMP) entityPlayer);

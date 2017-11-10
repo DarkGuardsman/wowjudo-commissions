@@ -11,9 +11,11 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -42,6 +44,8 @@ public class StatHandler
 
     HashMap<UUID, XpCacheObject> xpCache = new HashMap();
     HashMap<UUID, StatEntityProperty> propCache = new HashMap();
+
+    public static Function<EntityPlayer, FoodStats> foodStatsFactory = e -> new FoodStatOverride();
 
     public static StatEntityProperty getPropertyForEntity(EntityPlayer entity)
     {
@@ -153,20 +157,31 @@ public class StatHandler
         }
     }
 
+    //@SubscribeEvent
+    public void interactionEvent(PlayerInteractEvent event)
+    {
+        //Could use this to handle food increase by adding extra food to StatEntityProperty
+    }
+
     public static boolean overrideFoodStats(EntityPlayer player)
     {
         FoodStats old = player.foodStats;
         if (old == null || old.getClass() == FoodStats.class)
         {
+            //Save data
             NBTTagCompound tag = new NBTTagCompound();
             if (old != null)
             {
                 old.writeNBT(tag);
             }
 
-            FoodStatOverride override = new FoodStatOverride();
+            //Create
+            FoodStats override = foodStatsFactory.apply(player);
+
+            //Load data
             override.readNBT(tag);
 
+            //Assign
             player.foodStats = override;
             return true;
         }
