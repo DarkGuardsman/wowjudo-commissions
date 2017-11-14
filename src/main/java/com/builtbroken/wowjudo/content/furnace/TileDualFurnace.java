@@ -5,6 +5,7 @@ import com.builtbroken.mc.api.tile.access.IGuiTile;
 import com.builtbroken.mc.api.tile.access.IRotation;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.framework.block.imp.ILightLevelListener;
+import com.builtbroken.mc.lib.helper.BlockUtility;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
@@ -178,6 +179,16 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
 
             if (prevOnState != isOn)
             {
+                //Meta index notes on/off state for mods like EnviroMine
+                int rotation = BlockUtility.directionToRotation(getDirection());
+                if(isOn)
+                {
+                    getHost().setMetaValue(rotation + 4);
+                }
+                else
+                {
+                    getHost().setMetaValue(rotation);
+                }
                 world().unwrap().markBlockForUpdate(xi(), yi(), zi());
             }
         }
@@ -351,7 +362,8 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     {
         if (dirCache == null)
         {
-            dirCache = ForgeDirection.getOrientation(world().unwrap().getBlockMetadata(xi(), yi(), zi()));
+            int meta = world().unwrap().getBlockMetadata(xi(), yi(), zi());
+            dirCache = ForgeDirection.getOrientation(BlockUtility.rotationToDirection(meta));
         }
         return dirCache;
     }

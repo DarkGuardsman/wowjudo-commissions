@@ -27,7 +27,7 @@
       }
     },
     "listeners": [
-      "rotation",
+      "rotation2",
       {
         "id": "multiblock",
         "layoutKey": "wjsurvialmod:wjFurnace"

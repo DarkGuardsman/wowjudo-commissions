@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo.content.furnace;
 
+import com.builtbroken.mc.api.tile.node.ITileNodeHost;
 import com.builtbroken.mc.client.json.ClientDataHandler;
 import com.builtbroken.mc.data.Direction;
 import com.builtbroken.mc.lib.render.RenderUtility;
@@ -8,8 +9,10 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -62,8 +65,16 @@ public class ISBRDualFurnace implements ISimpleBlockRenderingHandler
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         renderer.setRenderAllFaces(true);
-
-        Direction direction = world == null ? Direction.EAST : Direction.getOrientation(world.getBlockMetadata(x, y, z)).getOpposite();
+        Direction direction = Direction.EAST;
+        if (world != null)
+        {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof ITileNodeHost && ((ITileNodeHost) tile).getTileNode() instanceof TileDualFurnace)
+            {
+                ForgeDirection forgeDirection = ((TileDualFurnace) ((ITileNodeHost) tile).getTileNode()).getDirection().getOpposite();
+                direction = Direction.getOrientation(forgeDirection.ordinal());
+            }
+        }
 
         //Base
         renderer.setRenderBounds(

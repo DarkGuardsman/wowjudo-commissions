@@ -49,8 +49,13 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
     public int itemFuelTime = 100;
     /** Progress on cooking items */
     public int cookTimer = 0;
+    public int prevCookTimer = 0;
+
     public boolean hasRecipe = false;
+    public boolean prevHasRecipe = false;
+
     public boolean hasFuel = false;
+    public boolean prevHasFuel = false;
 
     @Override
     public void updateEntity()
@@ -61,6 +66,7 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
             if (!hasRecipe && getStackInSlot(SLOT_INPUT) != null)
             {
                 ItemStackWrapper stack = new ItemStackWrapper(getStackInSlot(SLOT_INPUT));
+                stack.setNBTCompare(false);
                 if (recipes.containsKey(stack))
                 {
                     hasRecipe = true;
@@ -160,9 +166,27 @@ public class TileEntityCampfire extends TileEntityInv<ExternalInventory> impleme
                 cookTimer = 0;
             }
 
+            if (prevHasRecipe != hasRecipe || prevHasFuel != hasFuel)
+            {
+                boolean on = hasRecipe && hasFuel;
+                if (on)
+                {
+                    worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 3);
+                }
+                else
+                {
+                    worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 3);
+                }
+            }
+
             //Update client to sync render state
             Engine.packetHandler.sendToAllAround(getDescPacket(), this);
         }
+
+        //Update change state
+        prevCookTimer = cookTimer;
+        prevHasFuel = hasFuel;
+        prevHasRecipe = hasRecipe;
     }
 
     //==================================================
