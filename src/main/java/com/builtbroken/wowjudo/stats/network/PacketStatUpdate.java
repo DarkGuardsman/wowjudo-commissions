@@ -42,7 +42,7 @@ public class PacketStatUpdate implements IPacket
             meleeDamage = property.getMeleeDamageIncrease();
             foodAmount = property.getFoodAmountIncrease();
             armorIncrease = property.getArmorIncrease();
-            armorIncrease = property.getAirIncrease();
+            airIncrease = property.getAirIncrease();
         }
     }
 

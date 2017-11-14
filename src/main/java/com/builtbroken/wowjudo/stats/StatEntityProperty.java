@@ -119,7 +119,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
             }
 
             //Handle chance of more points being allocated then possible
-            if (getPointsUsed() > getMaxPointUsed())
+            if (getPointsUsed() > getMaxPointUsable())
             {
                 reset();
             }
@@ -157,6 +157,11 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
             headPreviousInWater = headInWater;
         }
+    }
+
+    public boolean hasPointsLeft()
+    {
+        return getPointsUsed() < getMaxPointUsable();
     }
 
     protected void createAttributes()
@@ -237,7 +242,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
         return points;
     }
 
-    public int getMaxPointUsed()
+    public int getMaxPointUsable()
     {
         return entityPlayer.experienceLevel;
     }

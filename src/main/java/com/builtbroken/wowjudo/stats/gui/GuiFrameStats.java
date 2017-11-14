@@ -136,6 +136,15 @@ public class GuiFrameStats extends GuiFrame<GuiFrameStats>
         }
     }
 
+    public boolean canIncreaseStat(int id)
+    {
+        if(player() != null)
+        {
+            return StatHandler.getPropertyForEntity(player()).hasPointsLeft();
+        }
+        return false;
+    }
+
     public EntityPlayer player()
     {
         if (getHost() instanceof GuiStats)

@@ -62,6 +62,12 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
     {
         if (button == increaseButton)
         {
+            //Fail safe
+            if(!(getParentComponent() instanceof GuiFrameStats) || !((GuiFrameStats) getParentComponent()).canIncreaseStat(id))
+            {
+                increaseButton.disable();
+                return;
+            }
             //Enable decrease
             decreaseButton.enable();
 
