@@ -22,12 +22,14 @@ import com.builtbroken.wowjudo.content.generator.TilePowerGenerator;
 import com.builtbroken.wowjudo.content.logs.ItemLog;
 import com.builtbroken.wowjudo.content.wall.TileNodeWall;
 import com.builtbroken.wowjudo.mods.applecore.AppleCoreModule;
+import com.builtbroken.wowjudo.mods.enviromine.EnviromineModule;
 import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.command.CommandStat;
 import com.builtbroken.wowjudo.stats.network.PacketStatRequest;
 import com.builtbroken.wowjudo.stats.network.PacketStatSet;
 import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -141,6 +143,7 @@ public class SurvivalMod extends AbstractMod
         GameRegistry.registerFuelHandler(itemLog);
 
         loader.applyModule(AppleCoreModule.class, Mods.APPLE_CORE.isLoaded());
+        loader.applyModule(EnviromineModule.class, Loader.isModLoaded("enviromine"));
         loader.preInit();
 
         //Load generator configs
