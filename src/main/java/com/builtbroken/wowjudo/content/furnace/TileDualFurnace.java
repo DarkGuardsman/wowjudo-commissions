@@ -411,7 +411,7 @@ public class TileDualFurnace extends TileMachineNode<ExternalInventory> implemen
     {
         if (cookTime > 0)
         {
-            return 13;
+            return 10;
         }
         return 0;
     }

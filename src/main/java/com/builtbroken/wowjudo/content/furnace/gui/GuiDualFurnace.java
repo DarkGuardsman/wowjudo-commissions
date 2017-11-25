@@ -6,7 +6,6 @@ import com.builtbroken.mc.prefab.gui.GuiContainerBase;
 import com.builtbroken.wowjudo.SurvivalMod;
 import com.builtbroken.wowjudo.content.furnace.TileDualFurnace;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 
 /**
  * @see <a href="https://github.com/BuiltBrokenModding/VoltzEngine/blob/development/license.md">License</a> for what you can and can't do with the code.
@@ -33,13 +32,7 @@ public class GuiDualFurnace extends GuiContainerBase
     protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
-        for (Object object : inventorySlots.inventorySlots)
-        {
-            if (object instanceof Slot)
-            {
-                drawSlot((Slot) object);
-            }
-        }
+        drawContainerSlots();
 
         this.mc.renderEngine.bindTexture(SharedAssets.GUI_COMPONENTS);
 
