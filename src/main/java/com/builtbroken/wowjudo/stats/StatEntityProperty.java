@@ -166,6 +166,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     protected void createAttributes()
     {
+        //IF adding new stats > Add to remove list as well
         healthAttribute = new AttributeModifier(ATTR_HP, getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
         speedAttribute = new AttributeModifier(ATTR_SPEED, getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
         attackAttribute = new AttributeModifier(ATTR_ATTACK, getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE, 0);
@@ -173,6 +174,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     protected void applyAttributes()
     {
+        //IF adding new stats > Add to remove list as well
         HashMultimap map = HashMultimap.create();
         map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
         map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
@@ -185,7 +187,11 @@ public class StatEntityProperty implements IExtendedEntityProperties
      */
     protected void removeAttributes()
     {
-        for (IAttribute attribute : new IAttribute[]{SharedMonsterAttributes.maxHealth, SharedMonsterAttributes.movementSpeed})
+        //IF adding new stats > Make sure contains all attributes for removal or they will stack
+        for (IAttribute attribute : new IAttribute[]{
+                SharedMonsterAttributes.maxHealth,
+                SharedMonsterAttributes.movementSpeed,
+                SharedMonsterAttributes.attackDamage})
         {
             removeAttributes(entityPlayer.getEntityAttribute(attribute));
         }
