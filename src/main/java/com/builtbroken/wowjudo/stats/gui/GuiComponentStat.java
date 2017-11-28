@@ -63,7 +63,7 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
         if (button == increaseButton)
         {
             //Fail safe
-            if(!(getParentComponent() instanceof GuiFrameStats) || !((GuiFrameStats) getParentComponent()).canIncreaseStat(id))
+            if (!(getParentComponent() instanceof GuiFrameStats) || !((GuiFrameStats) getParentComponent()).canIncreaseStat(id))
             {
                 increaseButton.disable();
                 return;
@@ -75,7 +75,7 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
             value = Math.min(max, value + 1);
 
             //Disable button if limit hit
-            if(value == max)
+            if (value == max)
             {
                 increaseButton.disable();
             }
@@ -92,7 +92,7 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
             value = Math.max(min, value - 1);
 
             //Disable button if limit hit
-            if(value == min)
+            if (value == min)
             {
                 decreaseButton.disable();
             }
@@ -141,7 +141,7 @@ public class GuiComponentStat extends GuiComponentContainer<GuiComponentStat>
         int nextX = x() + GuiButton9px.SIZE + (extra / 2);
         for (int i = 0; i < bars; i++)
         {
-            if(i <= value)
+            if (i < value)
             {
                 GL11.glColor3f(barColor.getRed() / 255f, barColor.getGreen() / 255f, barColor.getBlue() / 255f);
             }
