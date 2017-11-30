@@ -10,6 +10,7 @@ import com.builtbroken.wowjudo.content.furnace.ISBRDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.TESRDualFurnace;
 import com.builtbroken.wowjudo.content.furnace.TileWrapperDualFurnace;
 import com.builtbroken.wowjudo.content.wall.ISBRWall;
+import com.builtbroken.wowjudo.stats.gui.GuiOverlay;
 import com.builtbroken.wowjudo.stats.gui.GuiStats;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -21,6 +22,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -43,6 +45,10 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.registerKeyBinding(openGuiKey);
 
         FMLCommonHandler.instance().bus().register(this);
+
+        MinecraftForge.EVENT_BUS.register(GuiOverlay.INSTANCE);
+        GuiOverlay.INSTANCE.loadConfig(SurvivalMod.instance.getConfig());
+
     }
 
     @Override
