@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -31,7 +32,7 @@ public class StatHandler
     public static float DAMAGE_SCALE = 1f;
     public static int FOOD_SCALE = 1;
     public static float ARMOR_DAMAGE_REDUCTION_SCALE = .01f;
-    public static int AIR_SCALE = 1;
+    public static int AIR_SCALE = 20;
 
     public static int SPEED_MAX = 10;
     public static int HEALTH_MAX = 10;
@@ -40,9 +41,20 @@ public class StatHandler
     public static int ARMOR_MAX = 10;
     public static int AIR_MAX = 10;
 
+    public static boolean ENABLE_SPEED = true;
+    public static boolean ENABLE_HEALTH = true;
+    public static boolean ENABLE_DAMAGE = true;
+    public static boolean ENABLE_FOOD = true;
+    public static boolean ENABLE_DAMAGE_REDUCTION = true;
+    public static boolean ENABLE_AIR = true;
+
+    public static boolean KEEP_XP_ON_DEATH = true;
+
     public static StatHandler INSTANCE = new StatHandler();
 
+    /** Cache of XP from the player, used to store XP between respawns */
     HashMap<UUID, XpCacheObject> xpCache = new HashMap();
+    /** Cache of stats from the player, used to store values between respawns */
     HashMap<UUID, StatEntityProperty> propCache = new HashMap();
 
     public static Function<EntityPlayer, FoodStats> foodStatsFactory = e -> new FoodStatOverride();
@@ -73,7 +85,7 @@ public class StatHandler
     @SubscribeEvent
     public void livingDamageEvent(LivingHurtEvent event)
     {
-        if (event.entity instanceof EntityPlayer
+        if (ENABLE_DAMAGE_REDUCTION && event.entity instanceof EntityPlayer
                 && !event.entity.isEntityInvulnerable()
                 && !event.source.isDamageAbsolute()
                 && !event.source.isUnblockable())
@@ -99,17 +111,20 @@ public class StatHandler
         {
             EntityPlayer player = (EntityPlayer) event.entity;
 
-            //Collect xp
-            XpCacheObject object = new XpCacheObject();
-            object.level = player.experienceLevel;
-            object.totalXp = player.experienceTotal;
-            object.xp = player.experience;
-            xpCache.put(player.getGameProfile().getId(), object);
+            if (KEEP_XP_ON_DEATH)
+            {
+                //Collect xp
+                XpCacheObject object = new XpCacheObject();
+                object.level = player.experienceLevel;
+                object.totalXp = player.experienceTotal;
+                object.xp = player.experience;
+                xpCache.put(player.getGameProfile().getId(), object);
 
-            //Clear xp
-            player.experienceTotal = 0;
-            player.experience = 0;
-            player.experienceLevel = 0;
+                //Clear xp
+                player.experienceTotal = 0;
+                player.experience = 0;
+                player.experienceLevel = 0;
+            }
 
             //cache property
             propCache.put(player.getGameProfile().getId(), getPropertyForEntity(player));
@@ -121,7 +136,9 @@ public class StatHandler
     {
         EntityPlayer player = event.player;
         UUID uuid = player.getGameProfile().getId();
-        if (xpCache.containsKey(uuid))
+
+        //Restore XP
+        if (KEEP_XP_ON_DEATH && xpCache.containsKey(uuid))
         {
             XpCacheObject object = xpCache.get(uuid);
             event.player.experience = object.xp;
@@ -130,6 +147,7 @@ public class StatHandler
             xpCache.remove(uuid);
         }
 
+        //Restore stats
         if (propCache.containsKey(uuid))
         {
             StatEntityProperty property = propCache.get(uuid);
@@ -143,7 +161,7 @@ public class StatHandler
     @SubscribeEvent
     public void livingCreationEvent(EntityEvent.EntityConstructing event)
     {
-        if (event.entity instanceof EntityPlayer)
+        if (ENABLE_FOOD && event.entity instanceof EntityPlayer)
         {
             event.entity.registerExtendedProperties(PROPERTY_ID, new StatEntityProperty());
             if (!overrideFoodStats((EntityPlayer) event.entity))
@@ -165,27 +183,75 @@ public class StatHandler
 
     public static boolean overrideFoodStats(EntityPlayer player)
     {
-        FoodStats old = player.foodStats;
-        if (old == null || old.getClass() == FoodStats.class)
+        if(ENABLE_FOOD)
         {
-            //Save data
-            NBTTagCompound tag = new NBTTagCompound();
-            if (old != null)
+            FoodStats old = player.foodStats;
+            if (old == null || old.getClass() == FoodStats.class)
             {
-                old.writeNBT(tag);
+                //Save data
+                NBTTagCompound tag = new NBTTagCompound();
+                if (old != null)
+                {
+                    old.writeNBT(tag);
+                }
+
+                //Create
+                FoodStats override = foodStatsFactory.apply(player);
+
+                //Load data
+                override.readNBT(tag);
+
+                //Assign
+                player.foodStats = override;
+                return true;
             }
-
-            //Create
-            FoodStats override = foodStatsFactory.apply(player);
-
-            //Load data
-            override.readNBT(tag);
-
-            //Assign
-            player.foodStats = override;
-            return true;
         }
         return false;
+    }
+
+    public static void loadConfig(Configuration config)
+    {
+        SPEED_SCALE = config.getFloat("speed", "stat_scale",
+                SPEED_SCALE, 0, 1, "Multiplier for movement speed bonus");
+        HEALTH_SCALE = config.getInt("health", "stat_scale",
+                HEALTH_SCALE, 0, Short.MAX_VALUE, "Multiplier for health bonus");
+        DAMAGE_SCALE = config.getFloat("damage", "stat_scale",
+                DAMAGE_SCALE, 0, Short.MAX_VALUE, "Multiplier for damage bonus");
+        FOOD_SCALE = config.getInt("food", "stat_scale",
+                FOOD_SCALE, 0, Integer.MAX_VALUE / 2, "Multiplier for food bonus");
+        ARMOR_DAMAGE_REDUCTION_SCALE = config.getFloat("damage_reduction", "stat_scale",
+                ARMOR_DAMAGE_REDUCTION_SCALE, 0, 1, "Multiplier for damage reduction, do not set too high as a (multiplier * level == 1 will result in zero damage)");
+        AIR_SCALE = config.getInt("air", "stat_scale",
+                FOOD_SCALE, 0, Integer.MAX_VALUE / 2, "Multiplier for air bonus in ticks (20 ticks a second)");
+
+        SPEED_MAX = config.getInt("speed", "stat_max_level",
+                SPEED_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+        HEALTH_MAX = config.getInt("health", "stat_max_level",
+                SPEED_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+        DAMAGE_MAX = config.getInt("damage", "stat_max_level",
+                DAMAGE_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+        FOOD_MAX = config.getInt("food", "stat_max_level",
+                FOOD_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+        ARMOR_MAX = config.getInt("damage_reduction", "stat_max_level",
+                ARMOR_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+        AIR_MAX = config.getInt("air", "stat_max_level",
+                AIR_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
+
+        ENABLE_SPEED = config.getBoolean("speed", "stat_enable",
+                ENABLE_SPEED, "Enables the component of the stat system, set to false to disable.");
+        ENABLE_HEALTH = config.getBoolean("health", "stat_enable",
+                ENABLE_HEALTH, "Enables the component of the stat system, set to false to disable.");
+        ENABLE_DAMAGE = config.getBoolean("damage", "stat_enable",
+                ENABLE_DAMAGE, "Enables the component of the stat system, set to false to disable.");
+        ENABLE_FOOD = config.getBoolean("food", "stat_enable",
+                ENABLE_FOOD, "Enables the component of the stat system, set to false to disable.");
+        ENABLE_DAMAGE_REDUCTION = config.getBoolean("damage_reduction", "stat_enable",
+                ENABLE_DAMAGE_REDUCTION, "Enables the component of the stat system, set to false to disable.");
+        ENABLE_AIR = config.getBoolean("air", "stat_enable",
+                ENABLE_AIR, "Enables the component of the stat system, set to false to disable.");
+
+        KEEP_XP_ON_DEATH = !config.getBoolean("xp_drop", "stat_enable",
+                !KEEP_XP_ON_DEATH, "Allow XP to be dropped on death, disabled by default to keep levels.");
     }
 
 

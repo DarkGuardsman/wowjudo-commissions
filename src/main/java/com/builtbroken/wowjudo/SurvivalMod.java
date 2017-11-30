@@ -146,9 +146,6 @@ public class SurvivalMod extends AbstractMod
         loader.applyModule(EnviromineModule.class, Loader.isModLoaded("enviromine"));
         loader.preInit();
 
-        //Load generator configs
-        TilePowerGenerator.init(getConfig());
-
         ExplosiveRegistry.registerExplosive(DOMAIN, "wowjudo.damage", new ExDamage());
     }
 
@@ -161,10 +158,7 @@ public class SurvivalMod extends AbstractMod
         Engine.packetHandler.packetHandler.addPacket(PacketStatUpdate.class);
         Engine.packetHandler.packetHandler.addPacket(PacketStatRequest.class);
 
-        //Load customization configs
-        TileNodeWall.WallMaterial.loadConfig(getConfig());
-        TileEntityExplosive.BLAST_SIZE = getConfig().getFloat("size", "C4_Tile", TileEntityExplosive.BLAST_SIZE, 0, 1000, "Size of the blast in meters/blocks");
-        TileEntityExplosive.BLAST_DELAY = getConfig().getInt("timer", "C4_Tile", TileEntityExplosive.BLAST_DELAY, 0, 1000, "Delay in ticks (20 ticks a second) for the blast to trigger");
+        loadConfig();
 
         //Register ore dictionary support
         for (ItemLog.LogTypes type : ItemLog.LogTypes.values())
@@ -210,6 +204,23 @@ public class SurvivalMod extends AbstractMod
         TileEntityCampfire.addRecipe(Blocks.log, new ItemStack(Items.coal, 1, 1), 0.15F);
         TileEntityCampfire.addRecipe(Blocks.log2, new ItemStack(Items.coal, 1, 1), 0.15F);
 
+    }
+
+    public void loadConfig()
+    {
+        //Load generator configs
+        TilePowerGenerator.init(getConfig());
+
+        //Wall configs
+        TileNodeWall.WallMaterial.loadConfig(getConfig());
+
+        //Explosive configs
+        TileEntityExplosive.BLAST_SIZE = getConfig().getFloat("size", "C4_Tile",
+                TileEntityExplosive.BLAST_SIZE, 0, 1000, "Size of the blast in meters/blocks");
+        TileEntityExplosive.BLAST_DELAY = getConfig().getInt("timer", "C4_Tile",
+                TileEntityExplosive.BLAST_DELAY, 0, 1000, "Delay in ticks (20 ticks a second) for the blast to trigger");
+
+        StatHandler.loadConfig(getConfig());
     }
 
     @Mod.EventHandler
@@ -278,12 +289,12 @@ public class SurvivalMod extends AbstractMod
                             {
                                 float attackDamage = (float) (damage * wall.getMaterial().getWeaponDamageScale(wall.getStructureType()));
 
-                                if(Engine.runningAsDev)
+                                if (Engine.runningAsDev)
                                 {
                                     event.entityPlayer.addChatComponentMessage(new ChatComponentText("Damage: " + attackDamage));
                                 }
 
-                                if(attackDamage > 0)
+                                if (attackDamage > 0)
                                 {
                                     wall.reduceHP(attackDamage);
                                     event.setCanceled(true);

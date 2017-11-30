@@ -106,16 +106,16 @@ public class StatEntityProperty implements IExtendedEntityProperties
         if (entityPlayer != null && entityPlayer.isEntityAlive())
         {
             //Check if player head in water
-            if (entityPlayer.isInsideOfMaterial(Material.water))
-            {
-                headInWater = true;
-            }
+            headInWater = entityPlayer.isInsideOfMaterial(Material.water);
 
             //If head in water but not last tick
-            if (headInWater && !headPreviousInWater)
+            if (StatHandler.ENABLE_AIR && headInWater && !headPreviousInWater)
             {
-                //Increase default air supply
-                entityPlayer.setAir(entityPlayer.getAir() + getAirIncrease() * StatHandler.AIR_SCALE);
+                int airBonus = getAirIncrease() * StatHandler.AIR_SCALE;
+                int air = entityPlayer.getAir() + airBonus;
+
+                //Increase default air supply, 300 is the default
+                entityPlayer.setAir(air);
             }
 
             //Handle chance of more points being allocated then possible
@@ -138,14 +138,19 @@ public class StatEntityProperty implements IExtendedEntityProperties
                 //Apply
                 applyAttributes();
 
-                if (!(entityPlayer.foodStats instanceof FoodStatOverride))
+                if (StatHandler.ENABLE_FOOD)
                 {
-                    StatHandler.overrideFoodStats(entityPlayer);
-                }
+                    //Make sure we have overridden food stats
+                    if (!(entityPlayer.foodStats instanceof FoodStatOverride))
+                    {
+                        StatHandler.overrideFoodStats(entityPlayer);
+                    }
 
-                if (entityPlayer.foodStats instanceof FoodStatOverride)
-                {
-                    ((FoodStatOverride) entityPlayer.foodStats).setMaxFoodLevel(FoodStatOverride.MAX_FOOD_DEFAULT + foodAmount * StatHandler.FOOD_SCALE);
+                    //Apply updated food level
+                    if (entityPlayer.foodStats instanceof FoodStatOverride)
+                    {
+                        ((FoodStatOverride) entityPlayer.foodStats).setMaxFoodLevel(FoodStatOverride.MAX_FOOD_DEFAULT + foodAmount * StatHandler.FOOD_SCALE);
+                    }
                 }
 
                 //TODO remove extra hp if over max
@@ -167,18 +172,36 @@ public class StatEntityProperty implements IExtendedEntityProperties
     protected void createAttributes()
     {
         //IF adding new stats > Add to remove list as well
-        healthAttribute = new AttributeModifier(ATTR_HP, getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
-        speedAttribute = new AttributeModifier(ATTR_SPEED, getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
-        attackAttribute = new AttributeModifier(ATTR_ATTACK, getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE, 0);
+        if (StatHandler.ENABLE_HEALTH)
+        {
+            healthAttribute = new AttributeModifier(ATTR_HP, getHpIncrease() * StatHandler.HEALTH_SCALE, 0);
+        }
+        if (StatHandler.ENABLE_SPEED)
+        {
+            speedAttribute = new AttributeModifier(ATTR_SPEED, getSpeedIncrease() * StatHandler.SPEED_SCALE, 0);
+        }
+        if (StatHandler.ENABLE_DAMAGE_REDUCTION)
+        {
+            attackAttribute = new AttributeModifier(ATTR_ATTACK, getMeleeDamageIncrease() * StatHandler.DAMAGE_SCALE, 0);
+        }
     }
 
     protected void applyAttributes()
     {
         //IF adding new stats > Add to remove list as well
         HashMultimap map = HashMultimap.create();
-        map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
-        map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
-        map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), attackAttribute);
+        if (StatHandler.ENABLE_HEALTH && healthAttribute != null)
+        {
+            map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), healthAttribute);
+        }
+        if (StatHandler.ENABLE_SPEED && speedAttribute != null)
+        {
+            map.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), speedAttribute);
+        }
+        if (StatHandler.ENABLE_DAMAGE_REDUCTION && attackAttribute != null)
+        {
+            map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), attackAttribute);
+        }
         entityPlayer.getAttributeMap().applyAttributeModifiers(map);
     }
 
