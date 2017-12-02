@@ -10,7 +10,7 @@
   "ammo": {
     "name": "rpg",
     "id": "wjsurvialmod:ammo.rpg",
-    "creativeTab":"wowjudo",
+    "creativeTab":"wjsurvialmod",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "mass": 4500,
     "velocity": 0.5,
@@ -26,7 +26,7 @@
     "name": "rpg",
     "gunType": "rpg",
     "ID": "wjsurvialmod:rpg",
-    "creativeTab":"wowjudo",
+    "creativeTab":"wjsurvialmod",
     "ammoType": "wjsurvialmod:ammoType.rpg",
     "reloadType": "FRONT_LOADED",
     "sightToFire":true,

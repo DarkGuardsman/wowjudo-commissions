@@ -33,29 +33,6 @@
       "rockets"
     ]
   },
-  "ammoType": {
-    "name": "sentry",
-    "id": "wjsurvialmod:ammoType.sentry",
-    "projectileType": "bullet"
-  },
-  "ammo": {
-    "name": "sentry",
-    "id": "wjsurvialmod:ammo.sentry",
-    "creativeTab": "wowjudo",
-    "ammoType": "wjsurvialmod:ammoType.sentry",
-    "damage": {
-      "value": 3,
-      "type": "impact"
-    }
-  },
-  "clip": {
-    "name": "sentry.clip",
-    "id": "wjsurvialmod:sentry.clip",
-    "creativeTab": "wowjudo",
-    "reloadType": "clip",
-    "ammoType": "wjsurvialmod:ammoType.sentry",
-    "maxAmmo": 240
-  },
   "gun": {
     "name": "sentry",
     "gunType": "sentry",

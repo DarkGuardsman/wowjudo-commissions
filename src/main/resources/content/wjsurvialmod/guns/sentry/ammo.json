@@ -1,0 +1,28 @@
+{
+  "author": {
+    "name": "wjsurvialmod"
+  },
+  "ammoType": {
+    "name": "sentry",
+    "id": "wjsurvialmod:ammoType.sentry",
+    "projectileType": "bullet"
+  },
+  "ammo": {
+    "name": "sentry",
+    "id": "wjsurvialmod:ammo.sentry",
+    "creativeTab": "wjsurvialmod",
+    "ammoType": "wjsurvialmod:ammoType.sentry",
+    "damage": {
+      "value": 3,
+      "type": "impact"
+    }
+  },
+  "clip": {
+    "name": "sentry.clip",
+    "id": "wjsurvialmod:sentry.clip",
+    "creativeTab": "wjsurvialmod",
+    "reloadType": "clip",
+    "ammoType": "wjsurvialmod:ammoType.sentry",
+    "maxAmmo": 240
+  }
+}
