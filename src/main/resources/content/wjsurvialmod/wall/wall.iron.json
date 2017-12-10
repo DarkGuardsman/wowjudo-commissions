@@ -10,6 +10,7 @@
     "hardness": 1000,
     "renderTypeName": "wjsurvialmod:wall",
     "renderAsNormalBlock": false,
+    "isNormalCube": true,
     "isSolid": true,
     "tileEntity": {
       "id": "wjDamageWall",
