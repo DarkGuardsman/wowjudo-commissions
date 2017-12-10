@@ -222,7 +222,7 @@ public class StatHandler
         ARMOR_DAMAGE_REDUCTION_SCALE = config.getFloat("damage_reduction", "stat_scale",
                 ARMOR_DAMAGE_REDUCTION_SCALE, 0, 1, "Multiplier for damage reduction, do not set too high as a (multiplier * level == 1 will result in zero damage)");
         AIR_SCALE = config.getInt("air", "stat_scale",
-                FOOD_SCALE, 0, Integer.MAX_VALUE / 2, "Multiplier for air bonus in ticks (20 ticks a second)");
+                AIR_SCALE, 0, Integer.MAX_VALUE / 2, "Multiplier for air bonus in ticks (20 ticks a second)");
 
         SPEED_MAX = config.getInt("speed", "stat_max_level",
                 SPEED_MAX, 0, Integer.MAX_VALUE / 2, "Max level");
