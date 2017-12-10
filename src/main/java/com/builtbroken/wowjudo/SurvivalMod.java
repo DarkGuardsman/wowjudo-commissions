@@ -297,6 +297,10 @@ public class SurvivalMod extends AbstractMod
                                 if (attackDamage > 0)
                                 {
                                     wall.reduceHP(attackDamage);
+                                    if(wall.getHp() <= 0)
+                                    {
+                                        event.world.setBlockToAir(event.x, event.y, event.z);
+                                    }
                                     event.setCanceled(true);
                                 }
                             }
