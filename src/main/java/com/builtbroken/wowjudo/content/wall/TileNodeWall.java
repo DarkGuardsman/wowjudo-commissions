@@ -7,6 +7,7 @@ import com.builtbroken.mc.api.explosive.IExplosiveHandler;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.Engine;
 import com.builtbroken.mc.data.Direction;
+import com.builtbroken.mc.framework.block.imp.IActivationListener;
 import com.builtbroken.mc.framework.block.imp.IHardnessListener;
 import com.builtbroken.mc.framework.block.imp.IToolListener;
 import com.builtbroken.mc.framework.logic.TileNode;
@@ -21,8 +22,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.config.Configuration;
+
+import java.util.UUID;
 
 /**
  * Damageable wall system that is slowly broken down rather than instantly destroyed
@@ -31,7 +36,7 @@ import net.minecraftforge.common.config.Configuration;
  * Created by Dark(DarkGuardsman, Robert) on 5/12/2017.
  */
 @TileWrapped(className = "TileEntityWrappedWall")
-public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHardnessListener, IToolListener
+public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHardnessListener, IToolListener, IActivationListener
 {
     private float hp = -1;
     private WallMaterial mat_cache;
@@ -199,6 +204,26 @@ public class TileNodeWall extends TileNode implements IExplosiveDamageable, IHar
     {
         this.hp -= hp;
         sendDescPacket(); //TODO find way to fire only 1 time per tick
+    }
+
+    @Override
+    public boolean onPlayerActivated(EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    {
+        if (Engine.runningAsDev && player.getHeldItem() != null)
+        {
+            if (player.getHeldItem().getItem() == Items.stick)
+            {
+                if (isServer())
+                {
+                    setOwner(null);
+                    username = "test";
+                    setOwnerID(UUID.randomUUID());
+                    player.addChatComponentMessage(new ChatComponentText("Removed owner of wall"));
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     public enum WallMaterial
