@@ -103,7 +103,7 @@ public class StatEntityProperty implements IExtendedEntityProperties
 
     public void update()
     {
-        if (entityPlayer != null && entityPlayer.isEntityAlive())
+        if (entityPlayer != null && entityPlayer.isEntityAlive() && !entityPlayer.worldObj.isRemote)
         {
             //Check if player head in water
             headInWater = entityPlayer.isInsideOfMaterial(Material.water);
