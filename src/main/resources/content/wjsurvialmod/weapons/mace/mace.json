@@ -5,7 +5,7 @@
   "meleeWeapon": {
     "name": "mace",
     "id": "wjsurvialmod:mace",
-    "creativeTab": "wowjudo",
+    "creativeTab": "wjsurvialmod",
     "attack": 2,
     "damageEffects": [
       {

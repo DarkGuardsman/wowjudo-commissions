@@ -5,7 +5,7 @@
   "sentry": {
     "name": "sentry",
     "id": "wjsurvialmod:sentry",
-    "creativeTab": "wowjudo",
+    "creativeTab": "wjsurvialmod",
     "gunID": "wjsurvialmod:sentry",
     "rotationSpeed" : 15,
     "targetRange" : 30,

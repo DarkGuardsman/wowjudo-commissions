@@ -6,6 +6,7 @@
     "id": "craftingItem",
     "mod": "wjsurvialmod",
     "name": "craftingItem",
+    "creativeTab": "wjsurvialmod",
     "hasSubTypes": true,
     "subTypes": [
       {

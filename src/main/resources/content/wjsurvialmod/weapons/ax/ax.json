@@ -5,7 +5,7 @@
   "meleeWeapon": {
     "name": "ax",
     "id": "wjsurvialmod:ax",
-    "creativeTab": "wowjudo",
+    "creativeTab": "wjsurvialmod",
     "attack": 2,
     "damageEffects": [
       {

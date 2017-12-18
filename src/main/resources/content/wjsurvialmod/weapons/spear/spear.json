@@ -5,7 +5,7 @@
   "meleeWeapon": {
     "name": "spear",
     "id": "wjsurvialmod:spear",
-    "creativeTab": "wowjudo",
+    "creativeTab": "wjsurvialmod",
     "attack": 2,
     "damageEffects": [
       {
