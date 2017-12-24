@@ -50,7 +50,7 @@
     ],
     "items": {
       "S": "ore@sapphireRefined",
-      "T": "block@more:silver_ore",
+      "T": "ore@ingotSilver",
       "W": "ore@wireSilver",
       "R": "ore@ingotIron"
     }
