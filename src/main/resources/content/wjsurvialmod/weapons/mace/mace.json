@@ -15,5 +15,23 @@
         "amplifier": 1
       }
     ]
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "item@armory:armoryMeleeWeapon",
+      "meta": "wjsurvialmod:mace"
+    },
+    "grid": [
+      "  PW",
+      "  WP",
+      " O  ",
+      "O   "
+    ],
+    "items": {
+      "W": "ore@ingotTitanium",
+      "P": "ore@ingotIron",
+      "O": "ore@stickWood"
+    }
   }
 }

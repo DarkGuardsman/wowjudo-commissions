@@ -30,7 +30,7 @@
       "CCCC"
     ],
     "items": {
-      "S": "ore@sapphireRefined",
+      "S": "ore@ingotIron",
       "M": "ore@microchip",
       "W": "ore@wireSilver",
       "C": "ore@wireCopper"
@@ -50,9 +50,9 @@
     ],
     "items": {
       "S": "ore@sapphireRefined",
-      "T": "ore@ingotTitanium",
+      "T": "block@more:silver_ore",
       "W": "ore@wireSilver",
-      "R": "ore@rubyRefined"
+      "R": "ore@ingotIron"
     }
   },
   "craftingGridRecipe:3": {

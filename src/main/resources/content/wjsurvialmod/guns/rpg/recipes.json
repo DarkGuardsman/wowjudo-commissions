@@ -7,14 +7,18 @@
     },
     "grid": [
       " SS ",
-      "IGGI",
-      "IGGI",
+      "ISSI",
+      "YGGY",
       "IGGI"
     ],
     "items": {
-      "I": "ore@ingotIron",
-      "S": "ore@sapphireRefined",
-      "G": "ore@gunpowder"
+      "Y": "ore@rodSteel",
+      "S": {
+        "item": "armory:armoryThrownWeapon",
+        "meta": "wjsurvialmod:grenade"
+      },
+      "G": "ore@gunpowder",
+      "I" :"item@mw:BigSteelPlate"
     }
   },
   "craftingGridRecipe:1": {

@@ -36,5 +36,24 @@
         "speed": 1.5
       }
     ]
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "item@armory:armoryMeleeWeapon",
+      "meta": "wjsurvialmod:sword"
+    },
+    "grid": [
+      "  PS",
+      " PSP",
+      "LSP ",
+      "OL  "
+    ],
+    "items": {
+      "L": "ore@linen",
+      "S": "ore@ingotTitanium",
+      "P": "ore@ingotIron",
+      "O": "ore@stickWood"
+    }
   }
 }

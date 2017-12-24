@@ -27,7 +27,7 @@
     "items": {
       "M": "ore@microchip",
       "W": "ore@wireSilver",
-      "P": "ore@polymer",
+      "P": "item@mw:plastic",
       "B": "block@minecraft:stone_button"
     }
   }

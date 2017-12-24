@@ -13,5 +13,23 @@
         "power": 1
       }
     ]
+  },
+  "craftingGridRecipe": {
+    "type": "shaped",
+    "output": {
+      "item": "item@armory:armoryMeleeWeapon",
+      "meta": "wjsurvialmod:spear"
+    },
+    "grid": [
+      "  PS",
+      " POP",
+      "POP ",
+      "OP  "
+    ],
+    "items": {
+      "P": "ore@linen",
+      "S": "ore@ingotTitanium",
+      "O": "ore@stickWood"
+    }
   }
 }
