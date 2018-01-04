@@ -1,9 +1,13 @@
 package com.builtbroken.wowjudo.stats;
 
+import com.builtbroken.mc.core.Engine;
 import com.builtbroken.wowjudo.SurvivalMod;
+import com.builtbroken.wowjudo.stats.network.PacketStatSettings;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -67,6 +71,15 @@ public class StatHandler
             return (StatEntityProperty) prop;
         }
         return null;
+    }
+
+    @SubscribeEvent
+    public void onConnect(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP)
+        {
+            Engine.packetHandler.sendToPlayer(new PacketStatSettings(), (EntityPlayerMP) event.player);
+        }
     }
 
     @SubscribeEvent
@@ -183,7 +196,7 @@ public class StatHandler
 
     public static boolean overrideFoodStats(EntityPlayer player)
     {
-        if(ENABLE_FOOD)
+        if (ENABLE_FOOD)
         {
             FoodStats old = player.foodStats;
             if (old == null || old.getClass() == FoodStats.class)
@@ -252,6 +265,12 @@ public class StatHandler
 
         KEEP_XP_ON_DEATH = !config.getBoolean("xp_drop", "stat_enable",
                 !KEEP_XP_ON_DEATH, "Allow XP to be dropped on death, disabled by default to keep levels.");
+    }
+
+
+    public static void loadSettings(ByteBuf buf)
+    {
+
     }
 
 

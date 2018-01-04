@@ -27,6 +27,7 @@ import com.builtbroken.wowjudo.stats.StatHandler;
 import com.builtbroken.wowjudo.stats.command.CommandStat;
 import com.builtbroken.wowjudo.stats.network.PacketStatRequest;
 import com.builtbroken.wowjudo.stats.network.PacketStatSet;
+import com.builtbroken.wowjudo.stats.network.PacketStatSettings;
 import com.builtbroken.wowjudo.stats.network.PacketStatUpdate;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -157,6 +158,7 @@ public class SurvivalMod extends AbstractMod
         Engine.packetHandler.packetHandler.addPacket(PacketStatSet.class);
         Engine.packetHandler.packetHandler.addPacket(PacketStatUpdate.class);
         Engine.packetHandler.packetHandler.addPacket(PacketStatRequest.class);
+        Engine.packetHandler.packetHandler.addPacket(PacketStatSettings.class);
 
         loadConfig();
 
