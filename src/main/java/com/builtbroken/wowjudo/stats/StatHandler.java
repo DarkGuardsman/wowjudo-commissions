@@ -78,6 +78,7 @@ public class StatHandler
     {
         if (!event.player.worldObj.isRemote && event.player instanceof EntityPlayerMP)
         {
+            SurvivalMod.instance.logger().info("Sending stat settings packet to " + event.player.getCommandSenderName());
             Engine.packetHandler.sendToPlayer(new PacketStatSettings(), (EntityPlayerMP) event.player);
         }
     }

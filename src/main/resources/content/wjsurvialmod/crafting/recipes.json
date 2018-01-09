@@ -76,7 +76,8 @@
     "type": "shaped",
     "output": {
       "item": "item@wjsurvialmod:craftingItem",
-      "meta": "wire.copper"
+      "meta": "wire.copper",
+      "count":4
     },
     "grid": [
       "CCCC",
@@ -90,7 +91,8 @@
     "type": "shaped",
     "output": {
       "item": "item@wjsurvialmod:craftingItem",
-      "meta": "wire.silver"
+      "meta": "wire.silver",
+      "count":4
     },
     "grid": [
       "CCCC",
@@ -113,7 +115,7 @@
       "CC"
     ],
     "items": {
-      "C": "ore@oreUranium"
+      "C": "item@more:UraniumIngot"
     }
   },
   "craftingGridRecipe:7": {
