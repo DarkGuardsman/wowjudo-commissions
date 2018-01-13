@@ -6,10 +6,7 @@ import com.builtbroken.mc.api.tile.provider.ITankProvider;
 import com.builtbroken.mc.codegen.annotations.TileWrapped;
 import com.builtbroken.mc.core.network.packet.PacketType;
 import com.builtbroken.mc.framework.energy.UniversalEnergySystem;
-import com.builtbroken.mc.lib.world.map.tile.TileMapRegistry;
-import com.builtbroken.mc.lib.world.map.radar.RadarMap;
-import com.builtbroken.mc.lib.world.map.radar.data.RadarObject;
-import com.builtbroken.mc.lib.world.map.radar.data.RadarTile;
+import com.builtbroken.mc.imp.transform.region.Cube;
 import com.builtbroken.mc.prefab.inventory.ExternalInventory;
 import com.builtbroken.mc.prefab.inventory.InventoryUtility;
 import com.builtbroken.mc.prefab.tile.logic.TileMachineNode;
@@ -75,7 +72,11 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
     protected boolean isPowered = false;
 
+    //Cache of facing direction
     private ForgeDirection dirCache;
+
+    //Area this tile provides power
+    private Cube powerArea;
 
     public TilePowerGenerator()
     {
@@ -89,8 +90,16 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     }
 
     @Override
+    public void firstTick()
+    {
+        super.firstTick();
+        powerArea = new Cube(toPos().sub(powerProviderRange), toPos().add(powerProviderRange));
+    }
+
+    @Override
     public void update(long tick)
     {
+        super.firstTick();
         super.update(tick);
         if (isServer())
         {
@@ -131,21 +140,17 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
     protected void chargeTiles()
     {
-        RadarMap map = TileMapRegistry.getRadarMapForWorld(world().unwrap());
-        List<RadarObject> objects = map.getRadarObjects(xi() + 0.5, zi() + 0.5, powerProviderRange + 3); //TODO center correctly
-        for (RadarObject object : objects)
+        powerArea.getTilesInArea(world().unwrap()).forEach(tileEntity -> chargeTile(tileEntity));
+    }
+
+    protected void chargeTile(TileEntity tileEntity)
+    {
+        if (tileEntity != null && tileEntity != getHost())
         {
-            if (object instanceof RadarTile)
+            String className = tileEntity.getClass().getName();
+            if (supportedTiles.contains(className))
             {
-                TileEntity tileEntity = ((RadarTile) object).tile;
-                if (tileEntity != null && tileEntity != getHost())
-                {
-                    String className = tileEntity.getClass().getName();
-                    if (supportedTiles.contains(className))
-                    {
-                        UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
-                    }
-                }
+                UniversalEnergySystem.fill(tileEntity, ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
             }
         }
     }
@@ -153,13 +158,13 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
     protected void chargeItems()
     {
         //Loop to charge all items
-        for(int slot = CHARGE_SLOT_START; slot <= CHARGE_SLOT_END; slot++)
+        for (int slot = CHARGE_SLOT_START; slot <= CHARGE_SLOT_END; slot++)
         {
             //Get item
             ItemStack stack = getInventory().getStackInSlot(slot);
 
             //Only work on items that can handle energy
-            if(stack != null && UniversalEnergySystem.isHandler(stack, ForgeDirection.UNKNOWN))
+            if (stack != null && UniversalEnergySystem.isHandler(stack, ForgeDirection.UNKNOWN))
             {
                 UniversalEnergySystem.chargeItem(stack, Integer.MAX_VALUE, true);
             }
@@ -188,6 +193,7 @@ public class TilePowerGenerator extends TileMachineNode<ExternalInventory> imple
 
     /**
      * Drains the fluid item in the input slot and moves it to the output slot
+     *
      * @param inputSlot
      * @param outputSlot
      */
