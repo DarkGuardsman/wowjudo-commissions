@@ -1,5 +1,6 @@
 package com.builtbroken.wowjudo;
 
+import com.builtbroken.armory.Armory;
 import com.builtbroken.mc.api.event.blast.BlastEventDestroyBlock;
 import com.builtbroken.mc.api.tile.node.ITileNodeHost;
 import com.builtbroken.mc.core.Engine;
@@ -269,7 +270,7 @@ public class SurvivalMod extends AbstractMod
         {
             //Only do actions with held items
             ItemStack heldItem = event.entityPlayer.getHeldItem();
-            if (heldItem != null)
+            if (heldItem != null && heldItem.getItem() == Armory.itemMeleeWeapon)
             {
                 //Check if attack tile is our wall
                 TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
