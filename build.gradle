@@ -86,6 +86,7 @@ sourcesJar {
 dependencies
 {
     compile ("com.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf") { changing = true }
+    compile "com.builtbroken.armory:Armory:1.7.10-$armory_version+:deobf"
 }
 
 jacocoTestReport {
