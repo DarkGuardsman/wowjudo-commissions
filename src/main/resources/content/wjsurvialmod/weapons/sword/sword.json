@@ -7,14 +7,14 @@
     "id": "wjsurvialmod:sword",
     "creativeTab": "wjsurvialmod",
     "attack": 3,
+    "takesDamage": false,
     "blocksToBreak": [
       {
         "block": "minecraft:web",
         "speed": 15
       }
     ],
-    "materialsToBreak":
-    [
+    "materialsToBreak": [
       {
         "material": "plants",
         "speed": 1.5
